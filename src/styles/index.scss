@@ -1,0 +1,22 @@
+@import './element-ui.scss';
+
+body {
+    margin: 0px;
+    background-color: #eef0f1;
+}
+
+#app {
+    height: 100%;
+    font-family: 'Avenir', Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+a,
+a:focus,
+a:hover {
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 14px;
+}
+
