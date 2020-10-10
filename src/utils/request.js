@@ -5,6 +5,7 @@ import { Message } from 'element-ui'
 
 const instance = axios.create({
     baseURL: '/api',
+    withCredentials: true, // send cookies when cross-domain requests
 })
 
 instance.interceptors.request.use(
