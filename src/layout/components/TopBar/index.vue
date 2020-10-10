@@ -9,7 +9,8 @@
         <el-input
             clearable
             placeholder="搜索..."
-            class="search-bar">
+            class="search-bar"
+            v-model="searchContent">
         </el-input>
         <div class="right-actions">
             <div v-if="!name">
@@ -37,7 +38,7 @@ import { mapGetters } from 'vuex'
 export default {
     data() {
         return {
-
+            searchContent: '',
         }
     },
     computed: {

@@ -3,7 +3,7 @@
         <el-card class="login-panel">
             <div class="description">
                 <div>Welcome to VA</div>
-                <div>VA is a community based on Vue and WANANDROID API </div>
+                <div>VA is a community based on Vue and WANANDROID API</div>
             </div>
             <el-divider content-position="center">Login with your username and password</el-divider>
             <el-form
@@ -26,10 +26,10 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="login">登录</el-button>
+                    <el-button type="primary" @click="handleLogin" :loading="loading">登录</el-button>
                 </el-form-item>
             </el-form>
-            <router-link to="/">还没有账号？</router-link>
+            <router-link to="/register">还没有账号？</router-link>
         </el-card>
     </div>
 </template>
@@ -57,14 +57,21 @@ export default {
             loginModel: {
                 username: '',
                 password: ''
-            }
+            },
+            loading: false,
         }
     },
     methods: {
-        login() {
+        handleLogin() {
             this.$refs.loginForm.validate((valid) => {
                 if (valid) {
-                    this.$message('触发了登录')
+                    this.loading = true
+                    this.$store.dispatch('user/login', this.loginModel).then(() => {
+                        this.$router.push('/')
+                        this.loading = false
+                    }).catch(() => {
+                        this.loading = false
+                    })
                 }
             })
         }
