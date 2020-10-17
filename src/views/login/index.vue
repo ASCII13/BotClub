@@ -3,7 +3,7 @@
         <el-card class="login-panel">
             <div class="description">
                 <div>Welcome to VA</div>
-                <div>VA is a community based on Vue and WANANDROID API</div>
+                <div>VA is a community built on Vue and WANANDROID API</div>
             </div>
             <el-divider content-position="center">Login with your username and password</el-divider>
             <el-form
@@ -81,13 +81,13 @@ export default {
 
 <style lang="scss" scoped>
 .login-container {
-    height: 100vh;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 
     .login-panel {
-        width: 640px;
+        width: 740px;
         padding: 3rem;
         background-color: #ffffff;
 

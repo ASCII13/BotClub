@@ -3,7 +3,7 @@
         <el-card class="register-panel">
             <div class="description">
                 <div>Welcome to VA</div>
-                <div>VA is a community based on Vue and WANANDROID API </div>
+                <div>VA is a community built on Vue and WANANDROID API</div>
             </div>
             <el-divider content-position="center">Enter your information for register</el-divider>
             <el-form
@@ -86,6 +86,7 @@ export default {
                 password: '',
                 confirmPassword: ''
             },
+            loading: false,
         }
     },
     methods: {
@@ -102,13 +103,13 @@ export default {
 
 <style lang="scss" scoped>
 .register-container {
-    height: 100vh;
+    height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 
     .register-panel {
-        width: 640px;
+        width: 740px;
         padding: 3rem;
         background-color: #ffffff;
 
