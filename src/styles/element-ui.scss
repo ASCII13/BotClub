@@ -1,7 +1,12 @@
 // cover some element-ui styles
 
+.el-card__header {
+    font-weight: bold;
+    padding: 13px 20px;
+}
+
 .el-card__body {
-    padding: 0px;
+    padding: 6px;
 }
 
 .el-button {
