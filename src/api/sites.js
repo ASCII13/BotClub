@@ -1,7 +1,7 @@
 import request from '@/utils/request'
 
 export function getSiteList() {
-    request({
+    return request({
         url: '/navi/json',
         method: 'get'
     })
