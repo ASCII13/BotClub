@@ -95,7 +95,7 @@ export default {
             color: #303133;
             line-height: 26px;
             font-size: 18px;
-            font-weight: bold;
+            font-weight: 500;
             margin: 0.6rem 0;
             display: flex;
             justify-content: left;
