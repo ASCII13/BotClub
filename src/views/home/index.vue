@@ -1,7 +1,7 @@
 <template>
     <div class="home-container">
         <div class="left-container">
-            <el-carousel loop autoplay arrow="hover" height="300px" class="banner-container">
+            <el-carousel loop autoplay arrow="hover" height="330px" class="banner-container">
                 <el-carousel-item v-for="(item, index) in bannerList" :key="index" :name="item.title">
                     <el-image :src="item.imagePath" fit="fill" style="width: 100%; height: 100%;"></el-image>
                 </el-carousel-item>
@@ -70,6 +70,9 @@ export default {
     mounted() {
         document.addEventListener('scroll', this.onScroll);
     },
+    destroyed() {
+        document.removeEventListener('scroll', this.onScroll);
+    },
     components: {
         SideBar,
     },
@@ -129,9 +132,6 @@ export default {
                         }
                     })
                     break;
-
-                default:
-                    break;
             }
         },
         /**
@@ -144,7 +144,6 @@ export default {
             
             let scrollView = document.documentElement || document.body;
             if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                console.log('触发了上拉加载');
                 this.getArticleList('more');
             }
         }
@@ -196,8 +195,9 @@ export default {
 
                     .title {
                         color: #303133;
+                        line-height: 26px;
                         font-size: 18px;
-                        font-weight: bold;
+                        font-weight: 500;
                         margin: 0.8rem 0;
                         display: flex;
                         justify-content: left;
@@ -228,8 +228,6 @@ export default {
                 color: #909399;
                 text-align: center;
                 line-height: 60px;
-
-
             }
         }
     }
