@@ -81,6 +81,6 @@ export default {
 
 <style lang="scss" scoped>
 .square-container {
-    width: 600px;
+    width: 660px;
 }
 </style>
