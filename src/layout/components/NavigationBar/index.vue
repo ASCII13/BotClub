@@ -32,6 +32,7 @@ export default {
             }
         },
         navigateTo(path) {
+            if (path === this.currPath) return;
             if (path) {
                 this.currPath = path;
                 this.$router.push(path);
