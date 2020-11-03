@@ -176,6 +176,11 @@ export default {
     font-weight: 500;
     font-size: 16px;
     line-height: 1.3rem;
+    width: 100%;
+    display: inline-block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .description {
