@@ -1,7 +1,7 @@
 <template>
     <el-card shadow="hover" class="personal-panel">
         <div slot="header">
-            <span>个人信息</span>
+            <span>个人相关</span>
         </div>
         <div v-for="(item, index) in datas" :key="index" class="item-container">
             <router-link :to="item.path">{{ item.title }}</router-link>
@@ -15,16 +15,16 @@ export default {
         return {
             datas: [
                 {
-                    title: '积分详情',
+                    title: '积分排行',
                     path: '/ranking-list',
                 },
                 {
                     title: '收藏文章',
-                    path: '/login',
+                    path: '/favorite-list',
                 },
                 {
-                    title: '代办事项',
-                    path: '/login',
+                    title: '待办事项',
+                    path: '/todo',
                 }
             ]
         }

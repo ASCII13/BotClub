@@ -6,8 +6,8 @@
 </template>
 
 <script>
-import PersonalInfo from './components/Personal'
-import CommonlyUsedSite from './components/CommonlyUsedSite'
+import PersonalInfo from './Personal'
+import CommonlyUsedSite from './CommonlyUsedSite'
 
 export default {
     components: {
