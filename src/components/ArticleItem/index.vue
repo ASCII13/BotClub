@@ -116,9 +116,9 @@ export default {
             }
         }
     }
-}
-
-.article-item-container:not(:first-child) {
-    margin-top: 6px;
+    
+    &:not(:first-child) {
+        margin-top: 6px;
+    }
 }
 </style>
