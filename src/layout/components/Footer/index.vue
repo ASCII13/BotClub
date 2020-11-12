@@ -5,8 +5,11 @@
             <el-avatar :src="require('@/assets/email.svg')" shape="circle" @click.native="navigateTo('email')"></el-avatar>
         </div>
         <div class="info">
-            <div>Copyright © {{ getCurrentYear }} ASCII13</div>
-            <div>Made with love, Vue and WANANDROID API</div>
+            <div>Copyright © {{ getCurrentYear }} <a href="https://github.com/ASCII13" target="_blank">ASCII13</a></div>
+            <div>Made with love, 
+                <a href="https://cn.vuejs.org/" target="_blank">Vue</a> 
+                and <a href="http://www.wanandroid.com/" target="_blank">WANANDROID</a> API
+            </div>
         </div>
     </div>
 </template>
@@ -58,11 +61,20 @@ export default {
     &:not(:last-child) {
         margin-right: 10px;
     }
+
+    &:hover {
+        cursor: pointer;
+    }
 }
 
 .info {
-    marigin-top: 1rem;
+    margin-top: 0.6rem;
     text-align: center;
     line-height: 25px;
+
+    a {
+        color: #303133;
+        font-weight: bold;
+    }
 }
 </style>
