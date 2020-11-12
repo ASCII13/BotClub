@@ -57,6 +57,7 @@ export default {
     width: 30px;
     height: 30px;
     background-color: transparent;
+    transition: transform 0.3s;
 
     &:not(:last-child) {
         margin-right: 10px;
@@ -64,6 +65,7 @@ export default {
 
     &:hover {
         cursor: pointer;
+        transform: scale(1.25);
     }
 }
 
