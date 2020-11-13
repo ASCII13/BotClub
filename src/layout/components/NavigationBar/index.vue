@@ -2,8 +2,11 @@
     <div class="nav-container">
         <div class="title">热门标签</div>
         <div class="nav-list">
-            <div v-for="(route, index) in routes" :key="index" class="nav-item" :class="{ 'curr-item': route.redirect === currPath }">
-                <div @click="navigateTo(route.redirect)">{{ getNavTitle(route.children) }}</div>
+            <div v-for="(route, index) in routes"
+                :key="index"
+                class="nav-item"
+                :class="{ 'curr-item': route.redirect === currPath }"
+                @click="navigateTo(route.redirect)">{{ getNavTitle(route.children) }}
             </div>
         </div>
     </div>
@@ -58,6 +61,10 @@ export default {
         margin-top: 0.3rem;
         display: flex;
         flex-direction: column;
+
+        &:hover {
+            cursor: pointer;
+        }
 
         .nav-item {
             height: 40px;
