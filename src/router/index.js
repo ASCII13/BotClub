@@ -176,7 +176,7 @@ const routes = [
         path: 'index',
         component: () => import('@/views/todo'),
         name: 'Todo',
-        meta: { title: '待办事项' }
+        meta: { title: '待办清单' }
       }
     ]
   }

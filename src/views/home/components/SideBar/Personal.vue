@@ -23,7 +23,7 @@ export default {
                     path: '/favorite-list',
                 },
                 {
-                    title: '待办事项',
+                    title: '待办清单',
                     path: '/todo',
                 }
             ]
