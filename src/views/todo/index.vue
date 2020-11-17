@@ -287,7 +287,7 @@ export default {
                     add(data).then((res) => {
                         this.dialogVisible = false;
                         if (res.data.id) {
-                            this.$message.success('创建成功');   
+                            this.$message.success('创建成功，请刷新页面后查看');   
                         }
                     })
                 } else {
