@@ -59,6 +59,7 @@ export default {
                 password: ''
             },
             loading: false,
+            path: this.$route.query.path,
         }
     },
     methods: {
@@ -67,7 +68,11 @@ export default {
                 if (valid) {
                     this.loading = true
                     this.$store.dispatch('user/login', this.loginModel).then(() => {
-                        this.$router.push('/')
+                        if (this.path) {
+                            this.$router.replace(this.path)
+                        } else {
+                            this.$router.back()
+                        }
                         this.loading = false
                     }).catch(() => {
                         this.loading = false

@@ -10,7 +10,12 @@ router.beforeEach(async(to, from, next) => {
         next();
     } else {
         if (to.name === 'Todo' || to.name === 'FavoriteList') {
-            next('/login');
+            next({
+                path: '/login',
+                query: {
+                    path: to.fullPath
+                }
+            });
         } else {
             next();
         }
