@@ -1,17 +1,18 @@
 <h1 align="center">VAndroid</h1>
 <p align="center">
-    <a href="https://github.com/ASCII13/VAndroid/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/ASCII13/VAndroid"></a>
-    <a href="https://github.com/ASCII13/VAndroid/network"><img alt="GitHub forks" src="https://img.shields.io/github/forks/ASCII13/VAndroid"></a>
-    <a href="https://github.com/ASCII13/VAndroid/stargazers"><img alt="GitHub stars" src="https://img.shields.io/github/stars/ASCII13/VAndroid"></a>
-    <a href="https://github.com/ASCII13/VAndroid"><img alt="GitHub license" src="https://img.shields.io/github/license/ASCII13/VAndroid"></a>
+    <a href="https://github.com/ASCII13/VAndroid/issues"><img alt="issues" src="https://img.shields.io/github/issues/ASCII13/VAndroid"></a>
+    <a href="https://github.com/ASCII13/VAndroid/network"><img alt="forks" src="https://img.shields.io/github/forks/ASCII13/VAndroid"></a>
+    <a href="https://github.com/ASCII13/VAndroid/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/ASCII13/VAndroid"></a>
+    <a href="https://github.com/ASCII13/VAndroid"><img alt="license" src="https://img.shields.io/github/license/ASCII13/VAndroid"></a>
 </p>
 
 简体中文｜[English](./README.en-US.md)
 
 ## 描述
-VAndroid 是一个专注 Android 领域的信息聚合站点，基于 [Vue](https://cn.vuejs.org/)，[Element-ui](https://element.eleme.io/#/zh-CN) 和 [WANANDROID](http://www.wanandroid.com/) API 实现。
+VAndroid 是一个专注 Android 领域的信息聚合站点，基于 [Vue](https://cn.vuejs.org/)，[Element-ui](https://element.eleme.io/#/zh-CN) 和 [WANANDROID](https://www.wanandroid.com/) API 实现。
 
 ## 预览
+[在线体验](http://119.45.40.227/v-android)
 
 ## 功能
 - 首页
