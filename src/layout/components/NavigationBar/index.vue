@@ -6,7 +6,7 @@
                 :key="index"
                 class="nav-item"
                 :class="{ 'curr-item': route.redirect === currPath }"
-                @click="navigateTo(route.redirect)">{{ getNavTitle(route.children) }}
+                @click="navigateTo(route.path)">{{ getNavTitle(route.children) }}
             </div>
         </div>
     </div>
@@ -14,11 +14,6 @@
 
 <script>
 export default {
-    data() {
-        return {
-            currPath: this.$route.path,
-        }
-    },
     computed: {
         routes() {
             return this.$router.options.routes.filter(item => {
@@ -27,6 +22,9 @@ export default {
                 }
             })
         },
+        currPath() {
+            return this.$route.path;
+        }
     },
     methods: {
         getNavTitle(children = []) {
@@ -37,7 +35,6 @@ export default {
         navigateTo(path) {
             if (path === this.currPath) return;
             if (path) {
-                this.currPath = path;
                 this.$router.push(path);
             }
         },
