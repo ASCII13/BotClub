@@ -4,7 +4,7 @@ import axios from 'axios'
 import { Message } from 'element-ui'
 
 const instance = axios.create({
-    baseURL: '/api',
+    baseURL: process.env.VUE_APP_BASE_API,
     withCredentials: true, // send cookies when cross-domain requests
 })
 
