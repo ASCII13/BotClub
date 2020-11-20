@@ -4,6 +4,8 @@
     <a href="https://github.com/ASCII13/VAndroid/network"><img alt="forks" src="https://img.shields.io/github/forks/ASCII13/VAndroid"></a>
     <a href="https://github.com/ASCII13/VAndroid/stargazers"><img alt="stars" src="https://img.shields.io/github/stars/ASCII13/VAndroid"></a>
     <a href="https://github.com/ASCII13/VAndroid"><img alt="license" src="https://img.shields.io/github/license/ASCII13/VAndroid"></a>
+    <a href="https://cn.vuejs.org"><img alt="Vue version" src="https://img.shields.io/badge/Vue-2.6.11-brightgreen"></a>
+    <a href="https://element.eleme.io/"><img alt="Element-ui version" src="https://img.shields.io/badge/Element--ui-2.4.5-brightgreen"></a>
 </p>
 
 简体中文｜[English](./README.en-US.md)
