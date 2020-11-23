@@ -87,6 +87,10 @@ export default {
         font-family: Oswald;
         font-size: 28px;
         border-radius: 3px;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     .search-bar {
