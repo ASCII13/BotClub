@@ -22,6 +22,7 @@
                 v-for="(item, index) in categories"
                 :key="index"
                 :underline="false"
+                :class="{ 'curr-category': item.id === lastId }"
                 @click="getProjectList('init', item.id)">{{ item.name }}
             </el-link>
         </el-card>
@@ -46,7 +47,7 @@ export default {
     },
     created() {
         getCategories().then(res => {
-            if (res.data && res.data.length != 0) {
+            if (res.data != undefined && res.data.length != 0) {
                 this.categories = res.data;
                 this.setDefaultId(this.categories);
                 this.getProjectList('init', this.lastId);
@@ -204,6 +205,10 @@ export default {
 
     .categroy {
         padding: 10px;
+
+        &.curr-category {
+            color: #59a57c;
+        }
     }
 }
 </style>
