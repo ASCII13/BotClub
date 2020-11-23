@@ -64,20 +64,21 @@ export default {
         }
 
         .nav-item {
-            height: 40px;
-            line-height: 40px;
+            height: 36px;
+            line-height: 36px;
             font-size: 16px;
             color: #303133;
             font-weight: 500;
             padding-left: 5px;
             overflow: hidden;
             position: relative;
+
+            &:not(:last-child) {
+                margin-bottom: 0.2rem;
+            }
         }
 
-        .nav-item.curr-item {
-            color: #59a57c;
-        }
-
+        .nav-item.curr-item,
         .nav-item:hover {
             color: #59a57c;
             background-color: #e3e3e5;
