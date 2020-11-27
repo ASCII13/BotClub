@@ -36,3 +36,9 @@ VAndroid is a website for Android information, built on [Vue](https://cn.vuejs.o
 2. Enter the project directory.
 3. Run `npm install`.
 4. Run `npm run serve` for preview and debug.
+
+## Plan
+- Fix bug.
+- Optimize code.
+- Add new features.
+- Optimize interaction and Visual effects.
