@@ -6,7 +6,7 @@
                 <div>{{ item.author || item.shareUser }}</div>
                 <div>{{ item.niceDate }}</div>
             </div>
-            <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
+            <el-link :href="item.link" :underline="false" target="_blank" class="title"><span v-html="item.title"></span></el-link>
             <div>
                 <div class="classification">
                     <span>#{{ item.superChapterName }}</span>
@@ -120,5 +120,12 @@ export default {
     &:not(:first-child) {
         margin-top: 6px;
     }
+}
+</style>
+
+<style lang="scss">
+.highlight {
+    color: red;
+    font-style: normal;    
 }
 </style>
