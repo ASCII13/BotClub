@@ -25,6 +25,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { collectArticle, uncollectArticle } from '@/api/collection';
 
 export default {
@@ -45,22 +46,31 @@ export default {
             return arguments[1].charAt(0)
         },
         changeCollectionStatus(item) {
-            item.loading = true;
-
-            if (item.collect) {
-                uncollectArticle(item.id).then(() => {
-                    item.collect = false;
-                    item.loading = false;
-                    this.$message.success('已取消收藏');
-                })
+            if (!this.cookie) {
+                this.$router.push('/login');
             } else {
-                collectArticle(item.id).then(() => {
-                    item.collect = true;
-                    item.loading = false;
-                    this.$message.success('已成功收藏');
-                })
+                item.loading = true;
+
+                if (item.collect) {
+                    uncollectArticle(item.id).then(() => {
+                        item.collect = false;
+                        item.loading = false;
+                        this.$message.success('已取消收藏');
+                    })
+                } else {
+                    collectArticle(item.id).then(() => {
+                        item.collect = true;
+                        item.loading = false;
+                        this.$message.success('已成功收藏');
+                    })
+                }
             }
         },
+    },
+    computed: {
+        ...mapGetters([
+            'cookie',
+        ])
     }
 }
 </script>
