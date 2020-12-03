@@ -47,7 +47,7 @@ export default {
             switch (command) {
                 case "logout":
                     this.$store.dispatch('user/logout').then(() => {
-                        this.$message.success('已退出登录');
+                        window.location.reload();
                     })
                     break;
             
@@ -102,8 +102,21 @@ export default {
     .right-actions {
         margin-right: auto;
 
+        &:hover {
+            cursor: pointer;
+        }
+
         .nickname {
             font-weight: 500;
+
+            .el-icon-caret-bottom {
+                padding: 2px;
+                transition: transform 0.3s;
+            }
+
+            &:hover > i {
+                transform: rotate(180deg);
+            }
         }
     }
 }
