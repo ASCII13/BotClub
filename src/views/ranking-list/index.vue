@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" style="width: 660px;">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" style="width: 660px;">
         <el-card
             v-for="user in userList"
             :key="user.userId"
@@ -25,6 +25,7 @@ export default {
             busy: false,
             noMore: false,
             showHint: false,
+            loading: false,
             currPage: 1,
             userList: [],
         }
@@ -52,7 +53,9 @@ export default {
         },
         getRankingData(state, page) {
             if (state === 'init') {
+                this.loading = true;
                 getRankingList(page).then(res => {
+                    this.loading = false;
                     if (res.data.datas != undefined && res.data.datas.length != 0) {
                         this.userList = res.data.datas;
                         this.currPage = page + 1;

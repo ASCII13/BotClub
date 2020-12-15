@@ -1,9 +1,9 @@
 <template>
     <div class="wechat-container">
-        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" class="article-list">
+        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="showListLoading" class="article-list">
             <article-item v-for="article in articles" :key="article.id" :item="article"></article-item>
         </list-view>
-        <el-card class="account-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }">
+        <el-card class="account-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
             <el-link
                 class="account"
                 v-for="(item, index) in accounts"
@@ -31,11 +31,13 @@ export default {
             noMore: false,
             showHint: false,
             lastId: -1,
-
+            showListLoading: true,
+            showTypeLoading: true,
         }
     },
     created() {
         getOfficialAccounts().then(res => {
+            this.showTypeLoading = false;
             if (res.data != undefined && res.data.length != 0) {
                 this.accounts = res.data;
                 this.setDefaultId(res.data);
@@ -62,6 +64,7 @@ export default {
                 this.noMore = false;
 
                 getWechatArticles(this.currPage, currId).then(res => {
+                    this.showListLoading = false;
                     if (res.data.datas != undefined && res.data.datas.length != 0) {
                         this.articles = res.data.datas.map(item => {
                             item.loading = false;

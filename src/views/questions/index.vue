@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" class="question-list">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" class="question-list">
         <el-card
             class="question-item"
             v-for="(item, index) in datas"
@@ -40,8 +40,10 @@ export default {
             }
         },
         getQuestionData(state) {
+            this.loading = true;
             if (state === 'init') {
                 getQuestions().then(res => {
+                    this.loading = false;
                     let questions = res.data.datas;
                     if (questions && questions.length != 0) {
                         this.currpage += 1;
@@ -95,6 +97,7 @@ export default {
             busy: false,
             noMore: false,
             showHint: false,
+            loading: false,
             currpage: 1,
             datas: [],
         }
@@ -144,14 +147,19 @@ export default {
     display: flex;
     align-items: center;
 
-    .tag:not(:first-child) {
-        flex: 1;
-        margin-left: 10px;
-    }
+    // .tag:not(:first-child) {
+    //     flex: 1;
+    //     margin-left: 10px;
+    // }
 
     .tag {
         color: #909399;
         font-size: 13px;
+
+        &:not(:first-child) {
+            flex: 1;
+            margin-left: 10px;
+        }
     }
 }
 </style>

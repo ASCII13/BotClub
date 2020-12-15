@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" class="square-container">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" class="square-container">
         <article-item v-for="(item, index) in dataList" :key="index" :item="item"></article-item>
     </list-view>
 </template>
@@ -18,7 +18,9 @@ export default {
     methods: {
         getSquareContent(state) {
             if (state === 'init') {
+                this.loading = true;
                 getSquareData().then(res => {
+                    this.loading = false;
                     let datas = res.data.datas;
                     if (datas && datas.length != 0) {
                         this.currPage += 1;
@@ -64,6 +66,7 @@ export default {
             busy: false,
             noMore: false,
             showHint: false,
+            loading: false,
             dataList: [],
         }
     },

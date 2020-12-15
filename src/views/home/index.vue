@@ -6,7 +6,7 @@
                     <el-image :src="item.imagePath" fit="fill" style="width: 100%; height: 100%;"></el-image>
                 </el-carousel-item>
             </el-carousel>
-            <list-view :busy="busy" :noMore="noMore" :showHint="showHint" class="article-container">
+            <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" class="article-container">
                 <article-item v-for="(item, index) in articleList" :key="index" :item="item"></article-item>
             </list-view>
         </div>
@@ -30,6 +30,7 @@ export default {
             busy: false,
             noMore: false,
             showHint: false,
+            loading: false,
             bannerList: [],
             articleList: [],
         }
@@ -55,7 +56,9 @@ export default {
         getArticleList(state) {
             switch (state) {
                 case 'init':
+                    this.loading = true;
                     getArticles(0).then(res => {
+                        this.loading = false;
                         let dataList = res.data.datas;
                         if (dataList != undefined && dataList.length != 0) {
                             this.currPage += 1;

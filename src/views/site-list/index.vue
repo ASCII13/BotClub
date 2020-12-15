@@ -1,7 +1,7 @@
 <template>
     <div class="site-container">
-        <div>
-            <el-card v-for="type in siteList" :key="type.cid" :id="'id'+type.cid" class="site-list">
+        <list-view class="site-list" :loading="loading">
+            <el-card v-for="type in siteList" :key="type.cid" :id="'id'+type.cid" class="type-item">
                 <div slot="header">{{ type.name }}</div>
                 <div class="item-list">
                     <el-link
@@ -14,8 +14,8 @@
                     </el-link>
                 </div>
             </el-card>
-        </div>
-        <el-card class="site-type" :body-style="{ 'display': 'flex', 'flex-direction': 'column',}">
+        </list-view>
+        <el-card class="site-type" v-loading="loading" :body-style="{ 'display': 'flex', 'flex-direction': 'column',}">
             <el-link
                 class="item"
                 v-for="type in siteList"
@@ -28,16 +28,20 @@
 </template>
 
 <script>
+import ListView from '@/components/ListView';
 import { getSiteList } from '@/api/sites';
 
 export default {
     data() {
         return {
             siteList: [],
+            loading: false,
         }
     },
     created() {
+        this.loading = true;
         getSiteList().then(res => {
+            this.loading = false;
             let datas = res.data;
             if (datas && datas.length != 0) {
                 this.siteList = datas;
@@ -51,6 +55,9 @@ export default {
                 view.scrollIntoView();
             }
         }
+    },
+    components: {
+        ListView,
     }
 }
 </script>
@@ -61,6 +68,10 @@ export default {
 
     .site-list {
         width: 600px;
+
+        .type-item:not(:last-child) {
+            margin-bottom: 6px;
+        }
 
         .item-list {
             display: flex;
@@ -77,10 +88,6 @@ export default {
 
     .item {
         padding: 10px;
-    }
-
-    .site-list:not(:last-child) {
-        margin-bottom: 6px;
     }
 }
 </style>

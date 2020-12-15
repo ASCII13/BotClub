@@ -1,9 +1,9 @@
 <template>
     <div class="knowledge-container">
-        <list-view class="article-list" :showHint="showHint" :noMore="noMore" :busy="busy">
+        <list-view class="article-list" :showHint="showHint" :noMore="noMore" :busy="busy" :loading="showListLoading">
             <article-item v-for="(articleItem, index) in articles" :key="index" :item="articleItem"></article-item>
         </list-view>
-        <el-card :body-style="{ 'width': '200px', }" style="height: fit-content; margin-left: 0.6rem;">
+        <el-card :body-style="{ 'width': '200px', }" style="height: fit-content; margin-left: 0.6rem;" v-loading="showTypeLoading">
             <div slot="header">体系分类</div>
             <div class="knowledge-list">
                 <el-popover placement="right" trigger="hover" v-for="(item, index) in knowledgeDatas" :key="index">
@@ -34,10 +34,13 @@ export default {
             noMore: false,
             busy: false,
             lastId: -1,
+            showListLoading: true,
+            showTypeLoading: true,
         }
     },
     created() {
         getKnowledgeSystemData().then(res => {
+            this.showTypeLoading = false;
             let knowledgeList = res.data;
             if (knowledgeList && knowledgeList.length != 0) {
                 this.knowledgeDatas = knowledgeList.filter(item => {
@@ -73,6 +76,7 @@ export default {
                 this.noMore = false;
                 
                 getArticles(this.currpage, params).then(res => {
+                    this.showListLoading = false;
                     if (res.data.datas && res.data.datas.length != 0) {
                         this.articles = res.data.datas.map(item => {
                             item.loading = false;

@@ -1,6 +1,6 @@
 <template>
     <div class="project-container">
-        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" class="project-list">
+        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" :loading="showListLoading" class="project-list">
             <el-card v-for="project in projects" :key="project.id" class="project-item">
                 <div style="display: flex; align-items: center;">
                     <el-avatar class="avatar">{{ getAvatarText(project.author, project.shareUser) }}</el-avatar>
@@ -16,7 +16,7 @@
                 </div>
             </el-card>
         </list-view>
-        <el-card class="category-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }">
+        <el-card class="category-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
             <el-link
                 class="categroy"
                 v-for="(item, index) in categories"
@@ -43,10 +43,13 @@ export default {
             showHint: false,
             currPage: 1,
             lastId: -1,
+            showTypeLoading: true,
+            showListLoading: true,
         }
     },
     created() {
         getCategories().then(res => {
+            this.showTypeLoading = false;
             if (res.data != undefined && res.data.length != 0) {
                 this.categories = res.data;
                 this.setDefaultId(this.categories);
@@ -73,6 +76,7 @@ export default {
                 this.noMore = false;
 
                 getProjects(this.currPage, params).then(res => {
+                    this.showListLoading = false;
                     let projectList = res.data.datas;
                     if (projectList && projectList.length != 0) {
                         this.projects = projectList;
