@@ -1,6 +1,6 @@
 <template>
     <el-card class="article-item-container" :body-style="{ display: 'flex' }">
-        <el-avatar class="avatar">{{ getAvatarText(item.author, item.shareUser) }}</el-avatar>
+        <el-avatar class="avatar" @click.native="browseInfo(item.userId)">{{ getAvatarText(item.author, item.shareUser) }}</el-avatar>
         <div class="info-container">
             <div class="author-info">
                 <div>{{ item.author || item.shareUser }}</div>
@@ -66,6 +66,16 @@ export default {
                 }
             }
         },
+        browseInfo(userId) {
+            if (userId) {
+                this.$router.push({
+                    path: '/user',
+                    query: {
+                        id: userId,
+                    }
+                });
+            }
+        },
     },
     computed: {
         ...mapGetters([
@@ -81,6 +91,10 @@ export default {
 
     .avatar {
         background-color: #59a57c;
+
+        &:hover {
+            cursor: pointer;
+        }
     }
 
     .info-container {

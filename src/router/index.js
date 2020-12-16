@@ -179,6 +179,20 @@ const routes = [
         meta: { title: '待办清单' }
       }
     ]
+  },
+  {
+    path: '/user',
+    component: Layout,
+    hidden: true,
+    redirect: '/user/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/user'),
+        name: 'User',
+        meta: { title: '用户分享' }
+      }
+    ]
   }
 ]
 
