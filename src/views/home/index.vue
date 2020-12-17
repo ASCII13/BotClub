@@ -6,7 +6,7 @@
                     <el-image :src="item.imagePath" fit="fill" style="width: 100%; height: 100%;"></el-image>
                 </el-carousel-item>
             </el-carousel>
-            <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" class="article-container">
+            <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" :more="more" class="article-container">
                 <article-item v-for="(item, index) in articleList" :key="index" :item="item"></article-item>
             </list-view>
         </div>
@@ -40,12 +40,6 @@ export default {
             this.bannerList = res.data
         }),
         this.getArticleList('init')
-    },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
     },
     components: {
         SideBar,
@@ -91,18 +85,8 @@ export default {
                     break;
             }
         },
-        /**
-         * scrollHeight 总的可滚动高度
-         * scrollTop 已滚动的高度
-         * clientHeight 可视区域高度
-         */
-        onScroll() {
-            if (this.busy || this.noMore) return;
-            
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getArticleList('more');
-            }
+        more() {
+            this.getArticleList('more');
         }
     },
 }

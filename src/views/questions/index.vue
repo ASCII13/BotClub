@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" class="question-list">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" :more="more" class="question-list">
         <el-card
             class="question-item"
             v-for="(item, index) in datas"
@@ -31,16 +31,10 @@ export default {
         ListView,
     },
     methods: {
-        onScroll() {
-            if (this.busy) return;
-
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getQuestionData('more');
-            }
+        more() {
+            this.getQuestionData('more');
         },
         getQuestionData(state) {
-            this.loading = true;
             if (state === 'init') {
                 getQuestions().then(res => {
                     this.loading = false;
@@ -97,19 +91,13 @@ export default {
             busy: false,
             noMore: false,
             showHint: false,
-            loading: false,
+            loading: true,
             currpage: 1,
             datas: [],
         }
     },
     created() {
         this.getQuestionData('init');
-    },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
     },
 }
 </script>
@@ -146,11 +134,6 @@ export default {
 .collection-container {
     display: flex;
     align-items: center;
-
-    // .tag:not(:first-child) {
-    //     flex: 1;
-    //     margin-left: 10px;
-    // }
 
     .tag {
         color: #909399;

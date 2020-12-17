@@ -41,8 +41,36 @@ export default {
         loading: {
             type: Boolean,
             default: false
+        },
+        more: {
+            type: Function,
+            default: function() {
+                return () => {}
+            }
         }
     },
+    methods: {
+        /**
+         * scrollHeight 总的可滚动高度
+         * scrollTop 已滚动的高度
+         * clientHeight 可视区域高度
+         */
+        onScroll() {
+            if (this.busy || this.noMore) return;
+
+            let scrollView = document.documentElement || document.body;
+            if ((scrollView.scrollHeight > scrollView.clientHeight) &&
+            (scrollView.scrollTop + scrollView.clientHeight === scrollView.scrollHeight)) {
+                this.more();
+            }
+        }
+    },
+    mounted() {
+        document.addEventListener('scroll', this.onScroll);
+    },
+    destroyed() {
+        document.removeEventListener('scroll', this.onScroll);
+    }
 }
 </script>
 

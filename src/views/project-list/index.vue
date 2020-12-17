@@ -1,6 +1,6 @@
 <template>
     <div class="project-container">
-        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" :loading="showListLoading" class="project-list">
+        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" :loading="showListLoading" :more="more" class="project-list">
             <el-card v-for="project in projects" :key="project.id" class="project-item">
                 <div style="display: flex; align-items: center;">
                     <el-avatar class="avatar">{{ getAvatarText(project.author, project.shareUser) }}</el-avatar>
@@ -57,12 +57,6 @@ export default {
             }
         })
     },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
-    },
     components: {
         ListView,
     },
@@ -108,13 +102,8 @@ export default {
             }
             return arguments[1].charAt(0)
         },
-        onScroll() {
-            if (this.busy || this.noMore) return;
-
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getProjectList('more', this.lastId);
-            }
+        more() {
+            this.getProjectList('more', this.lastId);
         },
         setDefaultId(arr) {
             for (let index = 0; index < arr.length; index++) {

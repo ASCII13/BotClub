@@ -1,6 +1,6 @@
 <template>
     <div class="knowledge-container">
-        <list-view class="article-list" :showHint="showHint" :noMore="noMore" :busy="busy" :loading="showListLoading">
+        <list-view class="article-list" :showHint="showHint" :noMore="noMore" :busy="busy" :loading="showListLoading" :more="more">
             <article-item v-for="(articleItem, index) in articles" :key="index" :item="articleItem"></article-item>
         </list-view>
         <el-card :body-style="{ 'width': '200px', }" style="height: fit-content; margin-left: 0.6rem;" v-loading="showTypeLoading">
@@ -53,12 +53,6 @@ export default {
             }
         })
     },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
-    },
     components: {
         ListView,
         ArticleItem,
@@ -102,13 +96,8 @@ export default {
                 })
             }
         },
-        onScroll() {
-            if (this.busy || this.noMore) return;
-
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getArticleList('more', this.lastId);
-            }
+        more() {
+            this.getArticleList('more', this.lastId);
         },
         setDefaultId(arr) {
             for (let index = 0; index < arr.length; index++) {

@@ -9,7 +9,7 @@
                     @click="switchTab(index)">{{ tab.title }}
                 </div>
             </div>
-            <list-view :showHint="showHint" :busy="busy" :noMore="noMore">
+            <list-view :showHint="showHint" :busy="busy" :noMore="noMore" :more="more">
                 <el-collapse>
                     <el-collapse-item v-for="(date, dateIndex) in tabList[currTab].data" :key="date.type" :title="date.type" v-show="tabList[currTab].data.length != 0">
                         <div v-for="(item, itemIndex) in date.data" :key="item.id" class="todo-item">
@@ -109,7 +109,6 @@ export default {
             visible: false,
             dialogVisible: false,
             isNew: true,
-            scrollView: document.documentElement || document.body,
             rules: {
                 title: [
                     {
@@ -138,12 +137,6 @@ export default {
     },
     created() {
         this.getTodoList('init', this.getCurrData().status);
-    },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
     },
     components: {
         ListView,
@@ -312,11 +305,8 @@ export default {
         removeParent(dateIndex) {
             this.getCurrData().data.splice(dateIndex, 1);
         },
-        onScroll() {
-            if (this.busy) return;
-            if (this.scrollView.scrollHeight - this.scrollView.scrollTop <= this.scrollView.clientHeight) {
-                this.getTodoList('more', this.getCurrData().status);
-            }
+        more() {
+            this.getTodoList('more', this.getCurrData().status);
         },
         modifyTodoStatus(currItem, dateIndex, itemIndex) {
             let status = currItem.status === 0 ? 1 : 0;

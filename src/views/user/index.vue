@@ -9,7 +9,7 @@
                     <span>排名：{{ userInfo.rank }}</span>
                 </div>
             </div>
-            <list-view :loading="loading" :showHint="showHint" :busy="busy" :noMore="noMore">
+            <list-view :loading="loading" :showHint="showHint" :busy="busy" :noMore="noMore" :more="more">
                 <article-item v-for="(item, index) in dataList" :key="index" :item="item"></article-item>
             </list-view>
         </list-view>
@@ -63,14 +63,8 @@ export default {
                 })
             }
         },
-        onScroll() {
-            if (this.busy || this.noMore) return;
-
-            let scrollView = document.documentElement || document.body;
-            if ((scrollView.scrollHeight > scrollView.clientHeight) &&
-            (scrollView.scrollTop + scrollView.clientHeight === scrollView.scrollHeight)) {
-                this.getUserData('more', this.page);
-            }
+        more() {
+            this.getUserData('more', this.page);
         },
     },
     data() {
@@ -93,12 +87,6 @@ export default {
     created() {
         this.getUserData('init');
     },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
-    }
 }
 </script>
 

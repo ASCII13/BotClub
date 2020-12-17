@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" style="width: 660px;">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :more="more" style="width: 660px;">
         <article-item v-for="(result, index) in resultList" :key="index" :item="result"></article-item>
     </list-view>
 </template>
@@ -17,12 +17,8 @@ export default {
         ArticleItem,
     },
     methods: {
-        onScroll() {
-            if (this.busy || this.noMore) return;
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.search('more', this.currPage, this.searchKey);
-            }
+        more() {
+            this.search('more', this.currPage, this.searchKey);
         },
         search(state, currPage, key) {
             if (state === 'init') {
@@ -79,12 +75,6 @@ export default {
             this.search('init', 0, this.searchKey);
         }
     },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
-    }
 }
 </script>
 

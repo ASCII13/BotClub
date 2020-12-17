@@ -1,6 +1,6 @@
 <template>
     <div class="wechat-container">
-        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="showListLoading" class="article-list">
+        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="showListLoading" :more="more" class="article-list">
             <article-item v-for="article in articles" :key="article.id" :item="article"></article-item>
         </list-view>
         <el-card class="account-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
@@ -46,12 +46,6 @@ export default {
                 this.showHint = true;
             }
         })
-    },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
     },
     components: {
         ListView,
@@ -101,13 +95,8 @@ export default {
                 }
             }
         },
-        onScroll() {
-            if (this.busy || this.noMore) return;
-
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getArticles('more', this.lastId);
-            }
+        more() {
+            this.getArticles('more', this.lastId);
         },
     }
 }

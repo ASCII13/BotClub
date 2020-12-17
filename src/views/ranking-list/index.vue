@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" style="width: 660px;">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" :more="more" style="width: 660px;">
         <el-card
             v-for="user in userList"
             :key="user.userId"
@@ -33,23 +33,13 @@ export default {
     created() {
         this.getRankingData('init', this.currPage);
     },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
-    },
     components: {
         ListView,
     },
     methods: {
         getFirstChar,
-        onScroll() {
-            if (this.busy || this.noMore) return;
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getRankingData('more', this.currPage);
-            }
+        more() {
+            this.getRankingData('more', this.currPage);
         },
         getRankingData(state, page) {
             if (state === 'init') {

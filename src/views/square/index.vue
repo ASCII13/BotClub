@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" class="square-container">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" :more="more" class="square-container">
         <article-item v-for="(item, index) in dataList" :key="index" :item="item"></article-item>
     </list-view>
 </template>
@@ -51,13 +51,8 @@ export default {
                 })
             }
         },
-        onScroll() {
-            if (this.busy) return;
-
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getSquareContent('more');
-            }
+        more() {
+            this.getSquareContent('more');
         },
     },
     data() {
@@ -73,12 +68,6 @@ export default {
     created() {
         this.getSquareContent('init');
     },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
-    }
 }
 </script>
 
