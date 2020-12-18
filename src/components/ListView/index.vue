@@ -2,8 +2,8 @@
     <div class="list-view">
         <div v-if="loading" v-loading="loading" style="margin-top: 8rem;"></div>
         <div v-if="showHint" class="hint-container">
-            <el-image :src="require('@/assets/empty.svg')" style="width: 120px; height: 150px;"></el-image>
-            <div style="color: #909399;">{{ placeholder }}</div>
+            <el-image :src="require('@/assets/empty-list.svg')" style="width: 130px; height: 130px;"></el-image>
+            <div style="color: #515151; margin-top: 1rem;">{{ placeholder }}</div>
         </div>
         <div v-else :class="{ 'wrap-list': wrap }">
             <slot></slot>
