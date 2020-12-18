@@ -150,6 +150,7 @@ export default {
             }
 
             if (loadType === 'init') {
+                this.showHint = false;
                 getList(currPage, data).then(res => {
                     if (res.data.datas != undefined && res.data.datas.length != 0) {
                         currData.data = [];
@@ -167,8 +168,8 @@ export default {
                                 data: todoList
                             });
                         });
-                        console.log('当前Tab数据');
-                        console.log(JSON.stringify(this.getCurrData()));
+                        // console.log('当前Tab数据');
+                        // console.log(JSON.stringify(this.getCurrData()));
                     } else {
                         this.showHint = true;
                     }
