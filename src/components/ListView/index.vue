@@ -3,7 +3,7 @@
         <div v-if="loading" v-loading="loading" style="margin-top: 8rem;"></div>
         <div v-if="showHint" class="hint-container">
             <el-image :src="require('@/assets/empty.svg')" style="width: 120px; height: 150px;"></el-image>
-            <div style="color: #909399;">暂无数据</div>
+            <div style="color: #909399;">{{ placeholder }}</div>
         </div>
         <div v-else :class="{ 'wrap-list': wrap }">
             <slot></slot>
@@ -11,9 +11,9 @@
         <div class="bottom-info" v-if="!showHint">
             <div v-if="busy">
                 <i class="el-icon-loading"></i>
-                <span style="margin-left: 6px;">加载中...</span>
+                <span style="margin-left: 6px;">{{ moreText }}</span>
             </div>
-            <div v-if="noMore">暂无更多数据</div>
+            <div v-if="noMore">{{ noMoreText }}</div>
         </div>
     </div>
 </template>
@@ -47,6 +47,18 @@ export default {
             default: function() {
                 return () => {}
             }
+        },
+        placeholder: {
+            type: String,
+            default: '暂无数据'
+        },
+        moreText: {
+            type: String,
+            default: '加载中...'
+        },
+        noMoreText: {
+            type: String,
+            default: '暂无更多数据'
         }
     },
     methods: {
