@@ -1,7 +1,7 @@
 export function getDateStringWithoutYear() {
-    let date = new Date();
-    let month =  date.getMonth + 1;
-    let day = date.getDay();
+    const date = new Date();
+    const month =  date.getMonth() + 1;
+    const day = date.getDate();
 
-    return month + day;
+    return month.toString() + day.toString();
 }
