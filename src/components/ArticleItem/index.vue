@@ -1,6 +1,10 @@
 <template>
     <el-card class="article-item-container" :body-style="{ display: 'flex' }">
-        <el-avatar class="avatar" @click.native="browseInfo(item.userId)">{{ getAvatarText(item.author, item.shareUser) }}</el-avatar>
+        <el-avatar
+            class="avatar"
+            :style="{ 'background-color': theme }"
+            @click.native="browseInfo(item.userId)">{{ getFirstChar(item.author, item.shareUser) }}
+        </el-avatar>
         <div class="info-container">
             <div class="author-info">
                 <div>{{ item.author || item.shareUser }}</div>
@@ -27,6 +31,7 @@
 <script>
 import { mapGetters } from 'vuex';
 import { collectArticle, uncollectArticle } from '@/api/collection';
+import { getFirstChar } from '@/utils/text';
 
 export default {
     props: {
@@ -39,12 +44,7 @@ export default {
         }
     },
     methods: {
-        getAvatarText() {
-            if (arguments[0]) {
-                return arguments[0].charAt(0)
-            }
-            return arguments[1].charAt(0)
-        },
+        getFirstChar,
         changeCollectionStatus(item) {
             if (!this.cookie) {
                 this.$router.push('/login');
@@ -80,6 +80,7 @@ export default {
     computed: {
         ...mapGetters([
             'cookie',
+            'theme',
         ])
     }
 }
@@ -89,12 +90,8 @@ export default {
 .article-item-container {
     padding: 10px;
 
-    .avatar {
-        background-color: #59a57c;
-
-        &:hover {
-            cursor: pointer;
-        }
+    .avatar:hover {
+        cursor: pointer;
     }
 
     .info-container {
