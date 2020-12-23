@@ -1,5 +1,5 @@
 @import './element-ui.scss';
-@import './variables.scss';
+// @import './variables.scss';
 
 body {
     margin: 0px;
@@ -17,6 +17,7 @@ body {
 a,
 a:focus,
 a:hover {
+    color: #303133;
     text-decoration: none;
     font-weight: 500;
     font-size: 14px;
