@@ -1,10 +1,6 @@
 <template>
     <el-card class="article-item-container" :body-style="{ display: 'flex' }">
-        <el-avatar
-            class="avatar"
-            :style="{ 'background-color': theme }"
-            @click.native="browseInfo(item.userId)">{{ getFirstChar(item.author, item.shareUser) }}
-        </el-avatar>
+        <avatar :item="{ 'userId': item.userId, 'author': item.author, 'shareUser': item.shareUser }"></avatar>
         <div class="info-container">
             <div class="author-info">
                 <div>{{ item.author || item.shareUser }}</div>
@@ -29,9 +25,10 @@
 </template>
 
 <script>
+import Avatar from '@/components/Avatar';
+
 import { mapGetters } from 'vuex';
 import { collectArticle, uncollectArticle } from '@/api/collection';
-import { getFirstChar } from '@/utils/text';
 
 export default {
     props: {
@@ -44,7 +41,6 @@ export default {
         }
     },
     methods: {
-        getFirstChar,
         changeCollectionStatus(item) {
             if (!this.cookie) {
                 this.$router.push('/login');
@@ -66,33 +62,22 @@ export default {
                 }
             }
         },
-        browseInfo(userId) {
-            if (userId) {
-                this.$router.push({
-                    path: '/user',
-                    query: {
-                        id: userId,
-                    }
-                });
-            }
-        },
     },
     computed: {
         ...mapGetters([
             'cookie',
             'theme',
         ])
-    }
+    },
+    components: {
+        Avatar,
+    },
 }
 </script>
 
 <style lang="scss" scoped>
 .article-item-container {
     padding: 10px;
-
-    .avatar:hover {
-        cursor: pointer;
-    }
 
     .info-container {
         display: flex;

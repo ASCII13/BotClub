@@ -5,7 +5,7 @@
             :key="user.userId"
             :body-style="{ 'display': 'flex', 'align-items': 'center', 'height': '80px', 'padding': '15px' }"
             class="user-item">
-            <el-avatar class="avatar">{{ getFirstChar(user.username) }}</el-avatar>
+            <el-avatar class="avatar" :style="{ 'background-color': theme }">{{ getFirstChar(user.username) }}</el-avatar>
             <div class="username">{{ user.username }}</div>
             <div class="coin">积分：{{ user.coinCount }}</div>
             <div class="level">等级：{{ user.level }}</div>
@@ -18,6 +18,7 @@
 import ListView from '@/components/ListView';
 import { getFirstChar } from '@/utils/text';
 import { getRankingList } from '@/api/ranking';
+import { mapGetters } from "vuex";
 
 export default {
     data() {
@@ -67,6 +68,11 @@ export default {
                 })
             }
         }
+    },
+    computed: {
+        ...mapGetters([
+            'theme',
+        ])
     }
 }
 </script>
@@ -85,7 +91,6 @@ export default {
 .avatar {
     width: 45px;
     height: 45px;
-    background-color: #59a57c;
 }
 
 .username {

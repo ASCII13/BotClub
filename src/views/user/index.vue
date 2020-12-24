@@ -2,7 +2,7 @@
     <div class="user">
         <list-view :showHint="userId < 0">
             <div class="info">
-                <el-avatar style="background-color: #59a57c;">{{ getFirstChar(userInfo.username) }}</el-avatar>
+                <el-avatar :style="{ 'background-color': theme }">{{ getFirstChar(userInfo.username) }}</el-avatar>
                 <div>
                     <span>积分：{{ userInfo.coinCount }}</span>
                     <span>等级：{{ userInfo.level }}</span>
@@ -19,13 +19,20 @@
 <script>
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
+
 import { getData } from "@/api/sharer";
 import { getFirstChar } from '@/utils/text';
+import { mapGetters } from "vuex";
 
 export default {
     components: {
         ListView,
         ArticleItem,
+    },
+    computed: {
+        ...mapGetters([
+            'theme',
+        ])
     },
     methods: {
         getFirstChar,

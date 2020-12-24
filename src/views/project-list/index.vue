@@ -3,7 +3,7 @@
         <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" :loading="showListLoading" :more="more" class="project-list">
             <el-card v-for="project in projects" :key="project.id" class="project-item">
                 <div style="display: flex; align-items: center;">
-                    <el-avatar class="avatar">{{ getAvatarText(project.author, project.shareUser) }}</el-avatar>
+                    <avatar :item="{ 'userId': project.userId, 'author': project.author, 'shareUser': project.shareUser }"></avatar>
                     <div class="author-info">
                         <div>{{ project.author || project.shareUser }}</div>
                         <div>{{ project.niceDate }}</div>
@@ -32,6 +32,7 @@
 <script>
 import { getCategories, getProjects } from '@/api/project';
 import ListView from '@/components/ListView';
+import Avatar from '@/components/Avatar';
 
 export default {
     data() {
@@ -58,6 +59,7 @@ export default {
         })
     },
     components: {
+        Avatar,
         ListView,
     },
     methods: {
@@ -117,6 +119,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .project-container {
     display: flex;
 }
@@ -132,10 +136,10 @@ export default {
     margin-top: 10px;
 }
 
-.avatar {
-    background-color: #59a57c;
-    flex-shrink: 0;
-}
+// .avatar {
+//     background-color: #59a57c;
+//     flex-shrink: 0;
+// }
 
 .info-container {
     position: relative;
@@ -200,7 +204,7 @@ export default {
         padding: 10px;
 
         &.curr-category {
-            color: #59a57c;
+            color: $primaryColor;
         }
     }
 }

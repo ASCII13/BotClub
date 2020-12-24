@@ -1,8 +1,13 @@
 <template>
-    <div class="back-top" v-show="show" @click="backTop"><i class="el-icon-caret-top"></i></div>
+    <div class="back-top" v-show="show" @click="backTop">
+        <img v-if="showSuprise" src="@/assets/christmas/back-top.svg">
+        <i v-else class="el-icon-caret-top"></i>
+    </div>
 </template>
 
 <script>
+import { isChristmas } from "@/utils/suprise";
+
 export default {
     data() {
         return {
@@ -30,6 +35,11 @@ export default {
                 behavior: 'smooth'
             });
         }
+    },
+    computed: {
+        showSuprise() {
+            return isChristmas();
+        }
     }
 }
 </script>
@@ -43,10 +53,17 @@ export default {
     height: 50px;
     border-radius: 25px;
     background-color: white;
-    display: inline-block;
-    text-align: center;
-    line-height: 50px;
-    font-size: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        cursor: pointer;
+    }
+
+    & > i {
+        font-size: 20px;
+    }
 }
 </style>

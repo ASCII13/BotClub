@@ -1,8 +1,8 @@
-import date from './date';
+import { getDateStringWithoutYear } from './date';
 
 export function isChristmas() {
     const christmas = '1225';
-    const currDate = date.getDateStringWithoutYear();
+    const currDate = getDateStringWithoutYear();
 
     if (currDate === christmas) {
         return true;

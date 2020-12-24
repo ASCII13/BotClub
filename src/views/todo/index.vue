@@ -339,6 +339,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .todo-container {
     display: flex;
 }
@@ -371,7 +373,7 @@ export default {
 
 .type-item:hover,
 .curr-tab.tab-item {
-    color: #59a57c;
+    color: $primaryColor;
     background-color: #ffffff;
 }
 
@@ -384,7 +386,7 @@ export default {
     font-size: 18px;
 
     &.done {
-        color: #59a57c;
+        color: $primaryColor;
     }
 }
 

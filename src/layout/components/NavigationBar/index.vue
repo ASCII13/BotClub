@@ -43,6 +43,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables';
+
 .nav-container {
     height: fit-content;
 
@@ -80,7 +82,7 @@ export default {
 
         .nav-item.curr-item,
         .nav-item:hover {
-            color: #59a57c;
+            color: $primaryColor;
             background-color: #e3e3e5;
         }
 
