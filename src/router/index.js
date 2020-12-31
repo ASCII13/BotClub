@@ -193,6 +193,20 @@ const routes = [
         meta: { title: '用户分享' }
       }
     ]
+  },
+  {
+    path: '/share-list',
+    component: Layout,
+    hidden: true,
+    redirect: '/share-list/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/share-list'),
+        name: 'ShareList',
+        meta: { title: '分享列表' }
+      }
+    ]
   }
 ]
 

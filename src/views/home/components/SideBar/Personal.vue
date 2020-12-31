@@ -21,6 +21,10 @@ export default {
                     path: '/favorite-list',
                 },
                 {
+                    title: '分享文章',
+                    path: '/share-list',
+                },
+                {
                     title: '待办清单',
                     path: '/todo',
                 }
