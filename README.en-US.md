@@ -30,6 +30,7 @@ VAndroid is a website for Android information, built on [Vue](https://cn.vuejs.o
 - Todo
 - Commonly-used-sites
 - Search
+- Share-list
 
 ## Introduction For Use
 1. Install [Node](https://nodejs.org/en/) and [Git](https://git-scm.com/).
@@ -44,6 +45,9 @@ VAndroid is a website for Android information, built on [Vue](https://cn.vuejs.o
 - Optimize interaction and Visual effects.
 
 ## Update Log
+### 2020-12-31
+1. You can see historical shared articles and cancel sharing.
+
 ### 2020-12-16
 1. Add page loading when request.
 2. You can browse information by clicking the sharer's avatar.
