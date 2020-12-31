@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" style="width: 660px;">
+    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :more="more" :loading="loading" style="width: 660px;">
         <el-card v-for="(item, index) in favoriteList" :key="item.id" class="favorite-item">
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
             <div class="info">
@@ -27,6 +27,7 @@ export default {
             busy: false,
             noMore: false,
             showHint: false,
+            loading: true,
             currPage: 0,
             favoriteList: [],
         }
@@ -34,24 +35,17 @@ export default {
     created() {
         this.getFavoriteData('init');
     },
-    mounted() {
-        document.addEventListener('scroll', this.onScroll);
-    },
-    destroyed() {
-        document.removeEventListener('scroll', this.onScroll);
-    },
     components: {
         ListView,
     },
-    methods: {
-        onScroll() {
-            if (this.busy || this.noMore) return;
-
-            let scrollView = document.documentElement || document.body;
-            if (scrollView.scrollHeight - scrollView.scrollTop <= scrollView.clientHeight) {
-                this.getFavoriteData('more', this.currPage);
+    watch: {
+        favoriteList(val) {
+            if (val.length === 0) {
+                this.showHint = true;
             }
-        },
+        }
+    },
+    methods: {
         unstar(currIndex) {
             let currItem = this.favoriteList[currIndex];
             currItem.loading = true;
@@ -65,7 +59,8 @@ export default {
         getFavoriteData(state) {
             if (state === 'init') {
                 getFavoriteList().then(res => {
-                    if (res.data.datas != undefined && res.data.datas.length != 0) {
+                    this.loading = false;
+                    if (res.data.datas.length > 0) {
                         this.currPage += 1;
                         this.favoriteList = res.data.datas.map(item => {
                             item.visible = false;
@@ -94,15 +89,23 @@ export default {
                     }
                 })
             }
-        } 
+        },
+        more() {
+            this.getFavoriteData('more', this.currPage);
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables.scss';
+
 .favorite-item {
     padding: 10px;
-    margin-top: 6px;
+
+    &:not(:first-child) {
+        margin-top: 6px;
+    }
 }
 
 .title {
@@ -129,6 +132,6 @@ export default {
 
 .el-icon-star-on {
     font-size: 26px;
-    color: #59a57c;
+    color: $primaryColor;
 }
 </style>
