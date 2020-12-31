@@ -19,6 +19,7 @@ export default {
 
 <style lang="scss" scoped>
 .side-bar-container {
+    width: 300px;
     display: flex;
     flex-direction: column;
 
