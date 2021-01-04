@@ -9,7 +9,7 @@ router.beforeEach(async(to, from, next) => {
     if (cookie) {
         next();
     } else {
-        if (to.name === 'Todo' || to.name === 'FavoriteList') {
+        if (to.name === 'Todo' || to.name === 'FavoriteList' || to.name === 'ShareList') {
             next({
                 path: '/login',
                 query: {
