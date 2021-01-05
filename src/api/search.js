@@ -10,3 +10,10 @@ export function globalSearch(query = 0, key) {
         data
     })
 }
+
+export function getHotWords() {
+    return request({
+        url: '/hotkey/json',
+        method: 'get'
+    })
+}
