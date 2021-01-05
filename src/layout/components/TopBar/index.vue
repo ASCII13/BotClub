@@ -78,9 +78,9 @@ export default {
         },
         search() {
             if (!this.searchContent) return;
-            
+
             this.visible = false;
-            this.$store.dispatch('app/setSearchKey', this.searchContent);
+            this.$store.dispatch('app/setKeywords', this.searchContent);
 
             if (this.$route.path === '/search-result/index') return;
             this.$router.push('/search-result');

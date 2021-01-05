@@ -1,13 +1,15 @@
 import variables from '@/styles/element-variables.scss';
+import { setKeywords, getKeywords } from '@/utils/storage';
 
 const state = {
-    searchKey: '',
+    keywords: getKeywords(),
     theme: variables.theme,
 }
 
 const mutations = {
-    SET_SEARCH_KEY: (state, key) => {
-        state.searchKey = key;
+    SET_KEYWORDS: (state, key) => {
+        state.keywords = key;
+        setKeywords(key);
     },
     SET_THEME: (state, val) => {
         state.theme = val;
@@ -15,8 +17,8 @@ const mutations = {
 }
 
 const actions = {
-    setSearchKey({ commit }, key) {
-        commit('SET_SEARCH_KEY', key);
+    setKeywords({ commit }, key) {
+        commit('SET_KEYWORDS', key);
     },
     setTheme({ commit }, val) {
         commit('SET_THEME', val);

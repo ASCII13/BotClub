@@ -18,7 +18,7 @@ export default {
     },
     methods: {
         more() {
-            this.search('more', this.currPage, this.searchKey);
+            this.search('more', this.currPage, this.keywords);
         },
         search(state, currPage, key) {
             if (state === 'init') {
@@ -53,12 +53,12 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'searchKey',
+            'keywords',
         ])
     },
     watch: {
-        searchKey() {
-            this.search('init', 0, this.searchKey);
+        keywords() {
+            this.search('init', 0, this.keywords);
         }
     },
     data() {
@@ -71,8 +71,8 @@ export default {
         }
     },
     created() {
-        if (this.searchKey) {
-            this.search('init', 0, this.searchKey);
+        if (this.keywords) {
+            this.search('init', 0, this.keywords);
         }
     },
 }
