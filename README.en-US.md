@@ -45,7 +45,7 @@ VAndroid is a website for Android information, built on [Vue](https://cn.vuejs.o
 - Add new features.
 - Optimize interaction and Visual effects.
 
-## Update Log
+## Major Update Log
 ### 2021-01-05
 You can see popular searches when focus search-bar.
 
