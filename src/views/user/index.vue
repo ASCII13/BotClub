@@ -45,8 +45,11 @@ export default {
 
                         let data = res.data.shareArticles;
                         if (data.datas.length > 0) {
-                            this.dataList = data.datas;
                             this.page += 1;
+                            this.dataList = data.datas.map(item => {
+                                item.loading = false;
+                                return item;
+                            });
                         } else {
                             this.showHint = true;
                         }
@@ -62,7 +65,11 @@ export default {
                     
                     let list = res.data.shareArticles.datas;
                     if (list.length > 0) {
-                        this.dataList.push(...list);
+                        let tmp = list.map(item => {
+                            item.loading = false;
+                            return item;
+                        })
+                        this.dataList.push(...tmp);
                         this.page += 1;
                     } else {
                         this.noMore = true;
