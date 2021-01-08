@@ -30,6 +30,7 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
+            <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" />
         </div>
     </div>
 </template>
@@ -44,11 +45,13 @@ export default {
             searchContent: '',
             hotWords: [],
             visible: false,
+            isDark: false,
+            mode: 'normal'
         }
     },
     mounted() {
         document.addEventListener('click', e => {
-            if (e.target.className === 'el-input__inner') {
+            if (e.target.className === 'el-input__inner' && e.target.placeholder === '多个关键字用空格隔开...') {
                 this.visible = true;
             } else {
                 this.visible = false;
@@ -95,6 +98,15 @@ export default {
         onClickHotWord(keyword) {
             this.searchContent = keyword;
             this.search();
+        }
+    },
+    watch: {
+        isDark(val) {
+            if (val) {
+                this.mode = 'dark';
+            } else {
+                this.mode = 'normal';
+            }
         }
     }
 }
@@ -158,6 +170,8 @@ export default {
 
     .right-actions {
         margin-right: auto;
+        display: flex;
+        align-items: center;
 
         &:hover {
             cursor: pointer;
@@ -174,6 +188,10 @@ export default {
             &:hover > i {
                 transform: rotate(180deg);
             }
+        }
+
+        img {
+            margin-left: 1rem;
         }
     }
 }
