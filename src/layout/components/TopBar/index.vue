@@ -30,8 +30,8 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
-            <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" />
         </div>
+        <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" />
     </div>
 </template>
 
@@ -169,19 +169,18 @@ export default {
     }
 
     .right-actions {
-        margin-right: auto;
-        display: flex;
-        align-items: center;
 
         &:hover {
             cursor: pointer;
         }
 
         .nickname {
+            display: inline-block;
+            line-height: 40px;
             font-weight: 500;
+            padding: 0 5px;
 
             .el-icon-caret-bottom {
-                padding: 2px;
                 transition: transform 0.3s;
             }
 
@@ -189,9 +188,17 @@ export default {
                 transform: rotate(180deg);
             }
         }
+    }
 
-        img {
-            margin-left: 1rem;
+    img {
+        height: 25px;
+        margin: {
+            right: auto;
+            left: 1rem;
+        }
+
+        &:hover {
+            cursor: pointer;
         }
     }
 }
