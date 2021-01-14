@@ -113,8 +113,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
-
 .top-bar-container {
     height: 56px;
     display: flex;

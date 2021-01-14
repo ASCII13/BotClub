@@ -98,8 +98,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
-
 .favorite-item {
     padding: 10px;
 

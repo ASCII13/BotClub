@@ -119,8 +119,6 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import '@/styles/variables.scss';
-
 .project-container {
     display: flex;
 }
