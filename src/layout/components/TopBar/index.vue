@@ -1,5 +1,5 @@
 <template>
-    <div class="top-bar-container">
+    <div class="top-bar-container" :class="{ 'dark-mode': mode === 'dark' }">
         <div class="logo" @click="backToHome">VA</div>
         <div class="search-bar">
             <el-input
@@ -14,22 +14,20 @@
                 <div class="word" v-for="item in hotWords" :key="item.id" @click="onClickHotWord(item.name)">{{ item.name }}</div>
             </div>
         </div>
-        <div class="right-actions">
+        <div class="user">
             <div v-if="!name">
                 <router-link to="/login">登录</router-link>
                 <el-divider direction="vertical"></el-divider>
                 <router-link to="/register">注册</router-link>
             </div>
-            <div v-else>
-                <el-dropdown @command="handleCommand">
-                    <span class="nickname">{{ name }}
-                        <i class="el-icon-caret-bottom"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
-            </div>
+            <el-dropdown v-else @command="handleCommand">
+                <span class="nickname">{{ name }}
+                     <i class="el-icon-caret-bottom"></i>
+                </span>
+                <el-dropdown-menu slot="dropdown">
+                    <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+                </el-dropdown-menu>
+            </el-dropdown>
         </div>
         <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" />
     </div>
@@ -46,7 +44,6 @@ export default {
             hotWords: [],
             visible: false,
             isDark: false,
-            mode: 'normal'
         }
     },
     mounted() {
@@ -61,6 +58,7 @@ export default {
     computed: {
         ...mapGetters([
             'name',
+            'mode',
         ])
     },
     methods: {
@@ -98,16 +96,19 @@ export default {
         onClickHotWord(keyword) {
             this.searchContent = keyword;
             this.search();
+        },
+        changeMode(mode) {
+            this.$store.dispatch('app/setMode', mode);
         }
     },
     watch: {
         isDark(val) {
             if (val) {
-                this.mode = 'dark';
+                this.changeMode('dark');
             } else {
-                this.mode = 'normal';
+                this.changeMode('light');
             }
-        }
+        },
     }
 }
 </script>
@@ -166,8 +167,7 @@ export default {
         }
     }
 
-    .right-actions {
-
+    .user {
         &:hover {
             cursor: pointer;
         }
@@ -179,6 +179,7 @@ export default {
             padding: 0 5px;
 
             .el-icon-caret-bottom {
+                width: 14px;
                 transition: transform 0.3s;
             }
 
@@ -189,15 +190,19 @@ export default {
     }
 
     img {
-        height: 25px;
+        width: 25px;
         margin: {
+            left: 0.6rem;
             right: auto;
-            left: 1rem;
         }
 
         &:hover {
             cursor: pointer;
         }
     }
+}
+
+.dark-mode {
+    background-color: $bgColorDark;
 }
 </style>
