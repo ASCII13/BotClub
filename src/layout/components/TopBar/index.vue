@@ -1,41 +1,48 @@
 <template>
-    <div class="top-bar-container" :class="{ 'dark-mode': mode === 'dark' }">
-        <div class="logo" @click="backToHome">VA</div>
-        <div class="search-bar">
-            <el-input
-                clearable
-                placeholder="多个关键字用空格隔开..."
-                style="width: 100%;"
-                v-model="searchContent"
-                @focus="getPopularWords"
-                @keyup.enter.native="search">
-            </el-input>
-            <div class="hot-words" v-show="visible">
-                <div class="word" v-for="item in hotWords" :key="item.id" @click="onClickHotWord(item.name)">{{ item.name }}</div>
+    <div :class="{ 'fixed-header': fixedHeader }">
+        <div class="top-bar" :class="{ 'dark-mode': mode === 'dark' }">
+            <div class="logo" @click="backToHome">VA</div>
+            <div class="search-bar">
+                <el-input
+                    clearable
+                    placeholder="多个关键字用空格隔开..."
+                    style="width: 100%;"
+                    v-model="searchContent"
+                    @focus="getPopularWords"
+                    @keyup.enter.native="search">
+                </el-input>
+                <div class="hot-words" v-show="visible">
+                    <div class="word" v-for="item in hotWords" :key="item.id" @click="onClickHotWord(item.name)">{{ item.name }}</div>
+                </div>
             </div>
-        </div>
-        <div class="user">
-            <div v-if="!name">
-                <router-link to="/login">登录</router-link>
-                <el-divider direction="vertical"></el-divider>
-                <router-link to="/register">注册</router-link>
+            <div class="user">
+                <div v-if="!name">
+                    <router-link to="/login">登录</router-link>
+                    <el-divider direction="vertical"></el-divider>
+                    <router-link to="/register">注册</router-link>
+                </div>
+                <el-dropdown v-else @command="handleCommand">
+                    <span class="nickname">{{ name }}
+                        <i class="el-icon-caret-bottom"></i>
+                    </span>
+                    <el-dropdown-menu slot="dropdown">
+                        <el-dropdown-item command="logout">退出登录</el-dropdown-item>
+                    </el-dropdown-menu>
+                </el-dropdown>
             </div>
-            <el-dropdown v-else @command="handleCommand">
-                <span class="nickname">{{ name }}
-                     <i class="el-icon-caret-bottom"></i>
-                </span>
-                <el-dropdown-menu slot="dropdown">
-                    <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-                </el-dropdown-menu>
-            </el-dropdown>
+            <i class="el-icon-setting" @click="visibleSetting = !visibleSetting"></i>
+            <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" />
         </div>
-        <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" />
+        <transition name="slide">
+            <setting class="setting-panel" v-show="visibleSetting" :fixedHeader="fixedHeader"></setting>
+        </transition>
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
 import { getHotWords } from '@/api/search';
+import Setting from './Setting';
 
 export default {
     data() {
@@ -43,8 +50,12 @@ export default {
             searchContent: '',
             hotWords: [],
             visible: false,
-            isDark: false,
+            isDark: undefined,
+            visibleSetting: false,
         }
+    },
+    created() {
+        this.isDark = this.mode === 'dark' ? true : false;
     },
     mounted() {
         document.addEventListener('click', e => {
@@ -59,7 +70,11 @@ export default {
         ...mapGetters([
             'name',
             'mode',
+            'fixedHeader',
         ])
+    },
+    components: {
+        Setting,
     },
     methods: {
         handleCommand(command) {
@@ -68,9 +83,6 @@ export default {
                     this.$store.dispatch('user/logout').then(() => {
                         window.location.reload();
                     })
-                    break;
-            
-                default:
                     break;
             }
         },
@@ -114,12 +126,16 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.top-bar-container {
+.top-bar {
     height: 56px;
     display: flex;
     align-items: center;
     background-color: #ffffff;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
+
+    &.dark-mode {
+        background-color: $elementBgDark;
+    } 
 
     .logo {
         margin-left: auto;
@@ -189,12 +205,21 @@ export default {
         }
     }
 
-    img {
+    .el-icon-setting {
         width: 25px;
+        line-height: 25px;
+        font-size: 20px;
+        text-align: center;
         margin: {
             left: 0.6rem;
-            right: auto;
+            right: 0.6rem;
         }
+        color: #606266;
+    }
+
+    img {
+        width: 25px;
+        margin-right: auto;
 
         &:hover {
             cursor: pointer;
@@ -202,7 +227,25 @@ export default {
     }
 }
 
-.dark-mode {
-    background-color: $bgColorDark;
+.setting-panel {
+    height: 60px;
+}
+
+.slide-enter-active,
+.slide-leave-active {
+    transition: height 0.1s linear;
+}
+
+.slide-enter,
+.slide-leave {
+    height: 0px;
+}
+
+.fixed-header {
+    position: fixed;
+    top: 0;
+    right: 0;
+    left: 0;
+    z-index: 9;
 }
 </style>
