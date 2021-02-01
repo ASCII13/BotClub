@@ -54,6 +54,7 @@ export default {
 
     &.fixed-padding {
         padding-top: 72px;
+        min-height: calc(100vh - 200px);
     }
 }
 </style>
