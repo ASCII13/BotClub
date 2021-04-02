@@ -25,7 +25,10 @@ export default {
                 this.resetListState();
                 globalSearch(currPage, key).then(res => {
                     if (res.data.datas != undefined && res.data.datas.length != 0) {
-                        this.resultList = res.data.datas;
+                        this.resultList = res.data.datas.map(item => {
+                            item.loading = false;
+                            return item;
+                        });
                         this.currPage = currPage + 1;
                     } else {
                         this.showHint = true;
@@ -38,7 +41,11 @@ export default {
                     this.busy = false;
 
                     if (res.data.datas != undefined && res.data.datas.length != 0) {
-                        this.resultList.push(...res.data.datas);
+                        let tmp = res.data.datas.map(item => {
+                            item.loading = false;
+                            return item;
+                        })
+                        this.resultList.push(...tmp);
                         this.currPage = currPage + 1;
                     } else {
                         this.noMore = true;
