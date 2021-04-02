@@ -11,7 +11,7 @@
 简体中文｜[English](./README.en-US.md)
 
 ## 描述
-VAndroid 是一个专注 Android 领域的信息聚合站点，基于 [Vue](https://cn.vuejs.org/)，[Element-ui](https://element.eleme.io/#/zh-CN) 和 [WANANDROID](https://www.wanandroid.com/) API 实现。
+VAndroid 是一个 Android 领域的信息聚合站点，基于 [Vue](https://cn.vuejs.org/)，[Element-UI](https://element.eleme.io/#/zh-CN) 和 [WANANDROID](https://www.wanandroid.com/) API 实现。
 
 ## 预览
 [在线体验](http://119.45.40.227/v-android)

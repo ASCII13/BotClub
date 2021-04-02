@@ -11,7 +11,7 @@
 [简体中文](./README.md)｜English
 
 ## Introduction
-VAndroid is a website for Android information, built on [Vue](https://cn.vuejs.org/), [Element-ui](https://element.eleme.io/) and [WANANDROID](https://www.wanandroid.com/) API.
+VAndroid is a website for Android information, built on [Vue](https://cn.vuejs.org/), [Element-UI](https://element.eleme.io/) and [WANANDROID](https://www.wanandroid.com/) API.
 
 ## Experience
 [Online](http://119.45.40.227/v-android)
