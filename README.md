@@ -14,7 +14,7 @@
 VAndroid 是一个 Android 领域的信息聚合站点，基于 [Vue](https://cn.vuejs.org/)，[Element-UI](https://element.eleme.io/#/zh-CN) 和 [WANANDROID](https://www.wanandroid.com/) API 实现。
 
 ## 预览
-[在线体验](http://119.45.40.227/v-android)
+[在线体验](https://www.kwafoo.com.cn/v-android)
 
 ## 功能
 - 首页
