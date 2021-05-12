@@ -4,7 +4,7 @@ const getters = {
     keywords: state => state.app.keywords,
     theme: state => state.app.theme,
     mode: state => state.app.mode,
-    fixedHeader: state => state.app.fixedHeader
+    fixedHeader: state => state.app.fixedHeader,
 }
 
 export default getters

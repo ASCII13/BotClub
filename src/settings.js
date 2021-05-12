@@ -1,3 +1,3 @@
 module.exports = {
-    title: 'VAndroid'
+    title: 'Bot Club'
 }

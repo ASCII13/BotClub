@@ -20,7 +20,6 @@ export default {
         return {
             configList: [
                 { name: '固定搜索栏', status: this.fixedHeader },
-                { name: '固定左侧栏', status: false },
             ],
         }
     },
@@ -29,9 +28,6 @@ export default {
             switch (type) {
                 case '固定搜索栏':
                     this.$store.dispatch('app/setHeaderStatus', currState);
-                    break;
-
-                case '固定左侧栏':
                     break;
             }
         }

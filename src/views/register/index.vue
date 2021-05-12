@@ -2,8 +2,8 @@
     <div class="register-container">
         <el-card class="register-panel">
             <div class="description">
-                <div>Welcome to VA</div>
-                <div>VA is a community built on Vue and WANANDROID API</div>
+                <div>Welcome to BC</div>
+                <div>BC is a community built on Vue and WANANDROID API</div>
             </div>
             <el-divider content-position="center">Enter your information for register</el-divider>
             <el-form

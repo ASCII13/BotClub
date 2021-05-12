@@ -2,8 +2,8 @@
     <div class="login-container">
         <el-card class="login-panel">
             <div class="description">
-                <div>Welcome to VA</div>
-                <div>VA is a community built on Vue and WANANDROID API</div>
+                <div>Welcome to BC</div>
+                <div>BC is a community built on Vue and WANANDROID API</div>
             </div>
             <el-divider content-position="center">Login with your username and password</el-divider>
             <el-form

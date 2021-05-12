@@ -1,7 +1,7 @@
 <template>
     <div :class="{ 'fixed-header': fixedHeader }">
         <div class="top-bar" :class="{ 'dark-mode': mode === 'dark' }">
-            <div class="logo" @click="backToHome">VA</div>
+            <div class="logo" @click="backToHome">BC</div>
             <div class="search-bar">
                 <el-input
                     clearable
@@ -31,7 +31,7 @@
                 </el-dropdown>
             </div>
             <i class="el-icon-setting" @click="visibleSetting = !visibleSetting"></i>
-            <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" />
+            <!-- <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" /> -->
         </div>
         <transition name="slide">
             <setting class="setting-panel" v-show="visibleSetting" :fixedHeader="fixedHeader"></setting>
@@ -212,7 +212,8 @@ export default {
         text-align: center;
         margin: {
             left: 0.6rem;
-            right: 0.6rem;
+            right: auto;
+            // right: 0.6rem;
         }
         color: #606266;
     }

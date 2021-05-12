@@ -1,5 +1,5 @@
 <template>
-    <el-card class="article-item-container" :body-style="{ display: 'flex' }">
+    <el-card class="article-item-container" :body-style="{ display: 'flex' }" :class="{ 'dark-mode': mode === 'dark' }">
         <avatar :item="{ 'userId': item.userId, 'author': item.author, 'shareUser': item.shareUser }"></avatar>
         <div class="info-container">
             <div class="author-info">
@@ -67,6 +67,7 @@ export default {
         ...mapGetters([
             'cookie',
             'theme',
+            'mode',
         ])
     },
     components: {
@@ -78,6 +79,10 @@ export default {
 <style lang="scss" scoped>
 .article-item-container {
     padding: 10px;
+
+    &.dark-mode {
+        background-color: $elementBgDark;
+    }
 
     .info-container {
         display: flex;
