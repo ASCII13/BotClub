@@ -1,6 +1,7 @@
 <template>
     <div class="avatar">
         <el-avatar
+            :size="size"
             :style="{ 'background-color': theme }"
             @click.native="browseInfo(item.userId)">{{ getFirstChar(item.author, item.shareUser) }}
         </el-avatar>
@@ -22,6 +23,10 @@ export default {
                 return {}
             }
         },
+        size: {
+            type: [String, Number],
+            default: 'large'
+        }
     },
     computed: {
         ...mapGetters([
