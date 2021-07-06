@@ -207,7 +207,21 @@ const routes = [
         meta: { title: '分享列表' }
       }
     ]
-  }
+  },
+  {
+    path: '/notifications',
+    component: Layout,
+    hidden: true,
+    redirect: '/notifications/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/notifications'),
+        name: 'Notifications',
+        meta: { title: '站内消息' }
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({

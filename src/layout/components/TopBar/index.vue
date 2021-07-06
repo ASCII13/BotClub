@@ -30,7 +30,11 @@
                     </el-dropdown-menu>
                 </el-dropdown>
             </div>
-            <i class="el-icon-setting" @click="visibleSetting = !visibleSetting"></i>
+            <router-link to="/notifications" v-if="name" class="notification">
+                <span class="el-icon-bell"></span>
+                <span class="red-point" v-if="notification"></span>
+            </router-link>
+            <i class="el-icon-set-up" @click="visibleSetting = !visibleSetting"></i>
             <!-- <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" /> -->
         </div>
         <transition name="slide">
@@ -52,10 +56,16 @@ export default {
             visible: false,
             isDark: undefined,
             visibleSetting: false,
+            notification: true,
         }
     },
     created() {
         this.isDark = this.mode === 'dark' ? true : false;
+        // getUnreadMsgCount().then(res => {
+        //     if (res.data > 0) {
+        //         this.showRedPoint = true;
+        //     }
+        // });
     },
     mounted() {
         document.addEventListener('click', e => {
@@ -205,17 +215,44 @@ export default {
         }
     }
 
-    .el-icon-setting {
+    .el-icon-bell,
+    .el-icon-set-up {
         width: 25px;
         line-height: 25px;
         font-size: 20px;
         text-align: center;
+        // margin: {
+        //     left: 0.6rem;
+        //     right: auto;
+        //     right: 0.6rem;
+        // }
+        color: #606266;
+    }
+
+    .notification {
+        margin-left: 0.6rem;
+
+        // &::after {
+        //     position: absolute;
+        //     margin-left: -3px;
+        //     content: ' ';
+        //     border: 3px solid red;
+        //     border-radius: 3px;
+        // }
+    }
+
+    .red-point {
+        position: absolute;
+        margin-left: -0.4rem;
+        border: 3px solid red;
+        border-radius: 3px;
+    }
+
+    .el-icon-set-up {
         margin: {
             left: 0.6rem;
             right: auto;
-            // right: 0.6rem;
         }
-        color: #606266;
     }
 
     img {
