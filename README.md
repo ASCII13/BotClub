@@ -32,6 +32,7 @@ BotClub 是一个 Android 领域的信息聚合站点，基于 [Vue](https://cn.
 - 全局搜索
 - 搜索热词
 - 分享文章
+- 站内消息
 
 ## 使用说明
 1. 在本地搭建 [Node](https://nodejs.org/en/) 和 [Git](https://git-scm.com/) 环境。
@@ -40,6 +41,9 @@ BotClub 是一个 Android 领域的信息聚合站点，基于 [Vue](https://cn.
 4. 执行 `npm run serve` 启动服务进行本地调试及预览。
 
 ## 更新日志
+### 2021-07-06
+增加站内消息
+
 ### 2021-01-05
 顶部搜索栏增加搜索热词展示。
 

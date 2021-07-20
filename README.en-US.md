@@ -32,6 +32,7 @@ BotClub is a website for Android information, built on [Vue](https://cn.vuejs.or
 - Search
 - Hotwords
 - Share-list
+- Notifications
 
 ## Introduction For Use
 1. Install [Node](https://nodejs.org/en/) and [Git](https://git-scm.com/).
@@ -40,6 +41,9 @@ BotClub is a website for Android information, built on [Vue](https://cn.vuejs.or
 4. Run `npm run serve` for preview and debug.
 
 ## Major Update Log
+### 2021-07-06
+Add notifications
+
 ### 2021-01-05
 You can see popular searches when focus search-bar.
 
