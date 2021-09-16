@@ -15,7 +15,7 @@
                     <span>{{ item.niceDate }}</span>
                 </div>
                 <div class="title">
-                    <ex-link :href="item.fullLink" class="link">
+                    <ex-link :href="item.fullLink" :underlined="false" class="link">
                         <span>@{{ item.fromUser }}</span>
                         <span>{{ ' ' + item.title }}</span>
                     </ex-link>

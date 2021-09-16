@@ -10,13 +10,14 @@
             </div>
         </div>
         <div v-for="(item, index) in datas" :key="index" class="item-container">
-            <router-link :to="item.path">{{ item.title }}</router-link>
+            <ex-link :href="item.path" :router="true">{{ item.title }}</ex-link>
         </div>
     </el-card>
 </template>
 
 <script>
 import Avatar from '@/components/Avatar';
+import ExLink from '@/components/ExLink';
 import { mapGetters } from 'vuex';
 import { getSelfRankingInfo } from '@/api/ranking';
 
@@ -46,6 +47,7 @@ export default {
     },
     components: {
         Avatar,
+        ExLink,
     },
     methods: {
         getSelfRankingInfo,
