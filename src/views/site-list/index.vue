@@ -15,19 +15,16 @@
                 </div>
             </el-card>
         </list-view>
-        <el-card class="site-type" v-loading="loading" :body-style="{ 'display': 'flex', 'flex-direction': 'column',}">
-            <el-link
-                class="item"
-                v-for="type in siteList"
-                :key="type.cid"
-                :underline="false"
-                @click="scrollIntoElem(type.cid)">{{ type.name }}
-            </el-link>
+        <el-card class="catagroies" v-loading="loading" :body-style="{ 'display': 'flex', 'flex-direction': 'column',}">
+            <div v-for="type in siteList" :key="type.cid" @click="scrollIntoElem(type.cid)" class="catagroy-item">
+                <ex-link>{{ type.name }}</ex-link>
+            </div>
         </el-card>
     </div>
 </template>
 
 <script>
+import ExLink from '@/components/ExLink';
 import ListView from '@/components/ListView';
 import { getSiteList } from '@/api/sites';
 
@@ -44,7 +41,9 @@ export default {
             this.loading = false;
             let datas = res.data;
             if (datas && datas.length != 0) {
-                this.siteList = datas;
+                this.siteList = datas.filter(item => {
+                    return item.articles.length > 0;
+                });
             }
         })
     },
@@ -58,6 +57,7 @@ export default {
     },
     components: {
         ListView,
+        ExLink,
     }
 }
 </script>
@@ -79,11 +79,16 @@ export default {
         }
     }
 
-    .site-type {
+    .catagroies {
         width: 200px;
         height: 500px;
         overflow: auto;
         margin-left: 0.6rem;
+
+        .catagroy-item {
+            margin: 8px 0;
+            text-align: center;
+        }
     }
 
     .item {
