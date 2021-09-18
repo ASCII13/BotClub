@@ -4,22 +4,18 @@
             <article-item v-for="article in articles" :key="article.id" :item="article"></article-item>
         </list-view>
         <el-card class="account-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
-            <el-link
-                class="account"
-                v-for="(item, index) in accounts"
-                :key="index"
-                :underline="false"
-                @click="getArticles('init', item.id)">{{ item.name }}
-            </el-link>
+            <div v-for="(item, index) in accounts" :key="index" class="account" @click="getArticles('init', item.id)">
+                <ex-link>{{ item.name }}</ex-link>
+            </div>
         </el-card>
     </div>
 </template>
 
 <script>
-import { getOfficialAccounts, getWechatArticles } from "@/api/wechat.js";
-
+import ExLink from '@/components/ExLink';
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
+import { getOfficialAccounts, getWechatArticles } from "@/api/wechat";
 
 export default {
     data() {
@@ -50,6 +46,7 @@ export default {
     components: {
         ListView,
         ArticleItem,
+        ExLink,
     },
     methods: {
         getArticles(state, currId) {
@@ -119,6 +116,7 @@ export default {
 
     .account {
         padding: 10px;
+        text-align: center;
     }
 }
 </style>

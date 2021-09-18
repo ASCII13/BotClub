@@ -52,7 +52,12 @@ export default {
         getCategories().then(res => {
             this.showTypeLoading = false;
             if (res.data != undefined && res.data.length != 0) {
-                this.categories = res.data;
+                this.categories = res.data.map(item => {
+                    if (item.name.indexOf('&amp;')) {
+                        item.name = item.name.replace('&amp;', '&');
+                    }
+                    return item;
+                });
                 this.setDefaultId(this.categories);
                 this.getProjectList('init', this.lastId);
             }
