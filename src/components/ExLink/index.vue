@@ -1,5 +1,10 @@
 <template>
-    <a v-if="!router" :href="!href ? null : href" :target="!href ? null : target" :class="{'hyperlinks': underlined}"><slot/></a>
+    <a
+        v-if="!router"
+        :href="!href ? null : href"
+        :target="!href ? null : target"
+        :class="{'hyperlinks': underlined, 'active': current}"><slot/>
+    </a>
     <router-link v-else :class="{'hyperlinks': underlined}" :to="href"><slot/></router-link>
 </template>
 
@@ -21,21 +26,31 @@ export default {
         router: {
             type: Boolean,
             default: false
+        },
+        current: {
+            type: Boolean,
         }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.hyperlinks {
+.base {
     background: linear-gradient(90deg, #69a530, #69a530);
-    background-size: 0 0.3rem;
     background-repeat: no-repeat;
     background-position: 0 100%;
+}
+.hyperlinks {
+    @extend .base;
+    background-size: 0 0.3rem;
     transition: 0.2s all;
 
     &:hover {
         background-size: 100% 0.3rem;
     }
+}
+.active {
+    @extend .base;
+    background-size: 100% 0.3rem;
 }
 </style>

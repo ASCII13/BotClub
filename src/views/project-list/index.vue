@@ -1,8 +1,11 @@
 <template>
     <div class="project-container">
         <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" :loading="showListLoading" :more="more" class="project-list">
-            <el-card v-for="project in projects" :key="project.id" class="project-item">
-                <div style="display: flex; align-items: center;">
+            <ex-link v-for="project in projects" :key="project.id" :href="project.projectLink" :underlined="false" class="project-item">
+                <el-image :src="project.envelopePic" fit="cover" class="preview"></el-image>
+                <div class="title">{{ project.title }}</div>
+
+                <!-- <div style="display: flex; align-items: center;">
                     <avatar :item="{ 'userId': project.userId, 'author': project.author, 'shareUser': project.shareUser }"></avatar>
                     <div class="author-info">
                         <div>{{ project.author || project.shareUser }}</div>
@@ -13,18 +16,13 @@
                 <div class="info-container">
                     <div class="description">{{project.desc}}</div>
                     <el-image :src="project.envelopePic" fit="cover" class="preview"></el-image>
-                </div>
-            </el-card>
+                </div> -->
+            </ex-link>
         </list-view>
         <el-card class="category-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
-            <el-link
-                class="categroy"
-                v-for="(item, index) in categories"
-                :key="index"
-                :underline="false"
-                :class="{ 'curr-category': item.id === lastId }"
-                @click="getProjectList('init', item.id)">{{ item.name }}
-            </el-link>
+            <div class="category" v-for="(item, index) in categories" :key="index" @click="getProjectList('init', item.id)">
+                <ex-link :current="item.id === lastId">{{ item.name }}</ex-link>
+            </div>
         </el-card>
     </div>
 </template>
@@ -32,7 +30,8 @@
 <script>
 import { getCategories, getProjects } from '@/api/project';
 import ListView from '@/components/ListView';
-import Avatar from '@/components/Avatar';
+// import Avatar from '@/components/Avatar';
+import ExLink from '@/components/ExLink';
 
 export default {
     data() {
@@ -64,8 +63,9 @@ export default {
         })
     },
     components: {
-        Avatar,
+        // Avatar,
         ListView,
+        ExLink,
     },
     methods: {
         getProjectList(state, id) {
@@ -134,9 +134,14 @@ export default {
 }
 
 .project-item {
-    padding: 10px;
-    width: 360px;
+    position: relative;
     margin-top: 10px;
+    background-color: white;
+    border-radius: 4px;
+    width: 360px;
+    height: 360px;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
 }
 
 // .avatar {
@@ -144,19 +149,21 @@ export default {
 //     flex-shrink: 0;
 // }
 
-.info-container {
-    position: relative;
-    width: 100%;
-    height: 500px;
+// .info-container {
+//     position: relative;
+//     width: 360px;
+//     height: 360px;
+    // width: 100%;
+    // height: 500px;
 
-    &:hover .description {
-        visibility: visible;
-    }
+    // &:hover .description {
+    //     visibility: visible;
+    // }
 
-    &:hover .preview {
-        visibility: hidden;
-    }
-}
+    // &:hover .preview {
+    //     visibility: hidden;
+    // }
+// }
 
 .author-info {
     line-height: 18px;
@@ -171,27 +178,34 @@ export default {
     }
 }
 
-.title {
-    margin: 0.6rem 0;
-    color: black;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 1.3rem;
-    width: 100%;
-    display: inline-block;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+// .title {
+//     margin: 0.6rem 0;
+//     color: black;
+//     font-weight: 500;
+//     font-size: 16px;
+//     line-height: 1.3rem;
+//     width: 100%;
+//     display: inline-block;
+//     white-space: nowrap;
+//     overflow: hidden;
+//     text-overflow: ellipsis;
+// }
 
-.description {
-    visibility: hidden;
+.title {
     position: absolute;
-    line-height: 1.3rem;
-    font-size: 13px;
+    bottom: 0;
+    background-color: white;
+    width: 100%;
+    height: 35%;
+    border-radius: 4px;
+    padding: .8rem;
+    // visibility: hidden;
+    line-height: 1.4rem;
+    font-size: .9rem;
 }
 
 .preview {
+    border-radius: 4px;
     width: 100%;
     height: 100%;
     position: absolute;
@@ -203,8 +217,9 @@ export default {
     overflow: auto;
     margin-left: 0.6rem;
 
-    .categroy {
+    .category {
         padding: 10px;
+        text-align: center;
 
         &.curr-category {
             color: $primaryColor;
