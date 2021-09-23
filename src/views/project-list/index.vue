@@ -3,20 +3,14 @@
         <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" :loading="showListLoading" :more="more" class="project-list">
             <ex-link v-for="project in projects" :key="project.id" :href="project.projectLink" :underlined="false" class="project-item">
                 <el-image :src="project.envelopePic" fit="cover" class="preview"></el-image>
-                <div class="title">{{ project.title }}</div>
-
-                <!-- <div style="display: flex; align-items: center;">
-                    <avatar :item="{ 'userId': project.userId, 'author': project.author, 'shareUser': project.shareUser }"></avatar>
-                    <div class="author-info">
+                <div class="info">
+                    <div class="title">{{ project.title }}</div>
+                    <div class="description">{{ project.desc }}</div>
+                    <div class="author">
                         <div>{{ project.author || project.shareUser }}</div>
                         <div>{{ project.niceDate }}</div>
                     </div>
                 </div>
-                <el-link :href="project.projectLink" :underline="false" target="_blank" class="title">{{ project.title }}</el-link>
-                <div class="info-container">
-                    <div class="description">{{project.desc}}</div>
-                    <el-image :src="project.envelopePic" fit="cover" class="preview"></el-image>
-                </div> -->
             </ex-link>
         </list-view>
         <el-card class="category-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
@@ -50,7 +44,7 @@ export default {
     created() {
         getCategories().then(res => {
             this.showTypeLoading = false;
-            if (res.data != undefined && res.data.length != 0) {
+            if (res.data && res.data.length > 0) {
                 this.categories = res.data.map(item => {
                     if (item.name.indexOf('&amp;')) {
                         item.name = item.name.replace('&amp;', '&');
@@ -127,12 +121,10 @@ export default {
 .project-container {
     display: flex;
 }
-
 .project-list {
     width: 730px;
     margin-top: -10px;
 }
-
 .project-item {
     position: relative;
     margin-top: 10px;
@@ -142,75 +134,54 @@ export default {
     height: 360px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-}
 
-// .avatar {
-//     background-color: #59a57c;
-//     flex-shrink: 0;
-// }
-
-// .info-container {
-//     position: relative;
-//     width: 360px;
-//     height: 360px;
-    // width: 100%;
-    // height: 500px;
-
-    // &:hover .description {
-    //     visibility: visible;
-    // }
-
-    // &:hover .preview {
-    //     visibility: hidden;
-    // }
-// }
-
-.author-info {
-    line-height: 18px;
-    font-weight: 500;
-    font-size: 14px;
-    color: #4D5760;
-    margin-left: 0.5rem;
-
-    & > div:last-child {
-        font-size: 13px;
-        margin-top: 0.1rem;
+    &:hover .author {
+        height: 2.2rem;
     }
 }
-
-// .title {
-//     margin: 0.6rem 0;
-//     color: black;
-//     font-weight: 500;
-//     font-size: 16px;
-//     line-height: 1.3rem;
-//     width: 100%;
-//     display: inline-block;
-//     white-space: nowrap;
-//     overflow: hidden;
-//     text-overflow: ellipsis;
-// }
-
 .title {
-    position: absolute;
-    bottom: 0;
-    background-color: white;
-    width: 100%;
-    height: 35%;
-    border-radius: 4px;
-    padding: .8rem;
-    // visibility: hidden;
     line-height: 1.4rem;
     font-size: .9rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
-
 .preview {
     border-radius: 4px;
     width: 100%;
     height: 100%;
     position: absolute;
 }
-
+.info {
+    position: absolute;
+    bottom: 0;
+    background-color: white;
+    width: 100%;
+    min-height: 35%;
+    border-radius: 4px;
+    padding: .8rem;
+}
+.description {
+    margin: .5rem 0;
+    height: 3.3rem;
+    line-height: 1.1rem;
+    font-weight: 300;
+    font-size: .75rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+}
+.author {
+    height: 0;
+    line-height: 1.1rem;
+    text-align: end;
+    font-size: .8rem;
+    font-weight: 300;
+    overflow: hidden;
+    transition: 0.2s all;
+}
 .category-list {
     width: 200px;
     height: 500px;
