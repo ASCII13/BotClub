@@ -134,7 +134,6 @@ export default {
     height: 360px;
     cursor: pointer;
     box-shadow: 0 2px 4px rgba(0, 0, 0, .12), 0 0 6px rgba(0, 0, 0, .04);
-
     &:hover .author {
         height: 2.2rem;
     }
@@ -187,11 +186,12 @@ export default {
     height: 500px;
     overflow: auto;
     margin-left: 0.6rem;
-
+    &:hover {
+        cursor: pointer;
+    }
     .category {
         padding: 10px;
         text-align: center;
-
         &.curr-category {
             color: $primaryColor;
         }

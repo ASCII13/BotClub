@@ -103,17 +103,17 @@ export default {
 .wechat-container {
     display: flex;
 }
-
 .article-list {
     width: 600px;
 }
-
 .account-list {
     width: 200px;
     height: 500px;
     overflow: auto;
     margin-left: 0.6rem;
-
+    &:hover {
+        cursor: pointer;
+    }
     .account {
         padding: 10px;
         text-align: center;

@@ -84,6 +84,9 @@ export default {
         height: 500px;
         overflow: auto;
         margin-left: 0.6rem;
+        &:hover {
+            cursor: pointer;
+        }
 
         .catagroy-item {
             margin: 8px 0;
