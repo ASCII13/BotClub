@@ -164,7 +164,7 @@ export default {
     margin: .5rem 0;
     height: 3.3rem;
     line-height: 1.1rem;
-    font-weight: 300;
+    font-weight: 440;
     font-size: .75rem;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -177,7 +177,8 @@ export default {
     line-height: 1.1rem;
     text-align: end;
     font-size: .8rem;
-    font-weight: 300;
+    font-weight: 400;
+    font-style: italic;
     overflow: hidden;
     transition: 0.2s all;
 }
