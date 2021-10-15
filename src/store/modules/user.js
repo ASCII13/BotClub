@@ -48,18 +48,27 @@ const actions = {
             })
         })
     },
-    register(userInfo) {
-        const { username, password, confirmPassword } = userInfo;
+    register({ commit }, userInfo) {
+        const {
+            username,
+            password,
+            confirmPassword: repassword
+        } = userInfo;
+
         return new Promise((resolve, reject) => {
             register({
-                username: username,
-                password: password,
-                repassword: confirmPassword 
-            }).then(() => {
+                username,
+                password,
+                repassword
+            }).then(res => {
+                const name = res.data.nickname || res.data.username;
+                const cookie = document.cookie;
+                commit('SET_NAME', name);
+                commit('SET_COOKIE', cookie);
                 resolve();
             }).catch(error => {
                 reject(error);
-            })
+            });
         })
     }
     

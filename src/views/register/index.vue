@@ -34,7 +34,7 @@
                     </el-input>
                 </el-form-item>
                 <el-form-item>
-                    <el-button type="primary" @click="register">注册</el-button>
+                    <el-button type="primary" @click="register" :loading="loading">注册</el-button>
                 </el-form-item>
             </el-form>
             <router-link to="/login">已有其他账号？</router-link>
@@ -93,7 +93,13 @@ export default {
         register() {
             this.$refs.registerForm.validate((valid) => {
                 if (valid) {
-                    this.$message('触发了注册')
+                    this.loading = true;
+                    this.$store.dispatch('user/register', this.registerModel).then(() => {
+                        this.loading = false;
+                        this.$router.replace('/');
+                    }).catch(() => {
+                        this.loading = false;
+                    })
                 }
             })
         }
