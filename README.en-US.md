@@ -41,6 +41,9 @@ BotClub is a website for Android information, built on [Vue](https://cn.vuejs.or
 4. Run `npm run serve` for preview and debug.
 
 ## Major Update Log
+### 2021-10-18
+Refactor login and register, improve user interface
+
 ### 2021-07-06
 Add notifications
 
