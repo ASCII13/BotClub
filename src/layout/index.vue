@@ -26,7 +26,7 @@ export default {
     },
     computed: {
         show() {
-            if (this.$route.path === '/login/index' || this.$route.path === '/register/index') {
+            if (this.$route.path === '/login/index' || this.$route.path === '/register/index' || this.$route.path === '/auth/index') {
                 return false;
             } else {
                 return true;

@@ -222,6 +222,20 @@ const routes = [
       }
     ]
   },
+  {
+    path: '/auth',
+    component: Layout,
+    hidden: true,
+    redirect: '/auth/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/auth'),
+        name: 'auth',
+        meta: { title: '授权' }
+      }
+    ]
+  },
 ]
 
 const router = new VueRouter({

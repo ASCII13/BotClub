@@ -52,7 +52,7 @@ const actions = {
         const {
             username,
             password,
-            confirmPassword: repassword
+            repassword
         } = userInfo;
 
         return new Promise((resolve, reject) => {
