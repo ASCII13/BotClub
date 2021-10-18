@@ -17,9 +17,9 @@
             </div>
             <div class="user">
                 <div v-if="!name">
-                    <router-link to="/login">登录</router-link>
+                    <router-link to="/auth">登录</router-link>
                     <el-divider direction="vertical"></el-divider>
-                    <router-link to="/register">注册</router-link>
+                    <router-link to="/auth">注册</router-link>
                 </div>
                 <el-dropdown v-else @command="handleCommand">
                     <span class="nickname">{{ name }}
@@ -157,6 +157,8 @@ export default {
         font-family: Oswald;
         font-size: 28px;
         border-radius: 3px;
+        // text-shadow: 0 0 3vw #179E05;
+        // animation: flux 2s linear infinite;
 
         &:hover {
             cursor: pointer;
@@ -285,5 +287,16 @@ export default {
     right: 0;
     left: 0;
     z-index: 11;
+}
+
+@keyframes flux {
+    0%, 100% {
+        text-shadow: 0 0 1vw #10ff4c, 0 0 3vw #1041FF, 0 0 10vw #1041FF, 0 0 10vw #1041FF, 0 0 .4vw #8BFDFE, .5vw .5vw .1vw #147280;
+        color: #03C03C;
+    }
+    50% {
+        text-shadow: 0 0 .5vw #024218, 0 0 1.5vw #024713, 0 0 5vw #023812, 0 0 5vw #012707, 0 0 .2vw #022201, .5vw .5vw .1vw #011a06;
+        color: #179E05;
+    }
 }
 </style>
