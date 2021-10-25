@@ -76,7 +76,7 @@
 
 <script>
 import ListView from '@/components/ListView';
-import { getList, add, remove, modifyStatus, update } from '@/api/todo';
+import { fetchList, add, remove, modifyStatus, update } from '@/api/todo';
 
 export default {
     data() {
@@ -151,7 +151,7 @@ export default {
 
             if (loadType === 'init') {
                 this.showHint = false;
-                getList(currPage, data).then(res => {
+                fetchList(currPage, data).then(res => {
                     if (res.data.datas != undefined && res.data.datas.length != 0) {
                         currData.data = [];
                         currPage += 1;
@@ -177,7 +177,7 @@ export default {
             }
             if (loadType === 'more') {
                 this.busy = true;
-                getList(currPage, data).then(res => {
+                fetchList(currPage, data).then(res => {
                     this.busy = false;
                     if (res.data.datas != undefined && res.data.datas.length != 0) {
                         currPage += 1;

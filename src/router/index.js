@@ -231,8 +231,22 @@ const routes = [
       {
         path: 'index',
         component: () => import('@/views/auth'),
-        name: 'auth',
+        name: 'Auth',
         meta: { title: '授权' }
+      }
+    ]
+  },
+  {
+    path: '/todos',
+    component: Layout,
+    hidden: true,
+    redirect: '/todos/index',
+    children: [
+      {
+        path: 'index',
+        component: () => import('@/views/todos'),
+        name: 'Todos',
+        meta: { title: '代办清单' }
       }
     ]
   },

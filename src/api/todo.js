@@ -31,7 +31,7 @@ export function modifyStatus(id, data) {
     })
 }
 
-export function getList(query = 1, data) {
+export function fetchList(query = 1, data) {
     return request({
         url: `/lg/todo/v2/list/${query}/json`,
         method: 'post',

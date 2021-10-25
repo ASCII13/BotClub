@@ -39,7 +39,7 @@ export default {
                 },
                 {
                     title: '待办清单',
-                    path: '/todo',
+                    path: '/todos',
                 }
             ],
             userInfo: {},
