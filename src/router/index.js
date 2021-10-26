@@ -246,7 +246,7 @@ const routes = [
         path: 'index',
         component: () => import('@/views/todos'),
         name: 'Todos',
-        meta: { title: '代办清单' }
+        meta: { title: '待办清单' }
       }
     ]
   },

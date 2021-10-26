@@ -1,34 +1,45 @@
 <template>
-    <list-view :show-hint="!todoList || todoList.length === 0" :busy="busy" :no-more="noMore" :more="more">
-        <div class="todo" v-for="(timeGroup, groupIndex) in todoList" :key="timeGroup.time">
-            <div class="header">
-                <h3>{{ timeGroup.time }}</h3>
-                <div class="tools">
-                    <div>共{{ timeGroup.todos.length }}条</div>
-                    <div class="filter">
-                        <button
-                            v-for="(item, index) in timeGroup.filters"
-                            :key="index"
-                            :class="{'active': index === timeGroup.selected}"
-                            @click="filterData(groupIndex, index)">{{ item.name }}
-                        </button>
+    <div style="display: flex;">
+        <list-view :show-hint="!todoList || todoList.length === 0" :busy="busy" :no-more="noMore" :more="more">
+            <div class="todo" v-for="(timeGroup, groupIndex) in todoList" :key="timeGroup.time">
+                <div class="header">
+                    <h3>{{ timeGroup.time }}</h3>
+                    <div class="tools">
+                        <div>共{{ timeGroup.todos.length }}条</div>
+                        <div class="filter">
+                            <button
+                                v-for="(item, index) in timeGroup.filters"
+                                :key="index"
+                                :class="{'active': index === timeGroup.selected}"
+                                @click="filterData(groupIndex, index)">{{ item.name }}
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="task-list">
+                    <div class="task" :class="{'checked': todo.status}" v-for="(todo, index) in timeGroup.todos" :key="todo.id">
+                        <input type="checkbox" class="status" :class="{'checked': todo.status}" :checked="todo.status" @click="modifyTodoStatus(todo)" />
+                        <label class="content">{{ todo.title }}</label>
+                        <button class="delete" @click="removeTodo(todo.id, groupIndex, index)" />
                     </div>
                 </div>
             </div>
-            <div class="task-list">
-                <div class="task" :class="{'checked': todo.status}" v-for="(todo, index) in timeGroup.todos" :key="todo.id">
-                    <input type="checkbox" class="status" :class="{'checked': todo.status}" v-model="todo.status" />
-                    <label class="content">{{ todo.title }}</label>
-                    <button class="delete" @click="removeTodo(todo.id, groupIndex, index)" />
-                </div>
-            </div>
-        </div>
-    </list-view>
+        </list-view>
+        <button class="add" @click="dialogVisible = true">新增待办</button>
+        <el-dialog width="30%" :visible.sync="dialogVisible" @closed="resetForm" :close-on-click-modal="false">
+            <span slot="title">新增待办</span>
+            <form @submit.prevent="addTodo">
+                <input type="text" placeholder="事项内容" required v-model="todoModel.title" />
+                <input type="date" required v-model="todoModel.date" />
+                <button class="confirm">确认</button>
+            </form>
+        </el-dialog>
+    </div>
 </template>
 
 <script>
 import ListView from '@/components/ListView';
-import { fetchList, remove } from '@/api/todo';
+import { fetchList, add, remove, modifyStatus } from '@/api/todo';
 export default {
     data() {
         return {
@@ -37,6 +48,12 @@ export default {
             busy: false,
             noMore: false,
             currPage: 0,
+            dialogVisible: false,
+            todoModel: {
+                title: '',
+                date: '',
+                // status: 0,
+            },
         }
     },
     created() {
@@ -117,6 +134,27 @@ export default {
             }
             timeGroup.selected = filterIndex;
         },
+        modifyTodoStatus(todo) {
+            const id = todo.id;
+            const status = todo.status === 0 ? 1 : 0;
+            modifyStatus(id, { status }).then(() => {
+                todo.status = status;
+            });
+        },
+        resetForm() {
+            Object.keys(this.todoModel).forEach(key => {
+                if (key !== 'status') {
+                    this.todoModel[key] = '';
+                }
+            });
+        },
+        addTodo() {
+            add(this.todoModel).then(res => {
+                this.dialogVisible = false;
+                console.log(JSON.stringify(res));
+                window.location.reload();
+            })
+        },
     },
     components: {
         ListView,
@@ -137,6 +175,23 @@ button {
     cursor: pointer;
     color: #8a9ca5;
     border-radius: 20px;
+}
+form {
+    background-color: #FFFFFF;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    height: 100%;
+    text-align: center;
+    input {
+        box-sizing: border-box;
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        margin: 8px 0;
+        width: 100%;
+    }
 }
 .todo {
     width: 600px;
@@ -216,6 +271,24 @@ button {
             display: none;
         }
     }
+}
+.add {
+    margin-left: 0.5rem;
+    width: 8rem;
+    height: 2.6rem;
+    background-color: white;
+    color: black;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
+}
+.confirm {
+    border: 1px solid $primaryColor;
+    background-color: $primaryColor;
+    color: #FFFFFF;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 12px 45px;
+    letter-spacing: 1px;
 }
 </style>
 
