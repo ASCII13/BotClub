@@ -30,14 +30,15 @@
             <span slot="title">新增待办</span>
             <form @submit.prevent="addTodo">
                 <input type="text" placeholder="事项内容" required v-model="todoModel.title" />
-                <input type="date" required v-model="todoModel.date" />
-                <button class="confirm">确认</button>
+                <input type="date" required :min="minDate" v-model="todoModel.date" />
+                <button class="confirm">新增</button>
             </form>
         </el-dialog>
     </div>
 </template>
 
 <script>
+import { getDate } from '@/utils/date';
 import ListView from '@/components/ListView';
 import { fetchList, add, remove, modifyStatus } from '@/api/todo';
 export default {
@@ -52,7 +53,6 @@ export default {
             todoModel: {
                 title: '',
                 date: '',
-                // status: 0,
             },
         }
     },
@@ -150,14 +150,58 @@ export default {
         },
         addTodo() {
             add(this.todoModel).then(res => {
-                this.dialogVisible = false;
-                console.log(JSON.stringify(res));
-                window.location.reload();
-            })
+                if (res.data) {
+                    this.dialogVisible = false;
+                    this.insertTodo(res.data);
+                }
+            });
+        },
+        getTimeGroup(todo) {
+            let todos = [];
+            todos.push(todo);
+
+            return {
+                time: todo.dateStr,
+                todos,
+                _todos: todos,
+                filters: [
+                    { name: '全部' },
+                    { name: '已完成' },
+                    { name: '未完成' },
+                ],
+                selected: 0,
+            }
+        },
+        insertTodo(todo) {
+            let todoList = this.todoList;
+            let timeGroup = this.getTimeGroup(todo);
+            
+            for (let i = 0; i < todoList.length; i++) {
+                // 插入到分组数组头部
+                if (i === 0 && todoList[0].time < todo.dateStr) {
+                    return todoList.unshift(timeGroup);
+                }
+                // 插入到分组数组中
+                if (todoList[i].time < todo.dateStr) {
+                    return todoList.splice(i, 0, timeGroup);
+                }
+                // 插入到待办事项数组尾部
+                if (todoList[i].time === todo.dateStr) {
+                    let todos = todoList[i].todos;
+                    return todos.push(todo);
+                }
+            }
+            // 插入到分组数组尾部
+            return todoList.push(timeGroup);
         },
     },
     components: {
         ListView,
+    },
+    computed: {
+        minDate() {
+            return getDate();
+        }
     }
 }
 </script>
