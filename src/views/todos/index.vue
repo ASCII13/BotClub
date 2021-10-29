@@ -1,6 +1,6 @@
 <template>
     <div style="display: flex;">
-        <list-view :show-hint="!todoList || todoList.length === 0" :busy="busy" :no-more="noMore" :more="more">
+        <list-view :show-hint="showHint" :busy="busy" :no-more="noMore" :more="more" :loading="loading" style="width: 600px;">
             <div class="todo" v-for="(timeGroup, groupIndex) in todoList" :key="timeGroup.time">
                 <div class="header">
                     <h3>{{ timeGroup.time }}</h3>
@@ -45,19 +45,19 @@ export default {
     data() {
         return {
             todoList: [],
-            // showHint: false,
             busy: false,
             noMore: false,
-            currPage: 0,
+            pageNum: 1,
             dialogVisible: false,
             todoModel: {
                 title: '',
                 date: '',
             },
+            loading: true,
         }
     },
     created() {
-        this.getTodos();
+        this.getTodos('init', this.pageNum);
     },
     methods: {
         removeTodo(id, groupIndex, index) {
@@ -82,31 +82,44 @@ export default {
         removeTimeGroup(groupIndex) {
             this.todoList.splice(groupIndex, 1);
         },
-        getTodos() {
-            fetchList().then(res => {
-                if (res.data && res.data.datas) {
-                    let datas = res.data.datas;
-                    if (datas.length > 0) {
-                        let timeList = this.getTimeList(datas);
-                        timeList.forEach(time => {
-                            const todos = datas.filter(todo => todo.dateStr === time);
-                            this.todoList.push({
-                                time,
-                                todos,
-                                _todos: todos,
-                                filters: [
-                                    { name: '全部' },
-                                    { name: '已完成' },
-                                    { name: '未完成' },
-                                ],
-                                selected: 0,
-                            });
-                        });
+        getTodos(type, pageNum) {
+            this.busy = type !== 'init';
+            fetchList(pageNum).then(res => {
+                this.loading = false;
+                if (type === 'init') {
+                    if (!res.data || !res.data.datas) return;
 
-                        console.log('---------');
-                        console.log(this.todoList);
+                    const datas = res.data.datas;
+                    if (datas.length <= 0) return;
+
+                    const timeList = this.getTimeList(datas);
+                    timeList.forEach(time => {
+                        const todos = datas.filter(todo => todo.dateStr === time);
+                        this.addTimeGroup(time, todos);
+                    });
+                    this.pageNum = ++pageNum;
+                } else {
+                    const data = res.data;
+                    const todoList = data.datas;
+                    if (!data || !todoList || todoList.length <= 0) {
+                        this.noMore = true;
                     } else {
-                        this.showHint = true;
+                        const timeList = this.getTimeList(todoList);
+                        timeList.forEach(time => {
+                            const todos = todoList.filter(todo => todo.dateStr === time);
+                            const lastGroup = this.getLastTimeGroup();
+                            if (time === lastGroup.time) {
+                                lastGroup.todos.push(...todos);
+                            } else {
+                                this.addTimeGroup(time, todos);
+                            }
+                        });
+                        this.busy = false;
+                        this.pageNum = ++pageNum;
+                        // 根据页数和当前数组数量 与 total 进行判断，是否 noMore == true，如当前为第三页，2 * 20 + todoList.length <= total
+                        if (((pageNum - 1) * 20 + todoList.length) <= data.total) {
+                            this.noMore = true;
+                        }
                     }
                 }
             });
@@ -116,7 +129,7 @@ export default {
             return Array.from(new Set(timeList));
         },
         more() {
-
+            this.getTodos('more', this.pageNum);
         },
         filterData(groupIndex, filterIndex) {
             let timeGroup = this.todoList[groupIndex];
@@ -156,7 +169,7 @@ export default {
                 }
             });
         },
-        getTimeGroup(todo) {
+        createTimeGroup(todo) {
             let todos = [];
             todos.push(todo);
 
@@ -174,7 +187,7 @@ export default {
         },
         insertTodo(todo) {
             let todoList = this.todoList;
-            let timeGroup = this.getTimeGroup(todo);
+            let timeGroup = this.createTimeGroup(todo);
             
             for (let i = 0; i < todoList.length; i++) {
                 // 插入到分组数组头部
@@ -194,6 +207,22 @@ export default {
             // 插入到分组数组尾部
             return todoList.push(timeGroup);
         },
+        getLastTimeGroup() {
+            return this.todoList[this.todoList.length - 1];
+        },
+        addTimeGroup(time, todos) {
+            this.todoList.push({
+                time,
+                todos,
+                _todos: todos,
+                filters: [
+                    { name: '全部' },
+                    { name: '已完成' },
+                    { name: '未完成' },
+                ],
+                selected: 0,
+            });
+        },
     },
     components: {
         ListView,
@@ -201,6 +230,9 @@ export default {
     computed: {
         minDate() {
             return getDate();
+        },
+        showHint() {
+            return !this.loading && (!this.todoList || this.todoList.length === 0);
         }
     }
 }
@@ -238,7 +270,6 @@ form {
     }
 }
 .todo {
-    width: 600px;
     border-radius: 4px;
     background-color: white;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
@@ -262,6 +293,8 @@ form {
     }
 }
 .task-list {
+    max-height: 294px;
+    overflow: auto;
     .task {
         display: flex;
         align-items: center;
