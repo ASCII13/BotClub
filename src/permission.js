@@ -5,11 +5,12 @@ import { getCookie } from '@/utils/auth';
 router.beforeEach(async (to, from, next) => {
     document.title = getPageTitle(to.meta.title);
     
+    const authDir = ['Todos', 'FavoriteList', 'ShareList'];
     const cookie = getCookie();
     if (cookie) {
         next();
     } else {
-        if (to.name === 'Todo' || to.name === 'FavoriteList' || to.name === 'ShareList') {
+        if (authDir.includes(to.name)) {
             next({
                 path: '/auth',
                 query: {
