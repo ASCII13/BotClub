@@ -86,22 +86,21 @@ export default {
             this.busy = type !== 'init';
             fetchList(pageNum).then(res => {
                 this.loading = false;
+
+                const data = res.data;
+                const todoList = data.datas;
+
                 if (type === 'init') {
-                    if (!res.data || !res.data.datas) return;
+                    if (!data || !todoList || todoList.length === 0) return;
 
-                    const datas = res.data.datas;
-                    if (datas.length <= 0) return;
-
-                    const timeList = this.getTimeList(datas);
+                    const timeList = this.getTimeList(todoList);
                     timeList.forEach(time => {
-                        const todos = datas.filter(todo => todo.dateStr === time);
+                        const todos = todoList.filter(todo => todo.dateStr === time);
                         this.addTimeGroup(time, todos);
                     });
                     this.pageNum = ++pageNum;
                 } else {
-                    const data = res.data;
-                    const todoList = data.datas;
-                    if (!data || !todoList || todoList.length <= 0) {
+                    if (!data || !todoList || todoList.length === 0) {
                         this.noMore = true;
                     } else {
                         const timeList = this.getTimeList(todoList);
@@ -115,11 +114,11 @@ export default {
                             }
                         });
                         this.busy = false;
-                        this.pageNum = ++pageNum;
                         // 根据页数和当前数组数量 与 total 进行判断，是否 noMore == true，如当前为第三页，2 * 20 + todoList.length <= total
                         if (((pageNum - 1) * 20 + todoList.length) <= data.total) {
                             this.noMore = true;
                         }
+                        this.pageNum = ++pageNum;
                     }
                 }
             });
