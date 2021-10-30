@@ -90,20 +90,17 @@ export default {
                 const data = res.data;
                 const todoList = data.datas;
 
-                if (type === 'init') {
-                    if (!data || !todoList || todoList.length === 0) return;
-
-                    const timeList = this.getTimeList(todoList);
-                    timeList.forEach(time => {
-                        const todos = todoList.filter(todo => todo.dateStr === time);
-                        this.addTimeGroup(time, todos);
-                    });
-                    this.pageNum = ++pageNum;
+                if (!data || !todoList || todoList.length === 0) {
+                    if (type === 'init') return;
+                    this.noMore = true;
                 } else {
-                    if (!data || !todoList || todoList.length === 0) {
-                        this.noMore = true;
+                    const timeList = this.getTimeList(todoList);
+                    if (type === 'init') {
+                        timeList.forEach(time => {
+                            const todos = todoList.filter(todo => todo.dateStr === time);
+                            this.addTimeGroup(time, todos);
+                        });
                     } else {
-                        const timeList = this.getTimeList(todoList);
                         timeList.forEach(time => {
                             const todos = todoList.filter(todo => todo.dateStr === time);
                             const lastGroup = this.getLastTimeGroup();
@@ -118,8 +115,8 @@ export default {
                         if (((pageNum - 1) * 20 + todoList.length) <= data.total) {
                             this.noMore = true;
                         }
-                        this.pageNum = ++pageNum;
                     }
+                    this.pageNum = ++pageNum;
                 }
             });
         },
