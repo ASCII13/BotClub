@@ -1,78 +1,69 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" :more="more" class="square-container">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 660px;">
         <article-item v-for="(item, index) in dataList" :key="index" :item="item"></article-item>
     </list-view>
 </template>
 
 <script>
-import { getSquareData } from '@/api/square';
-
+import { fetchSquareData } from '@/api/square';
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
-
 export default {
     components: {
         ListView,
         ArticleItem,
     },
     methods: {
-        getSquareContent(state) {
-            if (state === 'init') {
-                this.loading = true;
-                getSquareData().then(res => {
+        getSquare(type, pageNum) {
+            this.busy = type !== 'init';
+            fetchSquareData(pageNum).then(res => {
+                const data = res.data;
+                const squareList = data.datas;
+                
+                if (type === 'init') {
                     this.loading = false;
-                    let datas = res.data.datas;
-                    if (datas && datas.length != 0) {
-                        this.currPage += 1;
-                        this.dataList = datas.map(item => {
-                            item.loading = false;
-                            return item;
-                        }) 
+                    if (!data || !squareList || squareList.length === 0) return;
+
+                    this.dataList = squareList.map(item => {
+                        item.loading = false;
+                        return item;
+                    });
+                    this.pageNum = ++pageNum;
+                } else {
+                    if (!data || !squareList || squareList.length === 0) {
+                        this.noMore = true;
                     } else {
-                        this.showHint = true;
-                    }
-                }) 
-            }
-            if (state === 'more') {
-                this.busy = true;
-                getSquareData(this.currPage).then(res => {
-                    this.busy = false;
-                    let datas = res.data.datas;
-                    if (datas && datas.length != 0) {
-                        this.currPage += 1;
-                        let tmp = datas.map(item => {
+                        const squares = squareList.map(item => {
                             item.loading = false;
                             return item;
                         });
-                        this.dataList.push(...tmp);
-                    } else {
-                        this.noMore = true;
+                        this.dataList.push(...squares);
+                        this.pageNum = ++pageNum;
+                        this.busy = false;
                     }
-                })
-            }
+                }
+            });
         },
         more() {
-            this.getSquareContent('more');
+            this.getSquare('more', this.pageNum);
         },
+    },
+    computed: {
+        showHint() {
+            return !this.loading && (!this.dataList || this.dataList.length === 0);
+        }
     },
     data() {
         return {
-            currPage: 0,
+            pageNum: 0,
             busy: false,
             noMore: false,
-            showHint: false,
-            loading: false,
+            loading: true,
             dataList: [],
         }
     },
     created() {
-        this.getSquareContent('init');
+        this.getSquare('init', this.pageNum);
     },
 }
 </script>
-
-<style lang="scss" scoped>
-.square-container {
-    width: 660px;
-}
-</style>
