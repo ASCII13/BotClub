@@ -7,14 +7,14 @@ export function getBanner() {
     })
 }
 
-export function getArticles(query = 0) {
+export function fetchArticles(query = 0) {
     return request({
         url: `/article/list/${query}/json`,
         method: 'get'
     })
 }
 
-export function getTopArticles() {
+export function fetchTopArticles() {
     return request({
         url: '/article/top/json',
         method: 'get'

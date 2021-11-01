@@ -9,6 +9,7 @@
             <el-link :href="item.link" :underline="false" target="_blank" class="title"><span v-html="item.title"></span></el-link>
             <div>
                 <div class="classification">
+                    <span v-if="item.top" style="color: red;">置顶</span>
                     <span>#{{ item.superChapterName }}</span>
                     <span>#{{ item.chapterName }}</span>
                 </div>
@@ -43,7 +44,7 @@ export default {
     methods: {
         changeCollectionStatus(item) {
             if (!this.cookie) {
-                this.$router.push('/login');
+                this.$router.push('/auth');
             } else {
                 item.loading = true;
 
