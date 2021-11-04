@@ -92,7 +92,7 @@ export default {
     },
     computed: {
         showHint() {
-            return !this.loading && (!this.articleList || !this.articleList.length === 0);
+            return !this.loading && (!this.articleList || this.articleList.length === 0);
         }
     }
 }
