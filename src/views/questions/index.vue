@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :loading="loading" :more="more" class="question-list">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 660px;">
         <el-card
             class="question-item"
             v-for="(item, index) in datas"
@@ -22,101 +22,94 @@
 </template>
 
 <script>
-import { getQuestions } from '@/api/question';
-import { collectArticle, uncollectArticle } from '@/api/collection';
 import ListView from '@/components/ListView';
-
+import { fetchQuestions } from '@/api/question';
+import { star, unstar } from '@/api/collection';
 export default {
     components: {
         ListView,
     },
     methods: {
-        more() {
-            this.getQuestionData('more');
-        },
-        getQuestionData(state) {
-            if (state === 'init') {
-                getQuestions().then(res => {
+        getQuestions(type, pageNum) {
+            this.busy = type !== 'init';
+            fetchQuestions(pageNum).then(res => {
+                const data = res.data;
+                const questions = data.datas;
+
+                if (type === 'init') {
                     this.loading = false;
-                    let questions = res.data.datas;
-                    if (questions && questions.length != 0) {
-                        this.currpage += 1;
-                        this.datas = questions.map(item => {
-                            item.loading = false;
-                            return item;
-                        })
-                    } else {
-                        this.showHint = true;
-                    }
-                })
-            }
-            if (state === 'more') {
-                this.busy = true;
-                getQuestions(this.currpage).then(res => {
-                    this.busy = false;
-                    let questions = res.data.datas;
-                    if (questions && questions.length != 0) {
-                        this.currpage += 1;
-                        let tmp = questions.map(item => {
-                            item.loading = false;
-                            return item;
-                        })
-                        this.datas.push(...tmp);
-                    } else {
+                    if (!data || !questions || questions.length === 0) return;
+
+                    this.datas = questions.map(q => {
+                        q.loading = false;
+                        return q;
+                    });
+                    this.pageNum = ++pageNum;
+                } else {
+                    if (!data || !questions || questions.length === 0) {
                         this.noMore = true;
+                    } else {
+                        const questionList = questions.map(q => {
+                            q.loading = false;
+                            return q;
+                        });
+                        this.datas.push(...questionList);
+                        this.pageNum = ++pageNum;
+                        this.busy = false;
                     }
-                })    
-            }
+                }
+            });
+        },
+        more() {
+            this.getQuestions('more', this.pageNum);
         },
         changeCollectionStatus(item) {
             item.loading = true;
 
             if (item.collect) {
-                uncollectArticle(item.id).then(() => {
+                unstar(item.id).then(() => {
                     item.loading = false;
                     item.collect = false;
                     this.$message.success('已取消收藏');
-                })
+                });
             } else {
-                collectArticle(item.id).then(() => {
+                star(item.id).then(() => {
                     item.loading = false;
                     item.collect = true;
                     this.$message.success('已成功收藏');
-                })
+                });
             }
+        }
+    },
+    computed: {
+        showHint() {
+            return !this.loading && (!this.datas || this.datas.length === 0);
         }
     },
     data() {
         return {
             busy: false,
             noMore: false,
-            showHint: false,
             loading: true,
-            currpage: 1,
+            pageNum: 1,
             datas: [],
         }
     },
     created() {
-        this.getQuestionData('init');
+        this.getQuestions('init', this.pageNum);
     },
 }
 </script>
 
 <style lang="scss" scoped>
-.question-list {
-    width: 660px;
-}
-
 .question-item:not(:last-child) {
     margin-bottom: 6px;
 }
-
 .date-info {
     color: #4D5760;
     font-weight: 500;
     font-size: 14px;
 }
-
 .title {
     color: #303133;
     line-height: 26px;
@@ -125,20 +118,21 @@ export default {
     margin: 0.6rem 0;
     display: inline-flex;
     justify-content: left;
+    &:hover {
+        color: #303133;
+    }
 }
 
-.title:hover {
-    color: #303133;
-}
+// .title:hover {
+//     color: #303133;
+// }
 
 .collection-container {
     display: flex;
     align-items: center;
-
     .tag {
         color: #909399;
         font-size: 13px;
-
         &:not(:first-child) {
             flex: 1;
             margin-left: 10px;

@@ -29,7 +29,7 @@
 import Avatar from '@/components/Avatar';
 
 import { mapGetters } from 'vuex';
-import { collectArticle, uncollectArticle } from '@/api/collection';
+import { star, unstar } from '@/api/collection';
 
 export default {
     props: {
@@ -49,13 +49,13 @@ export default {
                 item.loading = true;
 
                 if (item.collect) {
-                    uncollectArticle(item.id).then(() => {
+                    unstar(item.id).then(() => {
                         item.collect = false;
                         item.loading = false;
                         this.$message.success('已取消收藏');
                     })
                 } else {
-                    collectArticle(item.id).then(() => {
+                    star(item.id).then(() => {
                         item.collect = true;
                         item.loading = false;
                         this.$message.success('已成功收藏');
