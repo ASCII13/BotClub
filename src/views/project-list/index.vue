@@ -1,11 +1,18 @@
 <template>
     <div class="project-container">
-        <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :wrap="true" :loading="showListLoading" :more="more" class="project-list">
+        <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :wrap="true" :loading="showListLoading" :more="more" class="project-list">
             <ex-link v-for="project in projects" :key="project.id" :href="project.projectLink" :underlined="false" class="project-item">
                 <el-image :src="project.envelopePic" fit="cover" class="preview"></el-image>
                 <div class="info">
                     <div class="title">{{ project.title }}</div>
                     <div class="description">{{ project.desc }}</div>
+                    <!-- <div class="other">
+                        <i class="el-icon-star-on"></i>
+                        <div class="author">
+                            <div>{{ project.author || project.shareUser }}</div>
+                            <div>{{ project.niceDate }}</div>
+                        </div>
+                    </div> -->
                     <div class="author">
                         <div>{{ project.author || project.shareUser }}</div>
                         <div>{{ project.niceDate }}</div>
@@ -14,15 +21,15 @@
             </ex-link>
         </list-view>
         <el-card class="category-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
-            <div class="category" v-for="(item, index) in categories" :key="index" @click="getProjectList('init', item.id)">
-                <ex-link :current="item.id === lastId">{{ item.name }}</ex-link>
+            <div class="category" v-for="(item, index) in categories" :key="index" @click="cid = item.id">
+                <ex-link :current="item.id === cid">{{ item.name }}</ex-link>
             </div>
         </el-card>
     </div>
 </template>
 
 <script>
-import { getCategories, getProjects } from '@/api/project';
+import { fetchCategories, fetchProjects } from '@/api/project';
 import ListView from '@/components/ListView';
 // import Avatar from '@/components/Avatar';
 import ExLink from '@/components/ExLink';
@@ -34,27 +41,25 @@ export default {
             projects: [],
             busy: false,
             noMore: false,
-            showHint: false,
-            currPage: 1,
-            lastId: -1,
+            pageNum: 1,
+            cid: -1,
             showTypeLoading: true,
             showListLoading: true,
         }
     },
     created() {
-        getCategories().then(res => {
+        fetchCategories().then(res => {
             this.showTypeLoading = false;
             if (res.data && res.data.length > 0) {
-                this.categories = res.data.map(item => {
-                    if (item.name.indexOf('&amp;')) {
-                        item.name = item.name.replace('&amp;', '&');
+                this.categories = res.data.map(c => {
+                    if (c.name.indexOf('&amp;')) {
+                        c.name = c.name.replace('&amp;', '&');
                     }
-                    return item;
+                    return c;
                 });
                 this.setDefaultId(this.categories);
-                this.getProjectList('init', this.lastId);
             }
-        })
+        });
     },
     components: {
         // Avatar,
@@ -62,41 +67,6 @@ export default {
         ExLink,
     },
     methods: {
-        getProjectList(state, id) {
-            let params = {
-                cid: id
-            };
-            if (state === 'init') {
-                this.currPage = 1;
-                this.noMore = false;
-
-                getProjects(this.currPage, params).then(res => {
-                    this.showListLoading = false;
-                    let projectList = res.data.datas;
-                    if (projectList && projectList.length != 0) {
-                        this.projects = projectList;
-                        this.currPage += 1;
-                        this.lastId = id;
-                    } else {
-                        this.showHint = true;
-                    }
-                })
-            }
-            if (state === 'more') {
-                this.busy = true;
-                getProjects(this.currPage, params).then(res => {
-                    this.busy = false;
-
-                    let projectList = res.data.datas;
-                    if (projectList && projectList.length != 0) {
-                        this.projects.push(...projectList);
-                        this.currPage += 1;
-                    } else {
-                        this.noMore = true;
-                    }
-                })
-            }
-        },
         getAvatarText() {
             if (arguments[0]) {
                 return arguments[0].charAt(0)
@@ -104,14 +74,51 @@ export default {
             return arguments[1].charAt(0)
         },
         more() {
-            this.getProjectList('more', this.lastId);
+            this.busy = true;
+            fetchProjects(this.pageNum, {cid: this.cid}).then(res => {
+                const data = res.data;
+                const projects = data.datas;
+                if (data && projects && projects.length > 0) {
+                    this.projects.push(...projects);
+                    this.pageNum++;
+                } else {
+                    this.noMore = true;
+                }
+                this.busy = false;
+            });
         },
         setDefaultId(arr) {
             for (let index = 0; index < arr.length; index++) {
                 if (arr[index].id) {
-                    return this.lastId = arr[index].id;
+                    return this.cid = arr[index].id;
                 }
             }
+        }
+    },
+    computed: {
+        showHint() {
+            return !this.showListLoading &&
+                (!this.projects || this.projects.length === 0);
+        }
+    },
+    watch: {
+        cid(newVal, oldVal) {
+            if (newVal === oldVal) return;
+
+            this.projects = [];
+            this.showListLoading = true;
+
+            fetchProjects(1, {cid: newVal}).then(res => {
+                this.showListLoading = false;
+
+                const data = res.data;
+                const projects = data.datas;
+                if (data && projects && projects.length > 0) {
+                    this.projects = projects;
+                    this.pageNum = 2;
+                    this.noMore = false;
+                }
+            });
         }
     }
 }
@@ -137,6 +144,9 @@ export default {
     &:hover .author {
         height: 2.2rem;
     }
+    // &:hover .other {
+    //     height: 2.2rem;
+    // }
 }
 .title {
     line-height: 1.4rem;
@@ -172,6 +182,21 @@ export default {
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 3;
 }
+// .other {
+//     height: 0;
+//     overflow: hidden;
+//     display: flex;
+//     justify-content: flex-end;
+//     align-items: center;
+//     transition: 0.2s all;
+// }
+// .el-icon-star-on {
+//     margin-right: auto;
+//     width: 1.5rem;
+//     height: 1.5rem;
+//     line-height: 1.5rem;
+//     font-size: 1.5rem;
+// }
 .author {
     height: 0;
     line-height: 1.1rem;
