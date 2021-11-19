@@ -1,6 +1,6 @@
 <template>
     <el-card class="article-item-container" :body-style="{ display: 'flex' }" :class="{ 'dark-mode': mode === 'dark' }">
-        <avatar :item="{ 'userId': item.userId, 'author': item.author, 'shareUser': item.shareUser }"></avatar>
+        <avatar :name="item.author || item.shareUser" :userId="item.userId"></avatar>
         <div class="info-container">
             <div class="author-info">
                 <div>{{ item.author || item.shareUser }}</div>
@@ -26,9 +26,8 @@
 </template>
 
 <script>
-import Avatar from '@/components/Avatar';
-
 import { mapGetters } from 'vuex';
+import Avatar from '@/components/Avatar';
 import { star, unstar } from '@/api/collection';
 
 export default {

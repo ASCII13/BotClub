@@ -1,115 +1,98 @@
 <template>
-    <div class="user">
-        <list-view :showHint="userId < 0">
-            <div class="info">
-                <el-avatar :style="{ 'background-color': theme }">{{ getFirstChar(userInfo.nickname) }}</el-avatar>
-                <div>
-                    <span>积分：{{ userInfo.coinCount }}</span>
-                    <span>等级：{{ userInfo.level }}</span>
-                    <span>排名：{{ userInfo.rank }}</span>
-                </div>
+    <div style="width: 660px;">
+        <div class="info">
+            <avatar :name="userInfo.nickname"></avatar>
+            <div>
+                <span>积分：{{ userInfo.coinCount }}</span>
+                <span>等级：{{ userInfo.level }}</span>
+                <span>排名：{{ userInfo.rank }}</span>
             </div>
-            <list-view :loading="loading" :showHint="showHint" :busy="busy" :noMore="noMore" :more="more">
-                <article-item v-for="(item, index) in dataList" :key="index" :item="item"></article-item>
-            </list-view>
+        </div>
+        <list-view :loading="loading" :show-hint="showHint" :busy="busy" :no-more="noMore" :more="more">
+            <article-item v-for="(item, index) in dataList" :key="index" :item="item"></article-item>
         </list-view>
     </div>
 </template>
 
 <script>
+import { fetchData } from "@/api/sharer";
+import Avatar from '@/components/Avatar';
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
 
-import { getData } from "@/api/sharer";
-import { getFirstChar } from '@/utils/text';
-import { mapGetters } from "vuex";
-
 export default {
     components: {
+        Avatar,
         ListView,
         ArticleItem,
     },
     computed: {
-        ...mapGetters([
-            'theme',
-        ])
+        showHint() {
+            return !this.loading &&
+                (!this.dataList || this.dataList.length === 0);
+        },
     },
     methods: {
-        getFirstChar,
-        getUserData(type, currPage) {
-            if (type === 'init') {
-                getData(this.userId).then(res => {
-                    this.loading = false;
-                    if (res.data !== undefined) {
-                        this.userInfo = res.data.coinInfo;
+        getUserData(type, page) {
+            this.busy = type !== 'init';
+            fetchData(this.userId, page).then(res => {
+                this.loading = false;
+                if (res.data) {
+                    const {coinInfo, shareArticles} = res.data;
+                    const dataList = shareArticles.datas;
 
-                        let data = res.data.shareArticles;
-                        if (data.datas.length > 0) {
-                            this.page += 1;
-                            this.dataList = data.datas.map(item => {
-                                item.loading = false;
-                                return item;
-                            });
+                    if (coinInfo) {
+                        this.userInfo = coinInfo;
+                    }
+                    if (shareArticles && dataList && dataList.length > 0) {
+                        const tmp = dataList.map(a => {
+                            a.loading = false;
+                            return a;
+                        });
+
+                        if (type === 'init') {
+                            this.dataList = tmp;
                         } else {
-                            this.showHint = true;
+                            this.busy = false;
+                            this.dataList.push(...tmp);
                         }
+                        this.pageNum = ++page;
                     } else {
-                        this.showHint = true;
+                        if (type !== 'init') {
+                            this.noMore = true;
+                        }
                     }
-                });
-            }
-            if (type === 'more') {
-                this.busy = true;
-                getData(this.userId, currPage).then(res => {
-                    this.busy = false;
-                    
-                    let list = res.data.shareArticles.datas;
-                    if (list.length > 0) {
-                        let tmp = list.map(item => {
-                            item.loading = false;
-                            return item;
-                        })
-                        this.dataList.push(...tmp);
-                        this.page += 1;
-                    } else {
-                        this.noMore = true;
-                    }
-                })
-            }
+                }
+            });
         },
         more() {
-            this.getUserData('more', this.page);
+            this.getUserData('more', this.pageNum);
         },
     },
     data() {
         return {
-            page: 1,
+            pageNum: 1,
             userInfo: {
-                username: '-',
+                nickname: '-',
                 coinCount: '-',
                 level: '-',
                 rank: '-'
             },
             dataList: [],
             loading: true,
-            showHint: false,
             busy: false,
             noMore: false,
             userId: this.$route.query.id,
         }
     },
     created() {
-        this.getUserData('init');
+        this.getUserData('init', this.pageNum);
     },
 }
 </script>
 
 <style lang="scss" scoped>
 $distance: 0.5rem;
-
-.user {
-    width: 660px;
-}
 
 .info {
     margin-bottom: $distance;
@@ -120,12 +103,10 @@ $distance: 0.5rem;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-
     & > div {
         margin-top: $distance;
         font-size: 13px;
     }
-
     & span:not(:last-child) {
         margin-right: $distance;
     }

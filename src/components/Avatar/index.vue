@@ -3,7 +3,7 @@
         <el-avatar
             :size="size"
             :style="{ 'background-color': theme }"
-            @click.native="browseInfo(item.userId)">{{ getFirstChar(item.author, item.shareUser) }}
+            @click.native="browseInfo(userId)">{{ name | headChar }}
         </el-avatar>
         <img v-if="showHat" class="suprise" src="@/assets/christmas/hat.svg"/>
     </div>
@@ -11,21 +11,20 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import { getFirstChar } from "@/utils/text";
 import { isChristmas } from "@/utils/suprise";
-
 export default {
     name: 'Avatar',
     props: {
-        item: {
-            type: Object,
-            default: function() {
-                return {}
-            }
-        },
         size: {
             type: [String, Number],
             default: 'large'
+        },
+        userId: {
+            type: Number,
+        },
+        name: {
+            type: String,
+            default: '-'
         }
     },
     computed: {
@@ -37,7 +36,6 @@ export default {
         }
     },
     methods: {
-        getFirstChar,
         browseInfo(userId) {
             if (userId) {
                 this.$router.push({
@@ -47,6 +45,11 @@ export default {
                     }
                 });
             }
+        }
+    },
+    filters: {
+        headChar(str) {
+            return str.charAt(0);
         }
     },
     data() {
@@ -61,12 +64,10 @@ export default {
 .avatar {
     position: relative;
     height: fit-content;
-
     &:hover {
         cursor: pointer;
     }
 }
-
 .suprise {
     position: absolute;
     top: 13%;

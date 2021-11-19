@@ -2,7 +2,7 @@
     <el-card shadow="hover" class="personal-panel">
         <div slot="header">个人相关</div>
         <div class="user-info" v-if="name">
-            <avatar :size="60" :item="userInfo"></avatar>
+            <avatar :size="60" :name="userInfo.author" :userId="userInfo.userId"></avatar>
             <div class="info" v-if="userInfo">
                 <div>积分：{{ userInfo.coinCount || '-' }}</div>
                 <div>等级：{{ userInfo.level || '-' }}</div>
