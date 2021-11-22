@@ -1,6 +1,6 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :more="more" :loading="loading" style="width: 660px;">
-        <el-card v-for="(item, index) in favoriteList" :key="item.id" class="favorite-item">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :more="more" :loading="loading" style="width: 660px;">
+        <el-card v-for="(item, index) in favorites" :key="item.id" class="favorite-item">
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
             <div class="info">
                 <div class="date">{{ item.niceDate }}</div>
@@ -18,80 +18,73 @@
 </template>
 
 <script>
-import { getFavoriteList, uncollect } from '@/api/favorite';
 import ListView from '@/components/ListView';
+import { fetchFavorites, unstar } from '@/api/favorite';
 
 export default {
     data() {
         return {
             busy: false,
             noMore: false,
-            showHint: false,
             loading: true,
-            currPage: 0,
-            favoriteList: [],
+            pageNum: 0,
+            favorites: [],
         }
     },
     created() {
-        this.getFavoriteData('init');
+        this.getFavorites('init', this.pageNum);
     },
     components: {
         ListView,
     },
-    watch: {
-        favoriteList(val) {
-            if (val.length === 0) {
-                this.showHint = true;
-            }
+    computed: {
+        showHint() {
+            return !this.loading &&
+                (!this.favorites || this.favorites.length === 0);
         }
     },
     methods: {
         unstar(currIndex) {
-            let currItem = this.favoriteList[currIndex];
+            let currItem = this.favorites[currIndex];
             currItem.loading = true;
 
-            uncollect(currItem.id, currItem.originId).then(() => {
-                this.favoriteList.splice(currIndex, 1);
+            unstar(currItem.id, currItem.originId).then(() => {
+                this.favorites.splice(currIndex, 1);
             }).catch(() => {
                 currItem.loading = false;
             })
         },
-        getFavoriteData(state) {
-            if (state === 'init') {
-                getFavoriteList().then(res => {
-                    this.loading = false;
-                    if (res.data.datas.length > 0) {
-                        this.currPage += 1;
-                        this.favoriteList = res.data.datas.map(item => {
-                            item.visible = false;
-                            item.loading = false;
-                            return item;
-                        })
+        getFavorites(type, pageNum) {
+            this.busy = type !== 'init';
+            fetchFavorites(pageNum).then(res => {
+                this.loading = false;
+
+                const data = res.data;
+                const favorites = data.datas;
+
+                if (data && favorites && favorites.length > 0) {
+                    const tmp = favorites.map(f => {
+                        f.visible = false;
+                        f.loading = false;
+                        return f;
+                    });
+                    if (type === 'init') {
+                        this.favorites = tmp;
                     } else {
-                        this.showHint = true;
+                        this.busy = false;
+                        this.favorites.push(...tmp);
                     }
-                })
-            }
-            if (state === 'more') {
-                this.busy = true;
-                getFavoriteList(this.currPage).then(res => {
-                    this.busy = false;
-                    if (res.data.datas != undefined && res.data.datas.length != 0) {
-                        let tmp = res.data.datas.map(item => {
-                            item.visible = false;
-                            item.loading = false;
-                            return item;
-                        })
-                        this.currPage += 1;
-                        this.favoriteList.push(...tmp);
-                    } else {
+                    this.pageNum = ++pageNum;
+                } else {
+                    if (type !== 'init') {
+                        this.busy = false;
                         this.noMore = true;
                     }
-                })
-            }
+                }
+            });
         },
         more() {
-            this.getFavoriteData('more', this.currPage);
+            this.getFavorites('more', this.pageNum);
         }
     }
 }
@@ -100,34 +93,28 @@ export default {
 <style lang="scss" scoped>
 .favorite-item {
     padding: 10px;
-
     &:not(:first-child) {
         margin-top: 6px;
     }
 }
-
 .title {
     color: #303133;
     line-height: 26px;
     font-size: 18px;
     font-weight: 500;
 }
-
 .info {
     margin-top: 1rem;
     display: flex;
     align-items: center;
-
     .date {
         color: #909399;
         font-size: 13px;
     }
-
     & > :last-child {
         margin-left: auto;
     }
 }
-
 .el-icon-star-on {
     font-size: 26px;
     color: $primaryColor;

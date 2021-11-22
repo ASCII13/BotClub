@@ -1,13 +1,13 @@
 import request from '@/utils/request'
 
-export function getFavoriteList(query = 0) {
+export function fetchFavorites(query = 0) {
     return request({
         url: `/lg/collect/list/${query}/json`,
         method: 'get'
     })
 }
 
-export function uncollect(id, originId) {
+export function unstar(id, originId) {
     let data = {
         originId: originId || -1
     }
