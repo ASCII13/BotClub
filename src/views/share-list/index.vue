@@ -1,5 +1,5 @@
 <template>
-    <list-view :showHint="showHint" :noMore="noMore" :busy="busy" :loading="loading" :more="more" :placeholder="placeholder" style="width: 660px;">
+    <list-view :show-hint="showHint" :no-more="noMore" :busy="busy" :loading="loading" :more="more" :placeholder="'暂无分享内容'" style="width: 660px;">
         <el-card v-for="(item, index) in dataList" :key="item.id" class="share-item">
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
             <div class="info">
@@ -19,56 +19,51 @@
 
 <script>
 import ListView from '@/components/ListView';
-import { getSelfShareData, delSelfShareData } from '@/api/sharer';
+import { fetchSelfShareData, delSelfShareData } from '@/api/sharer';
 
 export default {
     components: {
         ListView,
     },
-    watch: {
-        dataList(val) {
-            if (val.length === 0) {
-                this.showHint = true;
-            }
+    computed: {
+        showHint() {
+            return !this.loading &&
+                (!this.dataList || this.dataList.length === 0);
         }
     },
     methods: {
-        more() {
-            this.getList('more', this.page);
-        },
-        getList(type, currPage) {
-            if (type === 'init') {
-                getSelfShareData().then(res => {
-                    this.loading = false;
-                    if (res.data.shareArticles.datas.length > 0) {
-                        this.page += 1;
-                        this.dataList = res.data.shareArticles.datas.map(item => {
-                            item.visible = false;
-                            item.loading = false;
-                            return item;
-                        })
+        getShareList(type, pageNum) {
+            this.busy = type !== 'init';
+            fetchSelfShareData(pageNum).then(res => {
+                this.loading = false;
+
+                const data = res.data;
+                const articleData = data.shareArticles;
+                const articles = articleData.datas;
+
+                if (data && articleData && articles && articles.length > 0) {
+                    const tmp = articles.map(a => {
+                        a.visible = false;
+                        a.loading = false;
+                        return a;
+                    });
+                    if (type === 'init') {
+                        this.dataList = tmp;
                     } else {
-                        this.showHint = true;
-                    }
-                })
-            }
-            if (type === 'more') {
-                this.busy = true;
-                getSelfShareData(currPage).then(res => {
-                    this.busy = false;
-                    if (res.data.shareArticles.datas.length > 0) {
-                        this.page += 1;
-                        let tmp = res.data.shareArticles.datas.map(item => {
-                            item.visible = false;
-                            item.loading = false;
-                            return item;
-                        });
+                        this.busy = false;
                         this.dataList.push(...tmp);
-                    } else {
+                    }
+                    this.pageNum = ++pageNum;
+                } else {
+                    if (type !== 'init') {
+                        this.busy = false;
                         this.noMore = true;
                     }
-                })
-            }
+                }
+            });
+        },
+        more() {
+            this.getShareList('more', this.pageNum);
         },
         remove(index) {
             let item = this.dataList[index];
@@ -83,17 +78,15 @@ export default {
     },
     data() {
         return {
-            showHint: false,
             noMore: false,
             busy: false,
             loading: true,
-            page: 1,
+            pageNum: 1,
             dataList: [],
-            placeholder: '暂无分享内容'
         }
     },
     created() {
-        this.getList('init');
+        this.getShareList('init', this.pageNum);
     }
 }
 </script>
@@ -101,29 +94,24 @@ export default {
 <style lang="scss" scoped>
 .share-item {
     padding: 10px;
-
     &:not(:first-child) {
         margin-top: 6px;
     }
 }
-
 .title {
     color: #303133;
     line-height: 26px;
     font-size: 18px;
     font-weight: 500;
 }
-
 .info {
     margin-top: 1rem;
     display: flex;
     align-items: center;
-
     .date {
         color: #909399;
         font-size: 13px;
     }
-
     & > :last-child {
         margin-left: auto;
     }
