@@ -1,15 +1,15 @@
 <template>
-    <div class="notifications">
+    <div style="width: 700px;">
         <div class="tab">
             <div class="tab-item"
                 :class="{ 'curr-tab': currTab === index }"
                 v-for="(item, index) in tabList"
                 :key="index"
-                @click="switchTab(index)">{{ item.title }}
+                @click="currTab = index">{{ item.title }}
             </div>
         </div>
-        <list-view :showHint="showHint" :busy="busy" :noMore="noMore" :more="more" :loading="loading">
-            <div class="msg-item" v-for="(item, index) in tabList[currTab].data" :key="index">
+        <list-view :show-hint="showHint" :busy="busy" :no-more="noMore" :more="more" :loading="loading">
+            <div class="msg-item" v-for="(item, index) in currData.data" :key="index">
                 <div class="tag">
                     <span>{{ item.tag }}</span>
                     <span>{{ item.niceDate }}</span>
@@ -27,9 +27,9 @@
 </template>
 
 <script>
-import ListView from '@/components/ListView';
 import ExLink from '@/components/ExLink';
-import { getReadMsgList, getUnreadMsgList } from '@/api/notification';
+import ListView from '@/components/ListView';
+import { fetchReadMsgs, fetchUnreadMsgs } from '@/api/notification';
 
 export default {
     data() {
@@ -37,119 +37,127 @@ export default {
             tabList: [
                 {
                     title: '未读消息',
-                    currPage: 1,
+                    pageNum: 1,
                     data: [],
+                    busy: false,
+                    noMore: false,
+                    loading: true,
                 },
                 {
                     title: '历史消息',
-                    currPage: 1,
+                    pageNum: 1,
                     data: [],
+                    busy: false,
+                    noMore: false,
+                    loading: true,
                 }
             ],
             currTab: 0,
-            showHint: false,
-            busy: false,
-            noMore: false,
-            loading: false,
         }
-    },
-    created() {
-        this.getMsg('init');
     },
     methods: {
-        switchTab(index) {
-            if (index === this.currTab) return;
-            this.currTab = index;
-            this.getMsg('init');
-        },
         more() {
-            this.getMsg('more');
-        },
-        getMsg(type) {
-            let currData = this.getCurrData();
+            this.busy = true;
+            const currTab = this.currTab;
+            const currData = this.currData;
 
-            if (type === 'init') {
-                this.loading = true;
-                this.showHint = false;
-                this.noMore = false;
-                currData.data = [];
-
-                if (currData.title === '未读消息') {
-                    getUnreadMsgList().then(res => {
-                        this.loading = false;
-                        if (res.data.datas.length > 0) {
-                            currData.data = res.data.datas;
-                            currData.currPage += 1;
-                        } else {
-                            this.showHint = true;
-                        }
-                    })
-                }
-                if (currData.title === '历史消息') {
-                    getReadMsgList().then(res => {
-                        this.loading = false;
-                        if (res.data.datas.length > 0) {
-                            currData.data = res.data.datas;
-                            currData.currPage += 1;
-                        } else {
-                            this.showHint = true;
-                        }
-                    });
-                }
-            }
-            if (type === 'more') {
-                this.busy = true;
-                if (currData.title === '未读消息') {
-                    getUnreadMsgList(currData.currPage).then(res => {
-                        this.busy = false;
-                        if (res.data.datas.length > 0) {
-                            currData.data.push(...res.data.datas);
-                            currData.currPage += 1;
-                        } else {
-                            this.noMore = true;
-                        }
-                    })
-                }
-                if (currData.title === '历史消息') {
-                    getReadMsgList(currData.currPage).then(res => {
-                        this.busy = false;
-                        if (res.data.datas.length > 0) {
-                            currData.data.push(...res.data.datas);
-                            currData.currPage += 1;
-                        } else {
-                            this.noMore = true;
-                        }
-                    })
-                }
+            if (currTab === 0) {
+                fetchUnreadMsgs(currData.pageNum).then(res => {
+                    this.setData(res, currData, 'more');
+                    this.busy = false;
+                });
+            } else if (currTab === 1) {
+                fetchReadMsgs(currData.pageNum).then(res => {
+                    this.setData(res, currData, 'more');
+                    this.busy = false;
+                });
             }
         },
-        getCurrData() {
-            return this.tabList[this.currTab];
-        }
+        setData(res, currData, type = 'init') {
+            const data = res.data;
+            const msgs = data.datas;
+            if (data && msgs && msgs.length > 0) {
+                currData.data = msgs;
+                currData.pageNum++;
+            } else {
+                if (type === 'init') return;
+                this.noMore = true;
+            }
+        },
     },
     components: {
         ListView,
         ExLink,
+    },
+    computed: {
+        currData() {
+            return this.tabList[this.currTab];
+        },
+        showHint() {
+            return !this.currData.loading &&
+                (!this.currData.data || this.currData.data.length === 0);
+        },
+        busy: {
+            get() {
+                return this.currData.busy;
+            },
+            set(newVal) {
+                this.currData.busy = newVal;
+            }
+        },
+        noMore: {
+            get() {
+                return this.currData.noMore;
+            },
+            set(newVal) {
+                this.currData.noMore = newVal;
+            }
+        },
+        loading: {
+            get() {
+                return this.currData.loading;
+            },
+            set(newVal) {
+                this.currData.loading = newVal;
+            }
+        }
+    },
+    watch: {
+        currTab: {
+            immediate: true,
+            handler(val, oldVla) {
+                if (val === oldVla) return;
+
+                const currData = this.currData;
+                if (!currData.data.length && val === 0) {
+                    this.loading = true;
+                    fetchUnreadMsgs().then(res => {
+                        this.loading = false;
+                        this.setData(res, currData);
+                    });
+                } else if (!currData.data.length && val === 1) {
+                    this.loading = true;
+                    fetchReadMsgs().then(res => {
+                        this.loading = false;
+                        this.setData(res, currData);
+                    });
+                }
+            }
+        }
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.notifications {
-    width: 700px;
-}
 .tab {
     text-align: end;
     background-color: #E0E4E6;
-
     .tab-item {
         display: inline-block;
         padding: 13px 15px;
-
         &:hover {
             cursor: pointer;
         }
-
         &.curr-tab {
             color: $primaryColor;
             background-color: #ffffff;
@@ -161,17 +169,14 @@ export default {
     background-color: white;
     border-radius: 6px;
     border: 1px solid #EBEEF5;
-
     &:not(:last-child) {
         margin-bottom: 6px;
     }
-    
     & > div:not(:last-child) {
         margin-bottom: 0.5rem;
     }
     .tag {
         font-size: 14px;
-
         & > span:first-child::after {
             content: ' - ';
         }
@@ -179,11 +184,9 @@ export default {
     .title {
         line-height: 26px;
         font-size: 18px;
-
         .link {
             font-size: inherit;
         }
-
         span:first-child {
             color: $primaryColor;
             font-style: italic;
