@@ -1,6 +1,6 @@
 import request from '@/utils/request'
 
-export function globalSearch(query = 0, key) {
+export function search(key, query = 0) {
     let data = {
         k: key
     }
@@ -11,7 +11,7 @@ export function globalSearch(query = 0, key) {
     })
 }
 
-export function getHotWords() {
+export function fetchHotWords() {
     return request({
         url: '/hotkey/json',
         method: 'get'

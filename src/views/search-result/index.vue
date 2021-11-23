@@ -1,15 +1,14 @@
 <template>
-    <list-view :busy="busy" :noMore="noMore" :showHint="showHint" :more="more" style="width: 660px;">
-        <article-item v-for="(result, index) in resultList" :key="index" :item="result"></article-item>
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :more="more" :loading="loading" style="width: 660px;">
+        <article-item v-for="(result, index) in results" :key="index" :item="result"></article-item>
     </list-view>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+import { search } from '@/api/search';
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
-
-import { mapGetters } from 'vuex';
-import { globalSearch } from '@/api/search';
 
 export default {
     components: {
@@ -18,70 +17,68 @@ export default {
     },
     methods: {
         more() {
-            this.search('more', this.currPage, this.keywords);
-        },
-        search(state, currPage, key) {
-            if (state === 'init') {
-                this.resetListState();
-                globalSearch(currPage, key).then(res => {
-                    if (res.data.datas != undefined && res.data.datas.length != 0) {
-                        this.resultList = res.data.datas.map(item => {
-                            item.loading = false;
-                            return item;
-                        });
-                        this.currPage = currPage + 1;
-                    } else {
-                        this.showHint = true;
-                    }
-                })
-            }
-            if (state === 'more') {
-                this.busy = true;
-                globalSearch(currPage, key).then(res => {
-                    this.busy = false;
+            this.busy = true;
+            search(this.keywords, this.pageNum).then(res => {
+                this.busy = false;
+                const data = res.data;
+                const results = data.datas;
 
-                    if (res.data.datas != undefined && res.data.datas.length != 0) {
-                        let tmp = res.data.datas.map(item => {
-                            item.loading = false;
-                            return item;
-                        })
-                        this.resultList.push(...tmp);
-                        this.currPage = currPage + 1;
-                    } else {
-                        this.noMore = true;
-                    }
-                })
-            }
-        },
-        resetListState() {
-            this.noMore = false;
-            this.showHint = false;
+                if (data && results && results.length > 0) {
+                    const tmp = results.map(result => {
+                        result.loading = false;
+                        return result;
+                    });
+                    this.results.push(...tmp);
+                    this.pageNum++;
+                } else {
+                    this.noMore = true;
+                }
+            });
         }
     },
     computed: {
         ...mapGetters([
             'keywords',
-        ])
+        ]),
+        showHint() {
+            return !this.loading &&
+                (!this.results || this.results.length === 0);
+        }
     },
     watch: {
-        keywords() {
-            this.search('init', 0, this.keywords);
+        keywords: {
+            immediate: true,
+            handler(val, oldVal) {
+                if (val === oldVal || val === '' || val === ' ') return;
+
+                this.results = [];
+                this.loading = true;
+                
+                search(val).then(res => {
+                    this.loading = false;
+                    const data = res.data;
+                    const results = data.datas;
+
+                    if (!data || !results || results.length === 0) return;
+
+                    this.results = results.map(result => {
+                        result.loading = false;
+                        return result;
+                    });
+                    this.pageNum = 1;
+                });
+            }
         }
     },
     data() {
         return {
             busy: false,
             noMore: false,
-            showHint: false,
-            currPage: 0,
-            resultList: [],
+            loading: true,
+            pageNum: 0,
+            results: [],
         }
-    },
-    created() {
-        if (this.keywords) {
-            this.search('init', 0, this.keywords);
-        }
-    },
+    }
 }
 </script>
 
