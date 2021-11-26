@@ -1,72 +1,42 @@
 <template>
-    <!-- <div :class="{ 'fixed-header': fixedHeader }"> -->
-        <div class="top-bar" :class="{ 'dark-mode': mode === 'dark' }">
-            <div class="logo" @click="backToHome">BC</div>
-            <div class="search-bar">
-                <el-input
-                    clearable
-                    placeholder="多个关键字用空格隔开"
-                    style="width: 100%;"
-                    v-model="keywords"
-                    @focus="getHotWords"
-                    @keyup.enter.native="search">
-                </el-input>
-                <div class="hot-words" v-show="visible.hotWords">
-                    <div class="word" v-for="item in hotWords" :key="item.id" @click="onClickHotWord(item.name)">{{ item.name }}</div>
-                </div>
+    <div class="top-bar" :class="{ 'dark-mode': mode === 'dark' }">
+        <router-link class="logo" to="/">BC</router-link>
+        <div class="search-bar">
+            <el-input
+                clearable
+                placeholder="多个关键字用空格隔开"
+                style="width: 100%;"
+                v-model="keywords"
+                @focus="getHotWords"
+                @keyup.enter.native="search">
+            </el-input>
+            <div class="hot-words" v-show="visible.hotWords">
+                <div class="word" v-for="item in hotWords" :key="item.id" @click="onClickHotWord(item.name)">{{ item.name }}</div>
             </div>
-            <div class="func">
-                <div class="user">
-                    <router-link v-if="!name" to="/auth">登录</router-link>
-                    <template v-else>
-                        <span class="nickname">{{ name }}
-                            <i class="el-icon-caret-bottom"></i>
-                        </span>
-                        <ul class="menu">
-                            <li @click="signOut">退出登录</li>
-                        </ul>
-                    </template>
-                </div>
-                <router-link to="/notifications" v-if="name">
-                    <span class="el-icon-bell"></span>
-                    <span class="red-dot" v-if="visible.redDot"></span>
-                </router-link>
-            </div>
-            <!-- <div class="user"> -->
-                <!-- <template v-if="!name"> -->
-                    <!-- <router-link v-if="!name" to="/auth">登录</router-link> -->
-                    <!-- <el-divider direction="vertical"></el-divider>
-                    <router-link to="/auth">注册</router-link> -->
-                <!-- </template> -->
-                <!-- <template v-else>
+        </div>
+        <div class="func">
+            <div class="user">
+                <router-link v-if="!name" to="/auth">登录</router-link>
+                <template v-else>
                     <span class="nickname">{{ name }}
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <ul class="menu">
                         <li @click="signOut">退出登录</li>
                     </ul>
-                </template> -->
-                <!-- <el-dropdown v-else @command="handleCommand">
-                    <span class="nickname">{{ name }}
-                        <i class="el-icon-caret-bottom"></i>
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item command="logout">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown> -->
-            <!-- </div> -->
-            <!-- <router-link to="/notifications" v-if="name" class="notification">
+                </template>
+            </div>
+            <router-link to="/notifications" v-if="name">
                 <span class="el-icon-bell"></span>
                 <span class="red-dot" v-if="visible.redDot"></span>
-            </router-link> -->
-            <!-- <i class="el-icon-set-up" @click="visible.setting = !visible.setting"></i> -->
-            <!-- <i class="el-icon-set-up" @click="visibleSetting = !visibleSetting"></i> -->
-            <!-- <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" /> -->
+            </router-link>
         </div>
+        <!-- <i class="el-icon-set-up" @click="visible.setting = !visible.setting"></i> -->
+        <!-- <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" /> -->
+    </div>
         <!-- <transition name="slide">
             <setting class="setting-panel" v-show="visible.setting" :fixedHeader="fixedHeader"></setting>
         </transition> -->
-    <!-- </div> -->
 </template>
 
 <script>
@@ -77,7 +47,6 @@ import { fetchHotWords } from '@/api/search';
 export default {
     data() {
         return {
-            // searchContent: '',
             keywords: '',
             hotWords: [],
             visible: {
@@ -85,26 +54,13 @@ export default {
                 hotWords: false,
                 redDot: true,
             },
-            // isDark: undefined,
-            // visibleSetting: false,
-            // notification: true,
         }
     },
-    // created() {
-        // this.isDark = this.mode === 'dark' ? true : false;
-        // getUnreadMsgCount().then(res => {
-        //     if (res.data > 0) {
-        //         this.showRedPoint = true;
-        //     }
-        // });
-    // },
     mounted() {
         document.addEventListener('click', e => {
             if (e.target.className === 'el-input__inner' && e.target.placeholder === '多个关键字用空格隔开') {
-                // this.visible = true;
                 this.visible.hotWords = true;
             } else {
-                // this.visible = false;
                 this.visible.hotWords = false;
             }
         })
@@ -113,7 +69,6 @@ export default {
         ...mapGetters([
             'name',
             'mode',
-            // 'fixedHeader',
         ]),
         isDark() {
             if (this.mode === 'dark') {
@@ -127,18 +82,6 @@ export default {
     //     Setting,
     // },
     methods: {
-        handleCommand(command) {
-            switch (command) {
-                case "logout":
-                    this.$store.dispatch('user/logout').then(() => {
-                        window.location.reload();
-                    })
-                    break;
-            }
-        },
-        backToHome() {
-            this.$router.push('/');
-        },
         search() {
             if (!this.keywords) return;
 
@@ -149,14 +92,14 @@ export default {
             this.$router.push('/search-result');
         },
         getHotWords() {
+            const hotWords = this.hotWords;
+            if (hotWords && hotWords.length) return;
+
             fetchHotWords().then(res => {
                 if (res.data && res.data.length) {
                     this.hotWords = res.data;
                 }
-                // if (res.data.length > 0) {
-                //     this.hotWords = res.data;
-                // }
-            })
+            });
         },
         onClickHotWord(keywords) {
             this.keywords = keywords;
@@ -197,6 +140,7 @@ export default {
         background-color: $elementBgDark;
     }
     .logo {
+        display: block;
         margin-left: 15rem;
         min-width: 50px;
         line-height: 40px;
@@ -208,9 +152,6 @@ export default {
         border-radius: 3px;
         // text-shadow: 0 0 3vw #179E05;
         // animation: flux 2s linear infinite;
-        &:hover {
-            cursor: pointer;
-        }
     }
     .search-bar {
         width: 420px;
@@ -244,7 +185,6 @@ export default {
     }
     .user {
         position: relative;
-        // margin-right: auto;
         &:hover {
             cursor: pointer;
         }
@@ -255,13 +195,18 @@ export default {
         & > a {
             display: block;
             font-size: 1rem;
+            height: 56px;
+            min-width: 3rem;
             line-height: 56px;
+            text-align: center;
         }
         .nickname {
             display: inline-block;
             min-width: 6rem;
+            height: 56px;
             line-height: 56px;
             text-align: center;
+            overflow: hidden;
             font-weight: 500;
             padding: 0 10px;
             .el-icon-caret-bottom {
@@ -278,7 +223,7 @@ export default {
             position: absolute;
             background-color: white;
             margin: 0;
-            width: 8rem;
+            width: 10rem;
             z-index: 11;
             list-style: none;
             border-radius: 4px;
@@ -286,6 +231,10 @@ export default {
             box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
             li {
                 line-height: 2.6rem;
+                font-size: .9rem;
+                &:hover {
+                    color: $primaryColor;
+                }
             }
         }
     }
@@ -295,26 +244,8 @@ export default {
         line-height: 56px;
         font-size: 20px;
         text-align: center;
-        // margin: {
-        //     left: 0.6rem;
-        //     right: auto;
-        //     right: 0.6rem;
-        // }
         color: #606266;
     }
-    // .notification {
-        // margin-right: auto;
-        // float: right;
-        // margin-left: 0.6rem;
-
-        // &::after {
-        //     position: absolute;
-        //     margin-left: -3px;
-        //     content: ' ';
-        //     border: 3px solid red;
-        //     border-radius: 3px;
-        // }
-    // }
     .red-dot {
         position: absolute;
         margin-left: -0.4rem;
@@ -346,13 +277,6 @@ export default {
 // .slide-enter,
 // .slide-leave {
 //     height: 0px;
-// }
-// .fixed-header {
-//     position: fixed;
-//     top: 0;
-//     right: 0;
-//     left: 0;
-//     z-index: 11;
 // }
 // @keyframes flux {
 //     0%, 100% {
