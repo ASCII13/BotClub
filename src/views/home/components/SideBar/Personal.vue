@@ -16,10 +16,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import Avatar from '@/components/Avatar';
 import ExLink from '@/components/ExLink';
-import { mapGetters } from 'vuex';
-import { getSelfRankingInfo } from '@/api/ranking';
+import { fetchSelfRankingInfo } from '@/api/ranking';
 
 export default {
     data() {
@@ -50,7 +50,7 @@ export default {
         ExLink,
     },
     methods: {
-        getSelfRankingInfo,
+        // fetchSelfRankingInfo,
     },
     computed: {
         ...mapGetters([
@@ -59,7 +59,7 @@ export default {
         ])
     },
     watch: {
-        name: function(newVal, oldVal) {
+        name(newVal, oldVal) {
             if (newVal !== oldVal) {
                 this.userInfo.author = newVal;
             }
@@ -67,10 +67,10 @@ export default {
     },
     created() {
         if (this.cookie) {
-            getSelfRankingInfo().then(res => {
+            fetchSelfRankingInfo().then(res => {
                 this.userInfo = res.data;
                 this.userInfo.author = this.name;
-            })
+            });
         }
     },
 }
@@ -87,11 +87,9 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
-
     & > div:last-child {
         margin-top: 0.5rem;
     }
-
     ::v-deep .el-avatar {
         font-size: 1.4rem;
         font-weight: 500;
@@ -100,7 +98,6 @@ export default {
 .info {
     display: flex;
     font-size: 13px;
-
     & > div:not(:last-child) {
         margin-right: 0.6rem;
     }
