@@ -1,7 +1,7 @@
 <template>
-    <div class="main-container">
+    <div class="main-container" style="padding: 0 16px;">
         <router-view></router-view>
-        <back-top></back-top>
+        <back-top/>
     </div>
 </template>
 
@@ -14,9 +14,3 @@ export default {
     }
 }
 </script>
-
-<style lang="scss" scoped>
-.main-container {
-    padding: 0 16px;
-}
-</style>

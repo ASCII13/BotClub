@@ -41,7 +41,7 @@ export default {
 }
 .middle-container {
     width: 100%;
-    min-height: calc(100vh - 56px - 200px);
+    min-height: calc(100vh - 56px - 80px);
     margin-top: 56px;
     padding: 16px;
     display: flex;

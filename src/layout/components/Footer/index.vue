@@ -1,82 +1,68 @@
 <template>
-    <div class="footer-container">
-        <div class="contact">
-            <el-avatar :src="require('@/assets/github.svg')" shape="circle" @click.native="navigateTo('github')"></el-avatar>
-            <el-avatar :src="require('@/assets/email.svg')" shape="circle" @click.native="navigateTo('email')"></el-avatar>
+    <footer class="footer">
+        <span class="logo">BotClub</span>
+        <span class="copyright"> &copy; {{currentYear}} Created by ASCII13</span>
+        <div style="display: inline-block; float: right;">
+            <a class="contact mail" href="mailto:476747909@qq.com">E-mail</a>
+            <a class="contact github" href="https://github.com/ASCII13/BotClub" target="_blank">GitHub</a>
         </div>
-        <div class="info">
-            <div>Copyright © {{ getCurrentYear }} <a href="https://github.com/ASCII13" target="_blank">ASCII13</a></div>
-            <div>Made with love, 
-                <a href="https://cn.vuejs.org/" target="_blank">Vue</a> 
-                and <a href="http://www.wanandroid.com/" target="_blank">WANANDROID</a> API
-            </div>
-        </div>
-    </div>
+    </footer>
 </template>
 
 <script>
 export default {
     computed: {
-        getCurrentYear() {
+        currentYear() {
             return new Date().getFullYear();
         }
     },
-    methods: {
-        navigateTo(page) {
-            let url = '';
-            switch (page) {
-                case 'github':
-                    url = 'https://github.com/ASCII13/VAndroid';
-                    window.open(url, '_blank');
-                    break;
-
-                case 'email':
-                    url = 'mailto:476747909@qq.com';
-                    window.location.href = url;
-                    break;
-            }
-        }
-    }
+    // methods: {
+    //     navigateTo(dst) {
+    //         let url = '';
+    //         switch (dst) {
+    //             case 'github':
+    //                 url = 'https://github.com/ASCII13/BotClub';
+    //                 return window.open(url, '_blank');
+    //             case 'email':
+    //                 url = 'mailto:476747909@qq.com';
+    //                 return window.location.href = url;
+    //         }
+    //     }
+    // }
 }
 </script>
 
 <style lang="scss" scoped>
-.footer-container {
-    width: 100%;
-    height: 200px;
-    background-color: #d3d6da;
-    color: #303133;
-    font-size: 15px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-}
-
-.el-avatar {
-    width: 30px;
-    height: 30px;
-    background-color: transparent;
-    transition: transform 0.3s;
-
-    &:not(:last-child) {
-        margin-right: 10px;
-    }
-
-    &:hover {
-        cursor: pointer;
-        transform: scale(1.25);
-    }
-}
-
-.info {
-    margin-top: 0.6rem;
-    text-align: center;
-    line-height: 25px;
-
-    a {
-        color: #303133;
+.footer {
+    height: 80px;
+    line-height: 80px;
+    padding: 0 5rem;
+    background-color: #353535;
+    color: darkgray;
+    font-family: Oswald;
+    .logo {
         font-weight: bold;
+    }
+    .copyright {
+        font: {
+            style: italic;
+            weight: 500;
+        }
+    }
+    .contact {
+        display: inline-block;
+        line-height: 80px;
+        font-size: 1.3rem;
+        text-align: center;
+        border-radius: 4px;
+    }
+    .mail {
+        width: 12rem;
+        background-color: chocolate;
+    }
+    .github {
+        width: 10rem;
+        background-color: cadetblue;
     }
 }
 </style>
