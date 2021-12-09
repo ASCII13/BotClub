@@ -2,7 +2,7 @@
     <footer class="footer">
         <span class="logo">BotClub</span>
         <span class="copyright"> &copy; {{currentYear}} Created by ASCII13</span>
-        <div style="float: right;">
+        <div style="float: right; height: 80px;">
             <a class="contact mail" href="mailto:476747909@qq.com">E-mail</a>
             <a class="contact github" href="https://github.com/ASCII13/BotClub" target="_blank">GitHub</a>
         </div>
@@ -37,7 +37,7 @@ export default {
     height: 80px;
     line-height: 80px;
     padding: 0 5rem;
-    background-color: #999;
+    background-color: darkgray;
     font-family: Oswald;
     .logo {
         font-weight: bold;

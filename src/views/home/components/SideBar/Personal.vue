@@ -2,7 +2,7 @@
     <el-card shadow="hover" class="personal-panel">
         <div slot="header">个人相关</div>
         <div class="user-info" v-if="name">
-            <avatar :size="60" :name="userInfo.author" :userId="userInfo.userId"></avatar>
+            <avatar :size="60" :name="name" :userId="userInfo.userId"/>
             <div class="info" v-if="userInfo">
                 <div>积分：{{ userInfo.coinCount || '-' }}</div>
                 <div>等级：{{ userInfo.level || '-' }}</div>
@@ -49,27 +49,16 @@ export default {
         Avatar,
         ExLink,
     },
-    methods: {
-        // fetchSelfRankingInfo,
-    },
     computed: {
         ...mapGetters([
             'name',
             'cookie',
         ])
     },
-    watch: {
-        name(newVal, oldVal) {
-            if (newVal !== oldVal) {
-                this.userInfo.author = newVal;
-            }
-        }
-    },
-    created() {
+    mounted() {
         if (this.cookie) {
             fetchSelfRankingInfo().then(res => {
                 this.userInfo = res.data;
-                this.userInfo.author = this.name;
             });
         }
     },

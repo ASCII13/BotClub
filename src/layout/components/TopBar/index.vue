@@ -1,5 +1,5 @@
 <template>
-    <div class="top-bar" :class="{ 'dark-mode': mode === 'dark' }">
+    <header class="top-bar" :class="{ 'dark-mode': mode === 'dark' }">
         <router-link class="logo" to="/">BC</router-link>
         <div class="search-bar">
             <el-input
@@ -33,7 +33,7 @@
         </div>
         <!-- <i class="el-icon-set-up" @click="visible.setting = !visible.setting"></i> -->
         <!-- <img :src="require(`@/assets/mode-${mode}.svg`)" @click="isDark = !isDark" /> -->
-    </div>
+    </header>
         <!-- <transition name="slide">
             <setting class="setting-panel" v-show="visible.setting" :fixedHeader="fixedHeader"></setting>
         </transition> -->
@@ -83,7 +83,7 @@ export default {
     // },
     methods: {
         search() {
-            if (!this.keywords) return;
+            if (!this.keywords.trim()) return;
 
             this.visible.hotWords = false;
             this.$store.dispatch('app/setKeywords', this.keywords);
@@ -109,7 +109,19 @@ export default {
             this.$store.dispatch('app/setMode', mode);
         },
         signOut() {
-            this.$store.dispatch('user/logout').then(() => window.location.reload());
+            const authPath = [
+                '/notifications/index',
+                '/favorite-list/index',
+                '/share-list/index',
+                '/todos/index',
+            ];
+            this.$store.dispatch('user/logout').then(() => {
+                if (authPath.includes(this.$route.path)) {
+                    this.$router.replace('/auth');
+                } else {
+                    window.location.reload();
+                }
+            });
         }
     },
     watch: {

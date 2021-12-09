@@ -17,7 +17,7 @@ export default {
             sites: [],
         }
     },
-    created() {
+    mounted() {
         getCommonlyUsedSites().then((res) => {
             this.sites = res.data
         })
@@ -32,7 +32,6 @@ export default {
 .sites {
     display: flex;
     flex-wrap: wrap;
-
     .name {
         margin: 0 6px 10px 10px;
     } 
