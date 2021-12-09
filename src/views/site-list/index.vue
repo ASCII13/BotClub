@@ -1,22 +1,21 @@
 <template>
     <div style="display: flex;">
         <list-view style="width: 600px;" :loading="loading">
-            <el-card v-for="type in siteList" :key="type.cid" :id="'id'+type.cid" class="type-item">
+            <el-card v-for="type in siteList" :key="type.cid" :id="`id${type.cid}`" class="type-item">
                 <div slot="header">{{ type.name }}</div>
                 <div class="item-list">
-                    <el-link
-                        class="item"
-                        v-for="item in type.articles" 
+                    <a
+                        class="item draw"
+                        v-for="item in type.articles"
                         :key="item.id"
                         :href="item.link"
-                        :underline="false"
                         target="_blank">{{ item.title }}
-                    </el-link>
+                    </a>
                 </div>
             </el-card>
         </list-view>
         <el-card class="catagroies" v-loading="loading" :body-style="{ 'display': 'flex', 'flex-direction': 'column',}">
-            <div v-for="type in siteList" :key="type.cid" @click="currAnchor = '#id' + type.cid" class="catagroy-item">
+            <div v-for="type in siteList" :key="type.cid" @click="currAnchor = `#id${type.cid}`" class="catagroy-item">
                 <ex-link>{{ type.name }}</ex-link>
             </div>
         </el-card>
@@ -45,16 +44,6 @@ export default {
             this.siteList = datas.filter(item => item.articles.length > 0);
         });
     },
-    // methods: {
-    //     scrollIntoElem(id) {
-    //         const view = document.querySelector('#id'+id);
-    //         if (view) {
-    //             console.log(view);
-    //             view.style.border = '1px solid red';
-    //             view.scrollIntoView();
-    //         }
-    //     }
-    // },
     components: {
         ListView,
         ExLink,
@@ -62,12 +51,15 @@ export default {
     watch: {
         currAnchor(newVal, oldVal) {
             if (oldVal) {
-                const pre = document.querySelector(oldVal);
-                pre.classList.toggle('anchor');
+                const prev = document.querySelector(oldVal);
+                prev.classList.toggle('anchor');
             }
             const next = document.querySelector(newVal);
             next.classList.toggle('anchor');
-            next.scrollIntoView();
+            next.scrollIntoView({
+                behavior: 'smooth',
+                block: 'center',
+            });
         }
     }
 }
@@ -95,7 +87,64 @@ export default {
     }
 }
 .item {
-    padding: 10px;
+    padding: .5rem;
+    box-sizing: border-box;
+    // Required, since we're setting absolute on pseudo-elements
+    position: relative;
+    // vertical-align: middle;
+    &::before,
+    &::after {
+        box-sizing: inherit;
+        content: '';
+        position: absolute;
+        width: 100%;
+        height: 100%;
+    }
+}
+.draw {
+    transition: color 0.15s;
+    &::before,
+    &::after {
+        // Set border to invisible, so we don't see a 4px border on a 0x0 element before the transition starts
+        border: 2px solid transparent;
+        border-radius: 4px;
+        width: 0;
+        height: 0;
+    }
+    // This covers the top & right borders (expands right, then down)
+    &::before {
+        top: 0;
+        left: 0;
+    }
+    // And this the bottom & left borders (expands left, then up)
+    &::after {
+        bottom: 0;
+        right: 0;
+    }
+    &:hover {
+        color: $primaryColor;
+    }
+    // Hover styles
+    &:hover::before,
+    &:hover::after {
+        width: 100%;
+        height: 100%;
+    }
+    &:hover::before {
+        border-top-color: $primaryColor; // Make borders visible
+        border-right-color: $primaryColor;
+        transition:
+            width 0.15s ease-out, // Width expands first
+            height 0.15s ease-out 0.15s; // And then height
+    }
+    &:hover::after {
+        border-bottom-color: $primaryColor; // Make borders visible
+        border-left-color: $primaryColor;
+        transition:
+            border-color 0s ease-out 0.3s, // Wait for ::before to finish before showing border
+            width 0.15s ease-out, // And then exanding width
+            height 0.15s ease-out 0.35s; // And finally height
+    }
 }
 .anchor {
     border-color: $primaryColor;
