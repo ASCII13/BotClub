@@ -2,12 +2,15 @@
     <div class="list-view">
         <div v-if="loading" v-loading="loading" style="margin-top: 8rem;"></div>
         <div v-if="showHint" class="hint-container">
-            <el-image :src="require('@/assets/empty-list.svg')" style="width: 130px; height: 130px;"></el-image>
+            <img :src="require('@/assets/empty-list.svg')" style="width: 130px; height: 130px;">
             <div style="color: #515151; margin-top: 1rem;">{{ placeholder }}</div>
         </div>
-        <div v-else :class="{ 'wrap-list': wrap }">
-            <slot></slot>
+        <div v-else-if="wrap" :class="{ 'wrap-list': wrap }">
+            <slot/>
         </div>
+        <template v-else>
+            <slot/>
+        </template>
         <div class="bottom-info" v-if="!showHint">
             <div v-if="busy">
                 <i class="el-icon-loading"></i>
@@ -80,7 +83,7 @@ export default {
     mounted() {
         document.addEventListener('scroll', this.onScroll);
     },
-    destroyed() {
+    beforeDestroy() {
         document.removeEventListener('scroll', this.onScroll);
     }
 }
@@ -94,13 +97,11 @@ export default {
         flex-direction: column;
         align-items: center;
     }
-
     .wrap-list {
         display: flex;
         flex-wrap: wrap;
         justify-content: space-between;
     }
-    
     .bottom-info {
         color: #909399;
         text-align: center;
