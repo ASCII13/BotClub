@@ -7,7 +7,6 @@
 
 <script>
 import { isChristmas } from "@/utils/suprise";
-
 export default {
     data() {
         return {
@@ -18,7 +17,7 @@ export default {
     mounted() {
         document.addEventListener('scroll', this.onScroll);
     },
-    destroyed() {
+    beforeDestroy() {
         document.removeEventListener('scroll', this.onScroll);
     },
     methods: {
@@ -39,7 +38,7 @@ export default {
     computed: {
         showSuprise() {
             return isChristmas();
-        }
+        },
     }
 }
 </script>
@@ -57,11 +56,9 @@ export default {
     justify-content: center;
     align-items: center;
     box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
-
     &:hover {
         cursor: pointer;
     }
-
     & > i {
         font-size: 20px;
     }
