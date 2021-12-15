@@ -4,15 +4,12 @@ import {
     getKeywords,
     setMode,
     getMode,
-    isFixedHeader,
-    setHeaderStatus,
 } from '@/utils/storage';
 
 const state = {
     keywords: getKeywords(),
     theme: variables.theme,
     mode: getMode() || 'light',
-    fixedHeader: isFixedHeader() || false,
 }
 
 const mutations = {
@@ -27,10 +24,6 @@ const mutations = {
         state.mode = val;
         setMode(val);
     },
-    SET_HEADER_STATUS: (state, val) => {
-        state.fixedHeader = val;
-        setHeaderStatus(val);
-    }
 }
 
 const actions = {
@@ -43,9 +36,6 @@ const actions = {
     setMode({ commit }, val) {
         commit('SET_MODE', val);
     },
-    setHeaderStatus({ commit }, val) {
-        commit('SET_HEADER_STATUS', val);
-    }
 }
 
 export default {

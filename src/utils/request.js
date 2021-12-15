@@ -1,12 +1,11 @@
-import qs from 'qs'
-import axios from 'axios'
-
-import { Message } from 'element-ui'
+import qs from 'qs';
+import axios from 'axios';
+import { Message } from 'element-ui';
 
 const instance = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
     withCredentials: true, // send cookies when cross-domain requests
-})
+});
 
 instance.interceptors.request.use(
     config => {
@@ -16,10 +15,10 @@ instance.interceptors.request.use(
                 'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
             }
         }
-        return config
+        return config;
     },
     error => {
-        return Promise.reject(error)
+        return Promise.reject(error);
     }
 )
 
@@ -30,8 +29,8 @@ instance.interceptors.response.use(
             Message({
                 message: res.errorMsg || '接口异常，请稍后再试',
                 type: 'error'
-            })
-            return Promise.reject(new Error(res.errorMsg || '接口异常，请稍后再试'))
+            });
+            return Promise.reject(new Error(res.errorMsg || '接口异常，请稍后再试'));
         } else {
             return res;
         }
@@ -40,9 +39,9 @@ instance.interceptors.response.use(
         Message({
             message: error.message,
             type: 'error',
-        })
-        return Promise.reject(error)
+        });
+        return Promise.reject(error);
     }
 )
 
-export default instance
+export default instance;
