@@ -1,11 +1,11 @@
 <template>
-    <div style="width: 660px;">
+    <div style="width: 600px;">
         <div class="info">
             <avatar :name="userInfo.nickname"></avatar>
             <div>
-                <span>积分：{{ userInfo.coinCount }}</span>
-                <span>等级：{{ userInfo.level }}</span>
-                <span>排名：{{ userInfo.rank }}</span>
+                <span>积分: {{ userInfo.coinCount }}</span>
+                <span>等级: {{ userInfo.level }}</span>
+                <span>排名: {{ userInfo.rank }}</span>
             </div>
         </div>
         <list-view :loading="loading" :show-hint="showHint" :busy="busy" :no-more="noMore" :more="more">

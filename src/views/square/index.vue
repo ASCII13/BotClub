@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 660px;">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 600px;">
         <article-item v-for="(item, index) in dataList" :key="index" :item="item"></article-item>
     </list-view>
 </template>

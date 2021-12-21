@@ -1,5 +1,5 @@
 <template>
-    <list-view :show-hint="showHint" :no-more="noMore" :busy="busy" :loading="loading" :more="more" :placeholder="'暂无分享内容'" style="width: 660px;">
+    <list-view :show-hint="showHint" :no-more="noMore" :busy="busy" :loading="loading" :more="more" :placeholder="'暂无分享内容'" style="width: 600px;">
         <el-card v-for="(item, index) in dataList" :key="item.id" class="share-item">
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
             <div class="info">

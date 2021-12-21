@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 700px;">
+    <div style="width: 600px;">
         <div class="tab">
             <div class="tab-item"
                 :class="{ 'curr-tab': currTab === index }"

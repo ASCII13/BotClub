@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :more="more" :loading="loading" style="width: 660px;">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :more="more" :loading="loading" style="width: 600px;">
         <el-card v-for="(item, index) in favorites" :key="item.id" class="favorite-item">
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
             <div class="info">

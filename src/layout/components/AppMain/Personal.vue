@@ -4,9 +4,9 @@
         <div class="user-info" v-if="name">
             <avatar :size="60" :name="name" :userId="userInfo.userId"/>
             <div class="info" v-if="userInfo">
-                <div>积分：{{ userInfo.coinCount || '-' }}</div>
-                <div>等级：{{ userInfo.level || '-' }}</div>
-                <div>排名：{{ userInfo.rank || '-' }}</div>
+                <div>积分: {{ userInfo.coinCount || '-' }}</div>
+                <div>等级: {{ userInfo.level || '-' }}</div>
+                <div>排名: {{ userInfo.rank || '-' }}</div>
             </div>
         </div>
         <div v-for="(item, index) in datas" :key="index" class="item-container">

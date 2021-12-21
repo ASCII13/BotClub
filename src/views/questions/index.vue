@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 660px;">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 600px;">
         <el-card
             class="question-item"
             v-for="(item, index) in datas"
@@ -102,8 +102,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.question-item:not(:last-child) {
-    margin-bottom: 6px;
+.question-item:not(:first-child) {
+    margin-top: 6px;
 }
 .date-info {
     color: #4D5760;

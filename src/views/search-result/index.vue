@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :more="more" :loading="loading" style="width: 660px;">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :more="more" :loading="loading" style="width: 600px;">
         <article-item v-for="(result, index) in results" :key="index" :item="result"></article-item>
     </list-view>
 </template>

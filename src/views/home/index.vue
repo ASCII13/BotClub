@@ -1,23 +1,17 @@
 <template>
-    <div class="home-container" style="display: flex;">
-        <div class="left-container">
-            <el-carousel loop autoplay arrow="hover" height="330px" class="banner-container">
-                <el-carousel-item v-for="(item, index) in bannerList" :key="index" :name="item.title">
-                    <el-image :src="item.imagePath" fit="fill" style="width: 100%; height: 100%;"></el-image>
-                </el-carousel-item>
-            </el-carousel>
-            <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" class="article-container">
-                <article-item v-for="item in articleList" :key="item.id" :item="item"></article-item>
-            </list-view>
-        </div>
-        <div class="right-container">
-            <side-bar />
-        </div>
+    <div class="content">
+        <el-carousel loop autoplay arrow="hover" height="330px" class="banner">
+            <el-carousel-item v-for="(item, index) in bannerList" :key="index" :name="item.title">
+                <el-image :src="item.imagePath" fit="fill" style="width: 100%; height: 100%;"></el-image>
+            </el-carousel-item>
+        </el-carousel>
+        <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" class="articles">
+            <article-item v-for="item in articleList" :key="item.id" :item="item"></article-item>
+        </list-view>
     </div>
 </template>
 
 <script>
-import SideBar from './components/SideBar';
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
 import { getBanner, fetchArticles, fetchTopArticles } from '@/api/home';
@@ -37,7 +31,6 @@ export default {
         this.getListData();
     },
     components: {
-        SideBar,
         ListView,
         ArticleItem,
     },
@@ -99,21 +92,15 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.home-container {
-    .left-container {
-        width: 600px;
-        display: flex;
-        flex-direction: column;
-        .banner-container {
-            border-radius: 5px;
-        }
-        .article-container {
-            margin-top: 6px;
-        }
+.content {
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    .banner {
+        border-radius: 5px;
     }
-    .right-container {
-        height: fit-content;
-        margin-left: 0.6rem;
+    .articles {
+        margin-top: 6px;
     }
 }
 </style>

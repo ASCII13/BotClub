@@ -17,7 +17,7 @@
 export default {
     computed: {
         routes() {
-            return this.$router.options.routes.filter(route => !route.hidden);
+            return this.$router.options.routes.filter(route => !route.meta || !route.meta.hidden);
         },
         currPath() {
             return this.$route.path;

@@ -1,5 +1,5 @@
 <template>
-    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 660px;">
+    <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="loading" :more="more" style="width: 600px;">
         <el-card
             v-for="user in users"
             :key="user.userId"
@@ -7,8 +7,8 @@
             class="user-item">
             <avatar :name="user.username"></avatar>
             <div class="username">{{ user.username }}</div>
-            <div class="coin">积分：{{ user.coinCount }}</div>
-            <div class="level">等级：{{ user.level }}</div>
+            <div class="coin">积分: {{ user.coinCount }}</div>
+            <div class="level">等级: {{ user.level }}</div>
             <div class="rank">{{ user.rank }}</div>
         </el-card>
     </list-view>

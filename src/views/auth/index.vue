@@ -1,8 +1,8 @@
 <template>
-    <div style="height: 100%; display: flex; align-items: center;">
+    <div style="display: flex; align-items: center;">
         <div class="container" :class="{'right-panel-active': rightPanelActive}">
             <div class="form-container sign-up-container">
-                <form action="#" @submit.prevent="signUp">
+                <form @submit.prevent="signUp">
                     <h1>新建账户</h1>
                     <input type="text" placeholder="用户名" required v-model="signUpModel.username" />
                     <input type="password" minlength="6" placeholder="密码" required v-model="signUpModel.password" />

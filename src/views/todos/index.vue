@@ -269,8 +269,8 @@ form {
     border-radius: 4px;
     background-color: white;
     box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-    &:not(:last-child) {
-        margin-bottom: 0.5rem;
+    &:not(:first-child) {
+        margin-top: 0.5rem;
     }
 }
 .header {
