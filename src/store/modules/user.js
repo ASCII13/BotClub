@@ -1,77 +1,81 @@
+import { fetchSelfInfo } from '@/api/ranking';
 import { login, logout, register } from '@/api/user';
 import {
     getCookie,
     setCookie,
-    getUsername,
-    setUsername,
+    removeCookie,
+    getUser,
+    setUser,
+    removeUser
 } from '@/utils/auth';
 
 const state = {
-    name: getUsername(),
+    user: getUser() || {},
     cookie: getCookie(),
 }
 
 const mutations = {
-    SET_NAME: (state, name) => {
-        state.name = name;
-        setUsername(state.name);
-    },
     SET_COOKIE: (state, cookie) => {
         state.cookie = cookie;
-        setCookie(state.cookie);
+    },
+    SET_USER: (state, user) => {
+        state.user = user;
     },
 }
 
 const actions = {
-    login({ commit }, userInfo) {
-        const { username, password } = userInfo;
-        return new Promise((resolve, reject) => {
-            login({ username: username, password: password }).then(response => {
-                const name = response.data.nickname || response.data.username;
-                const cookie = document.cookie;
-                commit('SET_NAME', name);
-                commit('SET_COOKIE', cookie);
-                resolve();
-            }).catch(error => {
-                reject(error);
-            })
-        })
-    },
-    logout({ commit }) {
-        return new Promise((resolve, reject) => {
-            logout().then(() => {
-                commit('SET_NAME', '');
-                commit('SET_COOKIE', '');
-                resolve();
-            }).catch((error) => {
-                reject(error);
-            })
-        })
-    },
-    register({ commit }, userInfo) {
-        const {
-            username,
-            password,
-            repassword
-        } = userInfo;
+    async login(
+        { commit },
+        { username, password }
+    ) {
+        try {
+            const response = await login({username, password});
+            const res = await fetchSelfInfo();
 
-        return new Promise((resolve, reject) => {
-            register({
-                username,
-                password,
-                repassword
-            }).then(res => {
-                const name = res.data.nickname || res.data.username;
-                const cookie = document.cookie;
-                commit('SET_NAME', name);
-                commit('SET_COOKIE', cookie);
-                resolve();
-            }).catch(error => {
-                reject(error);
-            });
-        })
+            const cookie = document.cookie;
+            const name = response.data.nickname || response.data.username;
+            const user = res.data;
+            user.name = name;
+
+            setCookie(cookie);
+            setUser(user);
+
+            commit('SET_COOKIE', cookie);
+            commit('SET_USER', user);
+        } catch (error) {
+            console.error(error);
+        }
+    },
+    async logout({ commit }) {
+        await logout().then(() => {
+            removeUser();
+            removeCookie();
+
+            commit('SET_USER', '');
+            commit('SET_COOKIE', '');
+        });
+    },
+    async register(
+        { commit },
+        { username, password, repassword }
+    ) {
+        try {
+            const response = await register({username, password, repassword});
+            const res = await fetchSelfInfo();
+            const name = response.data.nickname || response.data.username;
+            const cookie = document.cookie;
+            const user = res.data;
+            user.name = name;
+
+            setCookie(cookie);
+            setUser(user);
+
+            commit('SET_USER', user);
+            commit('SET_COOKIE', cookie);
+        } catch (error) {
+            console.error(error);
+        }
     }
-    
 }
 
 export default {

@@ -7,7 +7,7 @@ export function fetchRankingList(query = 1) {
     })
 }
 
-export function fetchSelfRankingInfo() {
+export function fetchSelfInfo() {
     return request({
         url: '/lg/coin/userinfo/json',
         method: 'get'

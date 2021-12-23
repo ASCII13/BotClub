@@ -1,12 +1,12 @@
 <template>
     <el-card shadow="hover" class="personal-panel">
         <div slot="header">个人相关</div>
-        <div class="user-info" v-if="name">
-            <avatar :size="60" :name="name" :userId="userInfo.userId"/>
-            <div class="info" v-if="userInfo">
-                <div>积分: {{ userInfo.coinCount || '-' }}</div>
-                <div>等级: {{ userInfo.level || '-' }}</div>
-                <div>排名: {{ userInfo.rank || '-' }}</div>
+        <div class="user-info" v-show="cookie">
+            <avatar :size="60" :name="user.name" :userId="user.userId"/>
+            <div class="info">
+                <div>积分: {{ user.coinCount || '-' }}</div>
+                <div>等级: {{ user.level || '-' }}</div>
+                <div>排名: {{ user.rank || '-' }}</div>
             </div>
         </div>
         <div v-for="(item, index) in datas" :key="index" class="item-container">
@@ -19,8 +19,6 @@
 import { mapGetters } from 'vuex';
 import Avatar from '@/components/Avatar';
 import ExLink from '@/components/ExLink';
-import { fetchSelfRankingInfo } from '@/api/ranking';
-
 export default {
     data() {
         return {
@@ -42,7 +40,6 @@ export default {
                     path: '/todos',
                 }
             ],
-            userInfo: {},
         }
     },
     components: {
@@ -51,16 +48,9 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'name',
+            'user',
             'cookie',
         ])
-    },
-    mounted() {
-        if (this.cookie) {
-            fetchSelfRankingInfo().then(res => {
-                this.userInfo = res.data;
-            });
-        }
     },
 }
 </script>

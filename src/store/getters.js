@@ -1,5 +1,5 @@
 const getters = {
-    name: state => state.user.name,
+    user: state => state.user.user,
     cookie: state => state.user.cookie,
     keywords: state => state.app.keywords,
     theme: state => state.app.theme,

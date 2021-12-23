@@ -16,9 +16,9 @@
         </div>
         <div class="func">
             <div class="user">
-                <router-link v-if="!name" to="/auth">登录</router-link>
+                <router-link v-if="!cookie" to="/auth">登录</router-link>
                 <template v-else>
-                    <span class="nickname">{{ name }}
+                    <span class="nickname">{{ user.name }}
                         <i class="el-icon-caret-bottom"></i>
                     </span>
                     <ul class="menu">
@@ -26,7 +26,7 @@
                     </ul>
                 </template>
             </div>
-            <router-link to="/notifications" v-if="name">
+            <router-link to="/notifications" v-if="cookie">
                 <span class="el-icon-bell"></span>
                 <span class="red-dot" v-if="visible.redDot"></span>
             </router-link>
@@ -67,8 +67,9 @@ export default {
     },
     computed: {
         ...mapGetters([
-            'name',
+            'user',
             'mode',
+            'cookie',
         ]),
         isDark() {
             if (this.mode === 'dark') {
@@ -109,14 +110,8 @@ export default {
             this.$store.dispatch('app/setMode', mode);
         },
         signOut() {
-            const authPath = [
-                '/notifications/index',
-                '/favorite-list/index',
-                '/share-list/index',
-                '/todos/index',
-            ];
             this.$store.dispatch('user/logout').then(() => {
-                if (authPath.includes(this.$route.path)) {
+                if (this.$route.meta.auth) {
                     this.$router.replace('/auth');
                 } else {
                     window.location.reload();
