@@ -7,7 +7,7 @@
                     <input type="text" placeholder="用户名" required v-model="signUpModel.username" />
                     <input type="password" minlength="6" placeholder="密码" required v-model="signUpModel.password" />
                     <input type="password" minlength="6" placeholder="确认密码" required v-model="signUpModel.repassword" />
-                    <button>注册</button>
+					<load-button text="注册" :loading="loading.signUp" :disabled="loading.signUp"/>
                 </form>
             </div>
             <div class="form-container sign-in-container">
@@ -16,7 +16,7 @@
                     <input type="text" placeholder="用户名" required v-model="signInModel.username" />
                     <input type="password" minlength="6" required placeholder="密码" v-model="signInModel.password" />
                     <a @click="$message.warning('暂不支持此功能')">忘记密码?</a>
-                    <button>登录</button>
+					<load-button text="登录" :loading="loading.signIn" :disabled="loading.signIn"/>
                 </form>
             </div>
             <div class="overlay-container">
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import LoadButton from '@/components/LoadButton';
 export default {
     data() {
 		return {
@@ -51,6 +52,10 @@ export default {
 				username: '',
 				password: '',
 				repassword: ''
+			},
+			loading: {
+				signUp: false,
+				signIn: false
 			}
 		}
 	},
@@ -59,7 +64,9 @@ export default {
 			const valid = this.validateData(this.signUpModel);
 			if (!valid) return;
 
+			this.loading.signUp = true;
 			this.$store.dispatch('user/register', this.signUpModel).then(() => {
+				this.loading.signUp = false;
 				this.$router.replace('/');
 			});
 		},
@@ -67,7 +74,9 @@ export default {
 			const valid = this.validateData(this.signInModel);
 			if (!valid) return;
 
+			this.loading.signIn = true;
 			this.$store.dispatch('user/login', this.signInModel).then(() => {
+				this.loading.signIn = false;
 				if (this.path) {
 					this.$router.replace(this.path);
 				} else {
@@ -83,6 +92,9 @@ export default {
 			}
 			return true;
 		},
+	},
+	components: {
+		LoadButton,
 	}
 }
 </script>
@@ -109,17 +121,16 @@ a {
 	margin: 15px 0;
 }
 button {
+	width: 6rem;
     border-radius: 20px;
-	// border: 1px solid #FF4B2B;
-	// background-color: #FF4B2B;
     border: 1px solid $primaryColor;
 	background-color: $primaryColor;
 	color: #FFFFFF;
 	font-size: 12px;
 	font-weight: bold;
-	padding: 12px 45px;
+	padding: 12px 25px;
 	letter-spacing: 1px;
-	text-transform: uppercase;
+	// text-transform: uppercase;
 	transition: transform 80ms ease-in;
 	&:active {
 		transform: scale(0.95);
@@ -175,7 +186,6 @@ input {
 		.overlay-container {
 			transform: translateX(-100%);
 		}
-
 		.overlay {
 			transform: translateX(50%);
 		}
