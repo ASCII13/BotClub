@@ -10,7 +10,7 @@ import {
 } from '@/utils/auth';
 
 const state = {
-    user: getUser() || {},
+    user: getUser(),
     cookie: getCookie(),
 }
 

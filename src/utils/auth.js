@@ -16,7 +16,8 @@ export function removeCookie() {
 }
 
 export function getUser() {
-    return Cookies.get(KEY_USER);
+    const user = Cookies.get(KEY_USER) || '{}';
+    return JSON.parse(user);
 }
 
 export function setUser(user) {
