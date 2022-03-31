@@ -2,13 +2,12 @@
     <el-card shadow="hover" class="commonly-used-sites-panel">
         <div slot="header">常用站点</div>
         <div class="sites">
-            <ex-link class="name" v-for="(item, index) in sites" :key="index" :href="item.link">{{item.name}}</ex-link>
+            <a class="name" v-for="(item, index) in sites" :key="index" :href="item.link" target="_blank">{{item.name}}</a>
         </div>
     </el-card>
 </template>
 
 <script>
-import ExLink from '@/components/ExLink';
 import { getCommonlyUsedSites } from '@/api/commonly-used-sites';
 
 export default {
@@ -19,12 +18,9 @@ export default {
     },
     mounted() {
         getCommonlyUsedSites().then((res) => {
-            this.sites = res.data
+            this.sites = res.data;
         })
     },
-    components: {
-        ExLink,
-    }
 }
 </script>
 
@@ -32,8 +28,20 @@ export default {
 .sites {
     display: flex;
     flex-wrap: wrap;
+    justify-content: flex-start;
     .name {
-        margin: 0 6px 10px 10px;
+        margin: .2rem;
+        height: 2rem;
+        line-height: 2rem;
+        font-size: .85rem;
+        padding: 0 .5rem;
+        border-radius: 4px;
+        font-weight: 400;
+        background-color:#ededef;
+        &:hover {
+            background-color: $primaryColor;
+            color: white;
+        }
     } 
 }
 </style>
