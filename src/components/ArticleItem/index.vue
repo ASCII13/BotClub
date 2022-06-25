@@ -79,29 +79,24 @@ export default {
 <style lang="scss" scoped>
 .article-item-container {
     padding: 10px;
-
     &.dark-mode {
         background-color: $elementBgDark;
     }
-
     .info-container {
         display: flex;
         flex: 1;
         flex-direction: column;
         margin-left: 0.5rem;
-
         .author-info {
             line-height: 18px;
             font-weight: 500;
             font-size: 14px;
             color: #4D5760;
-
             & > div:last-child {
                 font-size: 13px;
                 margin-top: 0.1rem;
             }
         }
-
         .title {
             color: #303133;
             line-height: 26px;
@@ -111,23 +106,19 @@ export default {
             display: flex;
             justify-content: left;
         }
-
         & > div:last-child {
             display: flex;
             align-items: center;
-
             .classification {
                 flex: 1;
                 color: #909399;
                 font-size: 13px;
-
                 & > span:not(last-child) {
                     margin-right: 10px;
                 }
             }
         }
     }
-    
     &:not(:first-child) {
         margin-top: 6px;
     }

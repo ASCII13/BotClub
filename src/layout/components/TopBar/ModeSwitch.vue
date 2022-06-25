@@ -17,6 +17,12 @@ export default {
             dark: false
         }
     },
+    watch: {
+        dark(val) {
+            const mode = val ? 'dark' : 'light';
+            this.$store.dispatch('app/setMode', mode);
+        }
+    }
 }
 </script>
 
