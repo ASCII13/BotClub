@@ -30,7 +30,7 @@
                 <span class="el-icon-bell"></span>
                 <span class="red-dot" v-if="visible.redDot"></span>
             </router-link>
-            <mode-switch style="margin-left: 3rem"/>
+            <!-- <mode-switch style="margin-left: 3rem"/> -->
         </div>
         <!-- <i class="el-icon-set-up" @click="visible.setting = !visible.setting"></i> -->
     </header>
@@ -40,7 +40,7 @@
 </template>
 
 <script>
-import ModeSwitch from './ModeSwitch';
+// import ModeSwitch from './ModeSwitch';
 import { mapGetters } from 'vuex';
 import { fetchHotWords } from '@/api/search';
 
@@ -76,7 +76,7 @@ export default {
         ]),
     },
     components: {
-        ModeSwitch,
+        // ModeSwitch,
     },
     methods: {
         search() {

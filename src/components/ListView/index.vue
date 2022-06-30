@@ -66,7 +66,7 @@ export default {
     },
     methods: {
         /**
-         * scrollHeight 总的可滚动高度
+         * scrollHeight 总的可滚动高度(所有内容的高度)
          * scrollTop 已滚动的高度
          * clientHeight 可视区域高度
          */
@@ -75,7 +75,7 @@ export default {
 
             let scrollView = document.documentElement || document.body;
             if ((scrollView.scrollHeight > scrollView.clientHeight) &&
-            (scrollView.scrollTop + scrollView.clientHeight === scrollView.scrollHeight)) {
+            (scrollView.scrollTop + scrollView.clientHeight >= scrollView.scrollHeight)) {
                 this.more();
             }
         }
