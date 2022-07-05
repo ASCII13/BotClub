@@ -74,8 +74,9 @@ export default {
             if (this.busy || this.noMore) return;
 
             let scrollView = document.documentElement || document.body;
-            if ((scrollView.scrollHeight > scrollView.clientHeight) &&
-            (scrollView.scrollTop + scrollView.clientHeight >= scrollView.scrollHeight)) {
+            let { scrollHeight, clientHeight, scrollTop } = scrollView;
+            
+            if (Math.abs(scrollHeight - clientHeight - scrollTop) < 1) {
                 this.more();
             }
         }
