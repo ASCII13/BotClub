@@ -313,6 +313,8 @@ const routes = [
 ]
 
 const router = new VueRouter({
+  mode: 'history',
+  base: '/bot-club/',
   routes
 })
 

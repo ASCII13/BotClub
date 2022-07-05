@@ -1,7 +1,7 @@
 const CompressionPlugin = require('compression-webpack-plugin');
 
 module.exports = {
-    publicPath: './',
+    publicPath: '/bot-club/',
 	assetsDir: 'static',
 	productionSourceMap: false,
 	devServer: {
