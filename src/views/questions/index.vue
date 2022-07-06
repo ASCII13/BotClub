@@ -22,6 +22,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ListView from '@/components/ListView';
 import { fetchQuestions } from '@/api/question';
 import { star, unstar } from '@/api/collection';
@@ -64,27 +65,32 @@ export default {
             this.getQuestions('more', this.pageNum);
         },
         changeCollectionStatus(item) {
-            item.loading = true;
-
-            if (item.collect) {
-                unstar(item.id).then(() => {
-                    item.loading = false;
-                    item.collect = false;
-                    this.$message.success('已取消收藏');
-                });
+            if (!this.cookie) {
+                this.$router.push('/auth');
             } else {
-                star(item.id).then(() => {
-                    item.loading = false;
-                    item.collect = true;
-                    this.$message.success('已成功收藏');
-                });
+                item.loading = true;
+
+                if (item.collect) {
+                    unstar(item.id).then(() => {
+                        item.loading = false;
+                        item.collect = false;
+                        this.$message.success('已取消收藏');
+                    });
+                } else {
+                    star(item.id).then(() => {
+                        item.loading = false;
+                        item.collect = true;
+                        this.$message.success('已成功收藏');
+                    });
+                }
             }
         }
     },
     computed: {
+        ...mapGetters(['cookie']),
         showHint() {
             return !this.loading && (!this.datas || this.datas.length === 0);
-        }
+        },
     },
     data() {
         return {
