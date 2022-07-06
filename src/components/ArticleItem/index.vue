@@ -10,8 +10,8 @@
             <div>
                 <div class="classification">
                     <span v-if="item.top" style="color: red;">置顶</span>
-                    <span>#{{ item.superChapterName }}</span>
-                    <span>#{{ item.chapterName }}</span>
+                    <span>{{ item.superChapterName }}</span>
+                    <span>{{ item.chapterName }}</span>
                 </div>
                 <el-button
                     size="mini"
@@ -111,10 +111,16 @@ export default {
             align-items: center;
             .classification {
                 flex: 1;
-                color: #909399;
-                font-size: 13px;
+                color: #525252;
+                font-size: .75rem;
                 & > span:not(last-child) {
                     margin-right: 10px;
+                }
+                & > span {
+                    padding: .25rem .5rem;
+                    line-height: .75rem;
+                    border-radius: .75rem;
+                    background-color: #e8e8eb;
                 }
             }
         }

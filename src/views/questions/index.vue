@@ -8,10 +8,10 @@
             <div class="date-info">{{ item.niceDate }}</div>
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
             <div class="collection-container">
-                <div v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag">#{{ tag.name }}</div>
+                <div v-for="(tag, tagIndex) in item.tags" :key="tagIndex" class="tag">{{ tag.name }}</div>
                 <el-button
                     size="mini"
-                    style="width: 80px;"
+                    style="width: 80px; margin-left: auto;"
                     :loading="item.loading"
                     :type="item.collect ? 'primary' : 'info'"
                     @click="changeCollectionStatus(item)">{{ item.collect ? '已收藏' : '收藏'}}
@@ -131,10 +131,13 @@ export default {
     display: flex;
     align-items: center;
     .tag {
-        color: #909399;
-        font-size: 13px;
+        color: #525252;
+        font-size: .75rem;
+        padding: .25rem .5rem;
+        line-height: .75rem;
+        border-radius: .75rem;
+        background-color: #e8e8eb;
         &:not(:first-child) {
-            flex: 1;
             margin-left: 10px;
         }
     }
