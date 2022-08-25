@@ -1,11 +1,12 @@
 <template>
-    <div class="back-top" v-show="show" @click="backTop">
+    <div class="back-top" v-show="show" @click="backTop" :class="{ 'dark-mode': mode === 'dark' }">
         <img v-if="showSuprise" src="@/assets/christmas/back-top.svg">
         <i v-else class="el-icon-caret-top"></i>
     </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { isChristmas } from "@/utils/suprise";
 export default {
     data() {
@@ -36,6 +37,7 @@ export default {
         }
     },
     computed: {
+        ...mapGetters(['mode']),
         showSuprise() {
             return isChristmas();
         },
@@ -61,6 +63,12 @@ export default {
     }
     & > i {
         font-size: 20px;
+    }
+    &.dark-mode {
+        background-color: $inputBgColorDark;
+        .el-icon-caret-top {
+            color: $textColorDark;
+        }
     }
 }
 </style>

@@ -1,5 +1,5 @@
 <template>
-    <div class="dark-mode-switch" @click="dark = !dark" :class="{'dark': dark}">
+    <div class="dark-mode-switch" @click="isDark = !isDark" :class="{ 'dark': mode === 'dark' }">
         <div class="inner">
             <div class="bg"/>
             <div class="circle"/>
@@ -11,18 +11,28 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
-            dark: false
+            isDark: false
         }
     },
     watch: {
-        dark(val) {
+        isDark(val) {
             const mode = val ? 'dark' : 'light';
             this.$store.dispatch('app/setMode', mode);
+        },
+        mode: {
+            immediate: true,
+            handler(val) {
+                this.isDark = val === 'dark' ? true : false;
+            }
         }
-    }
+    },
+    computed: {
+        ...mapGetters(['mode']),
+    },
 }
 </script>
 
