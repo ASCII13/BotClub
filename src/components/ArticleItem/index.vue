@@ -81,6 +81,17 @@ export default {
     padding: 10px;
     &.dark-mode {
         background-color: $elementBgDark;
+        border-color: $elementBgDark;
+        ::v-deep .title {
+            color: $textColorDark !important;
+        }
+        ::v-deep .author-info {
+            color: gray !important;
+        }
+        ::v-deep .classification > span {
+            background-color: $inputBgColorDark !important;
+            color: $textColorDark;
+        }
     }
     .info-container {
         display: flex;

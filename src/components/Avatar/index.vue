@@ -3,6 +3,7 @@
         <el-avatar
             :size="size"
             :style="{ 'background-color': theme }"
+            :class="{ 'dark-mode': mode === 'dark' }"
             @click.native="browseInfo(userId)">{{ name | headChar }}
         </el-avatar>
         <img v-if="showHat" class="suprise" src="@/assets/christmas/hat.svg"/>
@@ -30,6 +31,7 @@ export default {
     computed: {
         ...mapGetters([
             'theme',
+            'mode',
         ]),
         showHat() {
             return isChristmas();
@@ -73,5 +75,8 @@ export default {
     top: 13%;
     right: -28%;
     transform: translateY(-60%) rotate(40deg);
+}
+.dark-mode {
+    color: $textColorDark;
 }
 </style>

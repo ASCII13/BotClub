@@ -140,6 +140,10 @@ export default {
         ::v-deep a {
             color: $textColorDark;
         }
+        ::v-deep .menu {
+            color: $textColorDark;
+            background-color: $elementBgDark !important;
+        }
     }
     .logo {
         display: block;

@@ -1,5 +1,5 @@
 <template>
-    <el-card shadow="hover" class="commonly-used-sites-panel">
+    <el-card shadow="hover" :class="{ 'dark-mode': mode === 'dark' }">
         <div slot="header">常用站点</div>
         <div class="sites">
             <a class="name" v-for="(item, index) in sites" :key="index" :href="item.link" target="_blank">{{item.name}}</a>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import { getCommonlyUsedSites } from '@/api/commonly-used-sites';
 
 export default {
@@ -21,6 +22,9 @@ export default {
             this.sites = res.data;
         })
     },
+    computed: {
+        ...mapGetters(['mode']),
+    }
 }
 </script>
 
@@ -43,5 +47,17 @@ export default {
             color: white;
         }
     } 
+}
+.dark-mode {
+    color: $textColorDark;
+    border-color: $elementBgDark;
+    background-color: $elementBgDark;
+    ::v-deep .name {
+        color: $textColorDark;
+        background-color: $inputBgColorDark;
+    }
+    ::v-deep .el-card__header{
+        border-bottom-color: gray;
+    }
 }
 </style>

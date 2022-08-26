@@ -1,7 +1,11 @@
 <template>
-    <div style="display: flex;">
+    <div style="display: flex;" :class="{ 'dark-mode': mode === 'dark' }">
         <list-view style="width: 600px;" :loading="loading">
-            <el-card v-for="type in siteList" :key="type.cid" :id="`id${type.cid}`" class="type-item">
+            <el-card
+                v-for="type in siteList"
+                :key="type.cid"
+                :id="`id${type.cid}`"
+                class="type-item">
                 <div slot="header">{{ type.name }}</div>
                 <div class="item-list">
                     <a
@@ -26,6 +30,7 @@
 import ExLink from '@/components/ExLink';
 import ListView from '@/components/ListView';
 import { getSiteList } from '@/api/sites';
+import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
@@ -61,13 +66,35 @@ export default {
                 block: 'center',
             });
         }
+    },
+    computed: {
+        ...mapGetters(['mode'])
     }
 }
 </script>
 
 <style lang="scss" scoped>
-.type-item:not(:last-child) {
-    margin-bottom: 6px;
+.dark-mode {
+    ::v-deep .type-item,
+    ::v-deep .catagroies {
+        color: $textColorDark;
+        border-color: $elementBgDark;
+        background-color: $elementBgDark;
+    }
+    ::v-deep .el-card__header {
+        border-bottom-color: gray;
+    }
+    ::v-deep .el-card__body a {
+        color: $textColorDark;
+    }
+    ::v-deep .el-loading-mask {
+        background-color: $elementBgDark;
+    }
+}
+.type-item {
+    &:not(:last-child) {
+        margin-bottom: 6px;
+    }
 }
 .item-list {
     display: flex;
@@ -147,6 +174,6 @@ export default {
     }
 }
 .anchor {
-    border-color: $primaryColor;
+    border-color: $primaryColor !important;
 }
 </style>

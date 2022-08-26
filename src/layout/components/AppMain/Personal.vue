@@ -1,5 +1,5 @@
 <template>
-    <el-card shadow="hover" class="personal-panel">
+    <el-card shadow="hover" :class="{ 'dark-mode': mode === 'dark' }">
         <div slot="header">个人相关</div>
         <div class="user-info" v-show="cookie">
             <avatar :size="60" :name="user.name" :userId="user.userId"/>
@@ -50,12 +50,24 @@ export default {
         ...mapGetters([
             'user',
             'cookie',
+            'mode',
         ])
     },
 }
 </script>
 
 <style lang="scss" scoped>
+.dark-mode {
+    color: $textColorDark;
+    background-color: $elementBgDark;
+    border-color: $elementBgDark;
+    ::v-deep a {
+        color: $textColorDark;
+    }
+    ::v-deep .el-card__header {
+        border-bottom-color: gray;
+    }
+}
 .item-container {
     padding: 5px 10px;
     text-align: center;
