@@ -1,5 +1,5 @@
 <template>
-    <footer class="footer">
+    <footer class="footer" :class="{ 'dark-mode': mode === 'dark' }">
         <span class="logo">BotClub</span>
         <span class="copyright"> &copy; {{currentYear}} Created by ASCII13</span>
         <div style="float: right; height: 80px;">
@@ -10,8 +10,10 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     computed: {
+        ...mapGetters(['mode']),
         currentYear() {
             return new Date().getFullYear();
         }
@@ -63,6 +65,13 @@ export default {
     .github {
         width: 10rem;
         background-color: black;
+    }
+    &.dark-mode {
+        color: $textColorDark;
+        background-color: $elementBgDark;
+        .contact {
+            color: inherit;
+        }
     }
 }
 </style>
