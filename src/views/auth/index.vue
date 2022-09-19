@@ -1,6 +1,6 @@
 <template>
     <div style="display: flex; align-items: center;">
-        <div class="container" :class="{'right-panel-active': rightPanelActive}">
+        <div class="container" :class="{'right-panel-active': rightPanelActive, 'dark-mode': mode === 'dark'}">
             <div class="form-container sign-up-container">
                 <form @submit.prevent="signUp">
                     <h1>新建账户</h1>
@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import LoadButton from '@/components/LoadButton';
 export default {
     data() {
@@ -95,6 +96,9 @@ export default {
 	},
 	components: {
 		LoadButton,
+	},
+	computed: {
+		...mapGetters(['mode']),
 	}
 }
 </script>
@@ -194,6 +198,35 @@ input {
 		}
 		.overlay-right {
 			transform: translateX(20%);
+		}
+	}
+	&.dark-mode {
+		background-color: $elementBgDark;
+		form {
+			color: $textColorDark;
+			background-color: $elementBgDark;
+			input {
+				background-color: $inputBgColorDark;
+				&:focus {
+					outline: 1px solid $textColorDark;
+				}
+			}
+			a {
+				color: $textColorDark;
+			}
+		}
+		.overlay {
+			background: -webkit-linear-gradient(to right, $primaryColor, #385918);
+			background: linear-gradient(to right, $primaryColor, #385918);
+			button {
+				color: $textColorDark;
+				&.ghost {
+					border-color: $textColorDark;
+				}
+			}
+		}
+		.overlay-panel {
+			color: $textColorDark;
 		}
 	}
 }

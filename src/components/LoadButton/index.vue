@@ -1,11 +1,12 @@
 <template>
-    <button :disabled="disabled">
+    <button :disabled="disabled" :class="{ 'dark': mode === 'dark' }">
         <i v-show="loading" class="el-icon-loading"/>
         {{ text }}
     </button>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: 'LoadButton',
     props: {
@@ -21,6 +22,9 @@ export default {
             type: Boolean
         }
     },
+    computed: {
+        ...mapGetters(['mode']),
+    }
 
 }
 </script>
@@ -29,5 +33,8 @@ export default {
 button {
     padding: .5rem;
     border: 1px solid;
+}
+.dark {
+    color: $textColorDark;
 }
 </style>
