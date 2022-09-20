@@ -11,3 +11,17 @@
 .el-button {
     width: 100%;
 }
+
+.el-card {
+    &.dark {
+        color: $textColorDark;
+        border-color: $elementBgDark;
+        background-color: $elementBgDark;
+        .el-card__header {
+            border-bottom-color: gray;
+        }
+        .el-loading-mask {
+            background-color: $elementBgDark;
+        }
+    }
+}

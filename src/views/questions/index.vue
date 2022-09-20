@@ -4,6 +4,7 @@
             class="question-item"
             v-for="(item, index) in datas"
             :key="index"
+            :class="{ 'dark-mode': mode === 'dark' }"
             :body-style="{ 'display': 'flex', 'flex-direction': 'column', 'padding': '15px' }">
             <div class="date-info">{{ item.niceDate }}</div>
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
@@ -87,7 +88,7 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['cookie']),
+        ...mapGetters(['cookie', 'mode']),
         showHint() {
             return !this.loading && (!this.datas || this.datas.length === 0);
         },
@@ -108,8 +109,24 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.question-item:not(:first-child) {
-    margin-top: 6px;
+.question-item {
+    &.dark-mode {
+        border-color: $elementBgDark;
+        background-color: $elementBgDark;
+        .date-info {
+            color: #768593;
+        }
+        .title {
+            color: $textColorDark;
+        }
+        .tag {
+            background-color: $inputBgColorDark;
+            color: $textColorDark;
+        }
+    }
+    &:not(:first-child) {
+        margin-top: 6px;
+    }
 }
 .date-info {
     color: #4D5760;

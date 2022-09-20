@@ -206,6 +206,7 @@ input {
 			color: $textColorDark;
 			background-color: $elementBgDark;
 			input {
+				color: $textColorDark;
 				background-color: $inputBgColorDark;
 				&:focus {
 					outline: 1px solid $textColorDark;

@@ -3,12 +3,14 @@
         v-if="!router"
         :href="!href ? null : href"
         :target="!href ? null : target"
-        :class="{'hyperlinks': underlined, 'active': current}"><slot/>
+        :class="{'hyperlinks': underlined, 'active': current, 'dark': mode === 'dark'}">
+        <slot/>
     </a>
     <router-link v-else :class="{'hyperlinks': underlined}" :to="href"><slot/></router-link>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 export default {
     name: 'ExLink',
     props: {
@@ -30,6 +32,9 @@ export default {
         current: {
             type: Boolean,
         }
+    },
+    computed: {
+        ...mapGetters(['mode']),
     }
 }
 </script>
@@ -52,5 +57,8 @@ export default {
 .active {
     @extend .base;
     background-size: 100% 0.3rem;
+}
+.dark {
+    color: $textColorDark;
 }
 </style>

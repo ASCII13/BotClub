@@ -3,7 +3,11 @@
         <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :loading="showListLoading" :more="more" class="article-list">
             <article-item v-for="article in articles" :key="article.id" :item="article"></article-item>
         </list-view>
-        <el-card class="account-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
+        <el-card
+            class="account-list"
+            :class="{ 'dark': mode === 'dark' }"
+            :body-style="{ 'display': 'flex', 'flex-direction': 'column' }"
+            v-loading="showTypeLoading">
             <div v-for="(item, index) in accounts" :key="index" class="account" @click="id = item.id">
                 <ex-link>{{ item.name }}</ex-link>
             </div>
@@ -12,6 +16,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ExLink from '@/components/ExLink';
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
@@ -74,6 +79,7 @@ export default {
         },
     },
     computed: {
+        ...mapGetters(['mode']),
         showHint() {
             return !this.showListLoading &&
                 (!this.articles || this.articles.length === 0);
