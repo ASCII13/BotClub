@@ -229,5 +229,9 @@ export default {
     .info {
         background-color: $elementBgDark;
     }
+    ::v-deep img {
+        -webkit-filter: brightness(70%);
+        filter: brightness(70%);
+    }
 }
 </style>

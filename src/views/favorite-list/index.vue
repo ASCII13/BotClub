@@ -1,6 +1,6 @@
 <template>
     <list-view :busy="busy" :no-more="noMore" :show-hint="showHint" :more="more" :loading="loading" style="width: 600px;">
-        <el-card v-for="(item, index) in favorites" :key="item.id" class="favorite-item">
+        <el-card v-for="(item, index) in favorites" :key="item.id" class="favorite-item" :class="{ 'dark': mode === 'dark' }">
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
             <div class="info">
                 <div class="date">{{ item.niceDate }}</div>
@@ -18,6 +18,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ListView from '@/components/ListView';
 import { fetchFavorites, unstar } from '@/api/favorite';
 
@@ -41,7 +42,8 @@ export default {
         showHint() {
             return !this.loading &&
                 (!this.favorites || this.favorites.length === 0);
-        }
+        },
+        ...mapGetters(['mode']),
     },
     methods: {
         unstar(currIndex) {

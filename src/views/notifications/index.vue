@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 600px;">
+    <div style="width: 600px;" :class="{ 'dark': mode === 'dark' }">
         <div class="tab">
             <div class="tab-item"
                 :class="{ 'curr-tab': currTab === index }"
@@ -27,6 +27,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
 import ExLink from '@/components/ExLink';
 import ListView from '@/components/ListView';
 import { fetchReadMsgs, fetchUnreadMsgs } from '@/api/notification';
@@ -120,7 +121,8 @@ export default {
             set(newVal) {
                 this.currData.loading = newVal;
             }
-        }
+        },
+        ...mapGetters(['mode']),
     },
     watch: {
         currTab: {
@@ -195,6 +197,21 @@ export default {
     .preview {
         font-size: 14px;
         line-height: 1.2rem;
+    }
+}
+.dark {
+    .tab {
+        color: $textColorDark;
+        background-color: $inputBgColorDark;
+    }
+    .tab-item.curr-tab {
+        color: inherit;
+        background-color: darkolivegreen;
+    }
+    .msg-item {
+        color: $textColorDark;
+        border-color: $elementBgDark;
+        background-color: $elementBgDark;
     }
 }
 </style>
