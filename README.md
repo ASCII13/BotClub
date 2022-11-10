@@ -11,7 +11,7 @@
 简体中文｜[English](./README.en-US.md)
 
 ## 描述
-BotClub 是一个 Android 领域的信息聚合站点，基于 [Vue](https://cn.vuejs.org/)，[Element-UI](https://element.eleme.io/#/zh-CN) 和 [WANANDROID](https://www.wanandroid.com/) API 实现。
+BotClub 是一个 Android 领域的信息聚合站点，基于 [Vue.js 2](https://cn.vuejs.org/)，[Element-UI](https://element.eleme.io/#/zh-CN) 和 [玩安卓](https://www.wanandroid.com/) API 实现。
 
 ## 预览
 [在线体验](https://www.kwafoo.com.cn/bot-club)
@@ -41,6 +41,9 @@ BotClub 是一个 Android 领域的信息聚合站点，基于 [Vue](https://cn.
 4. 执行 `npm run serve` 启动服务进行本地调试及预览。
 
 ## 更新日志
+### 2022-11-10
+支持暗黑模式（个别弹窗未适配，如：创建待办事项，取消收藏二次确认。由于自己对这部分的交互不太满意，因此后续会对这部分进行调整之后进行适配）
+
 ### 2021-10-18
 重写登录和注册功能，将其合并为一个页面，提升用户视觉和交互体验
 

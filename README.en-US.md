@@ -11,7 +11,7 @@
 [简体中文](./README.md)｜English
 
 ## Introduction
-BotClub is a website for Android information, built on [Vue](https://cn.vuejs.org/), [Element-UI](https://element.eleme.io/) and [WANANDROID](https://www.wanandroid.com/) API.
+BotClub is a website for Android information, built on [Vue.js 2](https://cn.vuejs.org/), [Element-UI](https://element.eleme.io/) and [Wan Android](https://www.wanandroid.com/) API.
 
 ## Experience
 [Online](https://www.kwafoo.com.cn/bot-club)
@@ -41,11 +41,15 @@ BotClub is a website for Android information, built on [Vue](https://cn.vuejs.or
 4. Run `npm run serve` for preview and debug.
 
 ## Major Update Log
+### 2022-11-10
+Support dark mode(Some pop-up windows are not adapted, such as: The dialog of create todo, the tooltip of double check. Because I will
+optimize the parts and adapte it later.)
+
 ### 2021-10-18
-Refactor login and register, improve user interface
+Refactor login and register, improve user interface.
 
 ### 2021-07-06
-Add notifications
+Add notifications.
 
 ### 2021-01-05
 You can see popular searches when focus search-bar.
