@@ -1,5 +1,5 @@
 <template>
-    <div style="width: 600px;" :class="{ 'dark': mode === 'dark' }">
+    <div style="width: 600px;">
         <div class="tab">
             <div class="tab-item"
                 :class="{ 'curr-tab': currTab === index }"
@@ -27,7 +27,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import ExLink from '@/components/ExLink';
 import ListView from '@/components/ListView';
 import { fetchReadMsgs, fetchUnreadMsgs } from '@/api/notification';
@@ -121,8 +120,7 @@ export default {
             set(newVal) {
                 this.currData.loading = newVal;
             }
-        },
-        ...mapGetters(['mode']),
+        }
     },
     watch: {
         currTab: {
@@ -199,7 +197,7 @@ export default {
         line-height: 1.2rem;
     }
 }
-.dark {
+.dark-mode {
     .tab {
         color: $textColorDark;
         background-color: $inputBgColorDark;

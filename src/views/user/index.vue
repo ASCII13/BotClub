@@ -1,6 +1,6 @@
 <template>
     <div style="width: 600px;">
-        <div class="info" :class="{ 'dark': mode === 'dark' }">
+        <div class="info">
             <avatar :name="userInfo.nickname"></avatar>
             <div>
                 <span>积分: {{ userInfo.coinCount }}</span>
@@ -15,7 +15,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { fetchData } from "@/api/sharer";
 import Avatar from '@/components/Avatar';
 import ListView from '@/components/ListView';
@@ -32,7 +31,6 @@ export default {
             return !this.loading &&
                 (!this.dataList || this.dataList.length === 0);
         },
-        ...mapGetters(['mode']),
     },
     methods: {
         getUserData(type, page) {
@@ -113,8 +111,10 @@ $distance: 0.5rem;
         margin-right: $distance;
     }
 }
-.dark {
-    color: $textColorDark;
-    background-color: $elementBgDark;
+.dark-mode {
+    .info {
+        color: $textColorDark;
+        background-color: $elementBgDark;
+    }
 }
 </style>

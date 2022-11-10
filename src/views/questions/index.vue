@@ -4,7 +4,6 @@
             class="question-item"
             v-for="(item, index) in datas"
             :key="index"
-            :class="{ 'dark-mode': mode === 'dark' }"
             :body-style="{ 'display': 'flex', 'flex-direction': 'column', 'padding': '15px' }">
             <div class="date-info">{{ item.niceDate }}</div>
             <el-link :href="item.link" :underline="false" target="_blank" class="title">{{ item.title }}</el-link>
@@ -23,7 +22,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import ListView from '@/components/ListView';
 import { fetchQuestions } from '@/api/question';
 import { star, unstar } from '@/api/collection';
@@ -88,7 +86,6 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['cookie', 'mode']),
         showHint() {
             return !this.loading && (!this.datas || this.datas.length === 0);
         },
@@ -109,10 +106,8 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-.question-item {
-    &.dark-mode {
-        border-color: $elementBgDark;
-        background-color: $elementBgDark;
+.dark-mode {
+    .question-item {
         .date-info {
             color: #768593;
         }
@@ -123,9 +118,9 @@ export default {
             background-color: $inputBgColorDark;
             color: $textColorDark;
         }
-    }
-    &:not(:first-child) {
-        margin-top: 6px;
+        &:not(:first-child) {
+            margin-top: 6px;
+        }
     }
 }
 .date-info {

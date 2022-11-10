@@ -1,5 +1,5 @@
 <template>
-    <div style="display: flex;" :class="{ 'dark-mode': mode === 'dark' }">
+    <div style="display: flex;">
         <list-view style="width: 600px;" :loading="loading">
             <el-card
                 v-for="type in siteList"
@@ -30,7 +30,6 @@
 import ExLink from '@/components/ExLink';
 import ListView from '@/components/ListView';
 import { getSiteList } from '@/api/sites';
-import { mapGetters } from 'vuex';
 export default {
     data() {
         return {
@@ -66,28 +65,16 @@ export default {
                 block: 'center',
             });
         }
-    },
-    computed: {
-        ...mapGetters(['mode'])
     }
 }
 </script>
 
 <style lang="scss" scoped>
 .dark-mode {
-    ::v-deep .type-item,
-    ::v-deep .catagroies {
+    .type-item,
+    .catagroies {
         color: $textColorDark;
         border-color: $elementBgDark;
-        background-color: $elementBgDark;
-    }
-    ::v-deep .el-card__header {
-        border-bottom-color: gray;
-    }
-    ::v-deep .el-card__body a {
-        color: $textColorDark;
-    }
-    ::v-deep .el-loading-mask {
         background-color: $elementBgDark;
     }
 }

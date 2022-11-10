@@ -20,7 +20,7 @@
                 </div>
             </ex-link>
         </list-view>
-        <el-card class="category-list" :class="{ 'dark': mode === 'dark' }" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
+        <el-card class="category-list" :body-style="{ 'display': 'flex', 'flex-direction': 'column' }" v-loading="showTypeLoading">
             <div class="category" v-for="(item, index) in categories" :key="index" @click="cid = item.id">
                 <ex-link :current="item.id === cid">{{ item.name }}</ex-link>
             </div>
@@ -33,7 +33,6 @@ import { fetchCategories, fetchProjects } from '@/api/project';
 import ListView from '@/components/ListView';
 // import Avatar from '@/components/Avatar';
 import ExLink from '@/components/ExLink';
-import { mapGetters } from 'vuex';
 
 export default {
     data() {
@@ -97,7 +96,6 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['mode']),
         showHint() {
             return !this.showListLoading &&
                 (!this.projects || this.projects.length === 0);
@@ -225,13 +223,15 @@ export default {
         }
     }
 }
-.dark {
-    .info {
-        background-color: $elementBgDark;
-    }
-    ::v-deep img {
-        -webkit-filter: brightness(70%);
-        filter: brightness(70%);
+.dark-mode {
+    .project-item {
+        .info {
+            background-color: $elementBgDark;
+        }
+        ::v-deep img {
+            -webkit-filter: brightness(70%);
+            filter: brightness(70%);
+        }
     }
 }
 </style>

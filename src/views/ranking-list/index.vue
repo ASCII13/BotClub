@@ -3,7 +3,6 @@
         <el-card
             v-for="user in users"
             :key="user.userId"
-            :class="{ 'dark': mode === 'dark' }"
             :body-style="{ 'display': 'flex', 'align-items': 'center', 'height': '80px', 'padding': '15px' }"
             class="user-item">
             <avatar :name="user.username"></avatar>
@@ -16,7 +15,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import Avatar from '@/components/Avatar';
 import ListView from '@/components/ListView';
 import { fetchRankingList } from '@/api/ranking';
@@ -68,8 +66,7 @@ export default {
         showHint() {
             return !this.loading &&
                 (!this.users || this.users.length === 0);
-        },
-        ...mapGetters(['mode']),
+        }
     }
 }
 </script>

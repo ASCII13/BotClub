@@ -3,11 +3,7 @@
         <list-view :show-hint="showHint" :no-more="noMore" :busy="busy" :loading="showListLoading" :more="more" style=" width: 600px;">
             <article-item v-for="(articleItem, index) in articles" :key="index" :item="articleItem"></article-item>
         </list-view>
-        <el-card
-            :body-style="{ 'width': '200px', }"
-            :class="{ 'dark': mode === 'dark' }"
-            class="category"
-            v-loading="showTypeLoading">
+        <el-card :body-style="{ 'width': '200px' }" class="category" v-loading="showTypeLoading">
             <div slot="header">体系分类</div>
             <div class="knowledge-list">
                 <el-popover placement="right" trigger="hover" v-for="(item, index) in knowledgeData" :key="index">
@@ -24,7 +20,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import ListView from '@/components/ListView';
 import ArticleItem from '@/components/ArticleItem';
 import { fetchKnowledgeData, fetchArticles } from '@/api/knowledge';
@@ -88,7 +83,6 @@ export default {
         }
     },
     computed: {
-        ...mapGetters(['mode']),
         showHint() {
             return !this.showListLoading &&
                 (!this.articles || this.articles.length === 0);
@@ -145,7 +139,7 @@ export default {
     height: fit-content;
     margin-left: 0.6rem;
 }
-.dark {
+.dark-mode {
     .knowledge-item:hover {
         background-color: $inputBgColorDark;
     }

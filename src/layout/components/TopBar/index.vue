@@ -1,5 +1,5 @@
 <template>
-    <header class="top-bar" :class="{ 'dark-mode': mode === 'dark' }">
+    <header class="top-bar">
         <router-link class="logo" to="/">BC</router-link>
         <div class="search-bar">
             <el-input
@@ -71,7 +71,6 @@ export default {
     computed: {
         ...mapGetters([
             'user',
-            'mode',
             'cookie',
         ]),
     },
@@ -127,24 +126,6 @@ export default {
     align-items: center;
     background-color: #ffffff;
     box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.1);
-    &.dark-mode {
-        color: $textColorDark;
-        background-color: $elementBgDark;
-        ::v-deep .el-input__inner {
-            background-color: $inputBgColorDark;
-            border-color: $inputBgColorDark;
-        }
-        ::v-deep .hot-words {
-            background-color: $elementBgDark !important;
-        }
-        ::v-deep a {
-            color: $textColorDark;
-        }
-        ::v-deep .menu {
-            color: $textColorDark;
-            background-color: $elementBgDark !important;
-        }
-    }
     .logo {
         display: block;
         margin-left: 15rem;
@@ -273,6 +254,22 @@ export default {
     //         cursor: pointer;
     //     }
     // }
+}
+.dark-mode {
+    .top-bar {
+        color: $textColorDark;
+        background-color: $elementBgDark;
+        .logo {
+            color: inherit;
+        }
+        .hot-words {
+            background-color: $elementBgDark;
+        }
+        .menu {
+            color: $textColorDark;
+            background-color: $elementBgDark;
+        }
+    }
 }
 // .setting-panel {
 //     height: 60px;

@@ -1,13 +1,13 @@
 <template>
-    <el-card class="article-item-container" :body-style="{ display: 'flex' }" :class="{ 'dark-mode': mode === 'dark' }">
+    <el-card class="article-item-container" :body-style="{ display: 'flex' }">
         <avatar :name="item.author || item.shareUser" :userId="item.userId"></avatar>
         <div class="info-container">
             <div class="author-info">
                 <div>{{ item.author || item.shareUser }}</div>
-                <div>{{ item.niceDate }}</div>
+                <div class="release-date">{{ item.niceDate }}</div>
             </div>
             <el-link :href="item.link" :underline="false" target="_blank" class="title"><span v-html="item.title"></span></el-link>
-            <div>
+            <div class="tags">
                 <div class="classification">
                     <span v-if="item.top" style="color: red;">置顶</span>
                     <span>{{ item.superChapterName }}</span>
@@ -66,8 +66,6 @@ export default {
     computed: {
         ...mapGetters([
             'cookie',
-            'theme',
-            'mode',
         ])
     },
     components: {
@@ -79,20 +77,7 @@ export default {
 <style lang="scss" scoped>
 .article-item-container {
     padding: 10px;
-    &.dark-mode {
-        background-color: $elementBgDark;
-        border-color: $elementBgDark;
-        ::v-deep .title {
-            color: $textColorDark !important;
-        }
-        ::v-deep .author-info {
-            color: gray !important;
-        }
-        ::v-deep .classification > span {
-            background-color: $inputBgColorDark !important;
-            color: $textColorDark;
-        }
-    }
+
     .info-container {
         display: flex;
         flex: 1;
@@ -103,7 +88,7 @@ export default {
             font-weight: 500;
             font-size: 14px;
             color: #4D5760;
-            & > div:last-child {
+           .release-date {
                 font-size: 13px;
                 margin-top: 0.1rem;
             }
@@ -117,7 +102,7 @@ export default {
             display: flex;
             justify-content: left;
         }
-        & > div:last-child {
+        .tags {
             display: flex;
             align-items: center;
             .classification {
@@ -138,6 +123,22 @@ export default {
     }
     &:not(:first-child) {
         margin-top: 6px;
+    }
+}
+.dark-mode {
+    .article-item-container {
+        background-color: $elementBgDark;
+        border-color: $elementBgDark;
+        .title {
+            color: $textColorDark;
+        }
+        .author-info {
+            color: gray;
+        }
+        .classification > span {
+            background-color: $inputBgColorDark !important;
+            color: $textColorDark;
+        }
     }
 }
 </style>

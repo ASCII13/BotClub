@@ -365,6 +365,40 @@ form {
     padding: 12px 45px;
     letter-spacing: 1px;
 }
+.dark-mode {
+    .add {
+        color: $textColorDark;
+        background-color: $elementBgDark;
+    }
+    // .el-dialog__header {
+    //     background-color: $elementBgDark;
+    // }
+    .todo {
+        background-color: $elementBgDark;
+        .header {
+            border-bottom-color: gray;
+            h3 {
+                color: #768593;
+            }
+            .tools {
+                color: #768593;
+            }
+        }
+        .task {
+            border-bottom-color: gray;
+            &:hover {
+                background-color: #46494c;
+            }
+            &.checked {
+                background-color: rgba(74, 206, 163, 0.1);
+                text-decoration-color: darkgray;
+            }
+            label {
+                color: #768593;
+            }
+        }
+    }
+}
 </style>
 
 <style lang="scss">

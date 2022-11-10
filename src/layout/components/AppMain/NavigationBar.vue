@@ -1,12 +1,12 @@
 <template>
-    <div class="nav-container" :class="{ 'dark-mode': mode === 'dark' }">
+    <div class="nav-container">
         <div class="title">热门标签</div>
         <div class="nav-list">
             <router-link
                 class="nav-item"
                 v-for="(route, index) in routes"
                 :key="index"
-                :class="{ 'curr-item': route.redirect === currPath, 'dark-mode': mode === 'dark' }"
+                :class="{ 'curr-item': route.redirect === currPath }"
                 :to="route.path">{{ getNavTitle(route.children) }}
             </router-link>
         </div>
@@ -14,7 +14,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 export default {
     computed: {
         routes() {
@@ -23,7 +22,6 @@ export default {
         currPath() {
             return this.$route.path;
         },
-        ...mapGetters(['mode']),
     },
     methods: {
         getNavTitle(children = []) {
@@ -36,9 +34,7 @@ export default {
 <style lang="scss" scoped>
 .nav-container {
     height: fit-content;
-    &.dark-mode {
-        color: $textColorDark;
-    }
+
     .title {
         padding: 5px;
         font-weight: 500;
@@ -65,9 +61,6 @@ export default {
             &:not(:last-child) {
                 margin-bottom: 0.2rem;
             }
-            &.dark-mode {
-                color: $textColorDark;
-            }
         }
         .nav-item.curr-item,
         .nav-item:hover {
@@ -87,11 +80,19 @@ export default {
             top: 50%;
             transform: translateY(-50%);
         }
-        .nav-item.dark-mode:hover::after {
+    }
+}
+.dark-mode {
+    .nav-container {
+        color: $textColorDark;
+    }
+    .nav-list {
+        .nav-item,
+        .nav-item:hover::after {
             color: $textColorDark;
         }
-        .nav-item.curr-item.dark-mode,
-        .nav-item.dark-mode:hover {
+        .nav-item:hover,
+        .nav-item.curr-item {
             background-color: $inputBgColorDark;
         }
     }

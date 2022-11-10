@@ -1,0 +1,35 @@
+
+.dark-mode {
+    .el-card {
+        color: $textColorDark;
+        border-color: $elementBgDark;
+        background-color: $elementBgDark;
+        .el-card__header {
+            border-bottom-color: gray;
+        }
+        .el-loading-mask {
+            background-color: $elementBgDark;
+        }
+        .el-link {
+            color: $textColorDark;
+        }
+    }
+    .el-loading-mask {
+        background-color: $elementBgDark;
+    }
+    .el-avatar {
+        color: $textColorDark;
+    }
+    .el-icon-caret-top {
+        color: $textColorDark;
+    }
+    .el-button--info {
+        color: $textColorDark;
+        border-color: $inputBgColorDark;
+        background-color: $inputBgColorDark;
+    }
+    .el-input__inner {
+        background-color: $inputBgColorDark;
+        border-color: $inputBgColorDark;
+    }
+}
