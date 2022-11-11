@@ -1,35 +1,95 @@
 
 .dark-mode {
-    .el-card {
+    .el-card,
+    .el-message-box {
         color: $textColorDark;
         border-color: $elementBgDark;
         background-color: $elementBgDark;
+    }
+
+    .el-card {
         .el-card__header {
             border-bottom-color: gray;
         }
+
         .el-loading-mask {
             background-color: $elementBgDark;
         }
+
         .el-link {
             color: $textColorDark;
         }
     }
+
     .el-loading-mask {
         background-color: $elementBgDark;
     }
-    .el-avatar {
-        color: $textColorDark;
-    }
-    .el-icon-caret-top {
-        color: $textColorDark;
-    }
+
+    .el-avatar,
+    .el-icon-caret-top,
     .el-button--info {
         color: $textColorDark;
-        border-color: $inputBgColorDark;
-        background-color: $inputBgColorDark;
     }
+
+    .el-button--info,
     .el-input__inner {
         background-color: $inputBgColorDark;
         border-color: $inputBgColorDark;
+    }
+
+    .el-image__inner {
+        -webkit-filter: brightness(70%);
+        filter: brightness(70%);
+    }
+
+    .el-message-box {
+        .el-message-box__title,
+        .el-message-box__content {
+            color: inherit;
+        }
+
+        .el-button {
+            color: $textColorDark;
+            border-color: $inputBgColorDark;
+            background-color: $inputBgColorDark;
+        }
+
+        .el-button--primary {
+            background-color: $primaryColor;
+            border-color: $primaryColor;
+        }
+    }
+
+    .el-popover {
+        color: $textColorDark;
+        border-color: $inputBgColorDark;
+        background-color: $elementBgDark;
+
+        .popper__arrow {
+            border-right-color: $inputBgColorDark;
+            border-left-color: $inputBgColorDark;
+        }
+
+        .popper__arrow::after {
+            border-right-color: $elementBgDark;
+            border-left-color: $elementBgDark;
+        }
+
+        .el-button {
+            color: $textColorDark;
+            border-color: $inputBgColorDark;
+            background-color: $inputBgColorDark;
+        }
+
+        .el-button--primary {
+            background-color: $primaryColor;
+            border-color: $primaryColor;
+        }
+    }
+
+    .el-button--info {
+        .el-icon-loading {
+            color: $textColorDark;
+        }
     }
 }

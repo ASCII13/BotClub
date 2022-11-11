@@ -140,6 +140,7 @@ export default {
     margin-left: 0.6rem;
 }
 .dark-mode {
+    .sec-item:hover,
     .knowledge-item:hover {
         background-color: $inputBgColorDark;
     }

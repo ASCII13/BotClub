@@ -305,7 +305,7 @@ const routes = [
         meta: {
           title: '待办清单',
           auth: true,
-          hideSideBar: true
+          // hideSideBar: true
         }
       }
     ]

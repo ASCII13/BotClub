@@ -27,6 +27,11 @@ export default {
             immediate: true,
             handler(val) {
                 this.isDark = val === 'dark' ? true : false;
+                if (this.isDark) {
+                    document.body.classList.add('dark-mode');
+                } else {
+                    document.body.removeAttribute('class');
+                }
             }
         }
     },

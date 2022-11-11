@@ -1,8 +1,14 @@
 
 .dark-mode {
+    background-color: $bodyBgDark;
+    
     a,
     a:focus,
     a:hover {
         color: $textColorDark;
+    }
+
+    #app {
+        background-color: $bodyBgDark;
     }
 }

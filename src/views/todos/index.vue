@@ -1,5 +1,10 @@
 <template>
-    <div style="display: flex;">
+    <div>
+        <form class="create-todo" @submit.prevent="addTodo">
+            <input type="text" placeholder="请输入待办内容" required v-model="todoModel.title" />
+            <input type="date" required :min="minDate" v-model="todoModel.date" />
+            <button>+</button>
+        </form>
         <list-view :show-hint="showHint" :busy="busy" :no-more="noMore" :more="more" :loading="loading" style="width: 600px;">
             <div class="todo" v-for="(timeGroup, groupIndex) in todoList" :key="timeGroup.time">
                 <div class="header">
@@ -25,20 +30,10 @@
                 </div>
             </div>
         </list-view>
-        <button class="add" @click="dialogVisible = true">新增待办</button>
-        <el-dialog width="30%" :visible.sync="dialogVisible" @closed="resetForm" :close-on-click-modal="false">
-            <span slot="title">新增待办</span>
-            <form @submit.prevent="addTodo">
-                <input type="text" placeholder="事项内容" required v-model="todoModel.title" />
-                <input type="date" required :min="minDate" v-model="todoModel.date" />
-                <button class="confirm">新增</button>
-            </form>
-        </el-dialog>
     </div>
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 import { getDate } from '@/utils/date';
 import ListView from '@/components/ListView';
 import { fetchList, add, remove, modifyStatus } from '@/api/todo';
@@ -49,7 +44,6 @@ export default {
             busy: false,
             noMore: false,
             pageNum: 1,
-            dialogVisible: false,
             todoModel: {
                 title: '',
                 date: '',
@@ -153,16 +147,14 @@ export default {
         },
         resetForm() {
             Object.keys(this.todoModel).forEach(key => {
-                if (key !== 'status') {
-                    this.todoModel[key] = '';
-                }
+                this.todoModel[key] = '';
             });
         },
         addTodo() {
             add(this.todoModel).then(res => {
                 if (res.data) {
-                    this.dialogVisible = false;
                     this.insertTodo(res.data);
+                    this.resetForm();
                 }
             });
         },
@@ -231,7 +223,6 @@ export default {
         showHint() {
             return !this.loading && (!this.todoList || this.todoList.length === 0);
         },
-        ...mapGetters(['mode']),
     }
 }
 </script>
@@ -249,23 +240,6 @@ button {
     cursor: pointer;
     color: #8a9ca5;
     border-radius: 20px;
-}
-form {
-    background-color: #FFFFFF;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    height: 100%;
-    text-align: center;
-    input {
-        box-sizing: border-box;
-        background-color: #eee;
-        border: none;
-        padding: 12px 15px;
-        margin: 8px 0;
-        width: 100%;
-    }
 }
 .todo {
     border-radius: 4px;
@@ -347,32 +321,7 @@ form {
         }
     }
 }
-.add {
-    margin-left: 0.5rem;
-    width: 8rem;
-    height: 2.6rem;
-    background-color: white;
-    color: black;
-    border-radius: 4px;
-    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
-}
-.confirm {
-    border: 1px solid $primaryColor;
-    background-color: $primaryColor;
-    color: #FFFFFF;
-    font-size: 12px;
-    font-weight: bold;
-    padding: 12px 45px;
-    letter-spacing: 1px;
-}
 .dark-mode {
-    .add {
-        color: $textColorDark;
-        background-color: $elementBgDark;
-    }
-    // .el-dialog__header {
-    //     background-color: $elementBgDark;
-    // }
     .todo {
         background-color: $elementBgDark;
         .header {
@@ -397,6 +346,58 @@ form {
                 color: #768593;
             }
         }
+    }
+    .create-todo {
+        input {
+            color: $textColorDark;
+            background-color: $inputBgColorDark;
+            &:focus {
+                outline: 1px solid $textColorDark;
+            }
+            &::-webkit-input-placeholder {
+                color: $textColorDark;
+            }
+            &::-moz-placeholder {
+                color: $textColorDark;
+            }
+            &:-moz-placeholder {
+                color: $textColorDark;
+            }
+            &:-ms-input-placeholder {
+                color: $textColorDark;
+            }
+            &::placeholder {
+                color: $textColorDark;
+            }
+        }
+        button {
+            color: $textColorDark;
+        }
+    }
+}
+.create-todo {
+    margin-bottom: .5rem;
+    height: 3rem;
+    display: flex;
+    input {
+        margin-right: .2rem;
+        height: 1.5rem;
+        background-color: #eee;
+        border: none;
+        padding: 12px 15px;
+        border-radius: 4px;
+    }
+    input[type="text"] {
+        width: 60%;
+    }
+    button {
+        flex: 1;
+        height: 100%;
+        background-color: $primaryColor;
+        font-size: 1.6rem;
+        vertical-align: bottom;
+        color: white;
+        border-radius: 4px;
     }
 }
 </style>
