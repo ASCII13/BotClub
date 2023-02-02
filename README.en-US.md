@@ -41,6 +41,9 @@ BotClub is a website for Android information, built on [Vue.js 2](https://cn.vue
 4. Run `npm run serve` for preview and debug.
 
 ## Major Update Log
+### 2023-02-02
+Support dark mode(Sitewide)
+
 ### 2022-11-10
 Support dark mode(Some pop-up windows are not adapted, such as: The dialog of create todo, the tooltip of double check. Because I will
 optimize the parts and adapte it later.)
