@@ -10,8 +10,13 @@
             <div class="tags">
                 <div class="classification">
                     <span v-if="item.top" style="color: red;">置顶</span>
-                    <span>{{ item.superChapterName }}</span>
-                    <span>{{ item.chapterName }}</span>
+                    <template v-if="item.superChapterName === item.chapterName">
+                        <span>{{ item.superChapterName }}</span>
+                    </template>
+                    <template v-else>
+                        <span>{{ item.superChapterName }}</span>
+                        <span>{{ item.chapterName }}</span>
+                    </template>
                 </div>
                 <el-button
                     size="mini"
@@ -117,6 +122,7 @@ export default {
                     line-height: .75rem;
                     border-radius: .75rem;
                     background-color: #e8e8eb;
+                    font-weight: 500;
                 }
             }
         }

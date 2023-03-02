@@ -382,7 +382,6 @@ button {
     input {
         margin-right: .2rem;
         height: 1.5rem;
-        background-color: #eee;
         border: none;
         padding: 12px 15px;
         border-radius: 4px;
